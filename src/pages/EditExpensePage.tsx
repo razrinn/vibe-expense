@@ -1,0 +1,66 @@
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import PageContainer from '../components/layout/PageContainer';
+import ExpenseForm from '../components/expenses/ExpenseForm';
+import { useExpenses } from '../context/ExpenseContext';
+import { useToast } from '../context/ToastContext';
+import { Expense } from '../types';
+
+const EditExpensePage: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const { expenses, updateExpense, categories } = useExpenses();
+  const navigate = useNavigate();
+  const { showToast } = useToast();
+  const [expense, setExpense] = useState<Expense | null>(null);
+
+  useEffect(() => {
+    if (id) {
+      const foundExpense = expenses.find(exp => exp.id === id);
+      if (foundExpense) {
+        setExpense(foundExpense);
+      } else {
+        showToast({
+          message: 'Expense not found',
+          type: 'error'
+        });
+        navigate('/expenses');
+      }
+    }
+  }, [id, expenses, navigate, showToast]);
+
+  const handleSubmit = (data: Omit<Expense, 'id'>) => {
+    if (id) {
+      updateExpense(id, data);
+      navigate('/expenses');
+    }
+  };
+
+  if (!expense) {
+    return (
+      <PageContainer>
+        <div className="flex justify-center items-center h-64">
+          <p className="text-gray-500 dark:text-gray-400">Loading expense...</p>
+        </div>
+      </PageContainer>
+    );
+  }
+
+  return (
+    <PageContainer>
+      <div className="max-w-2xl mx-auto">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Edit Expense</h2>
+        
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-100 dark:border-gray-700">
+          <ExpenseForm 
+            onSubmit={handleSubmit} 
+            categories={categories} 
+            initialData={expense}
+            isEditing={true}
+          />
+        </div>
+      </div>
+    </PageContainer>
+  );
+};
+
+export default EditExpensePage;

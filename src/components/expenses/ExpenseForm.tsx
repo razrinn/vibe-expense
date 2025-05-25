@@ -113,7 +113,6 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
           placeholder='0.00'
           {...register('amount', {
             required: 'Amount is required',
-            valueAsNumber: true,
             min: { value: 0.01, message: 'Amount must be greater than 0' },
           })}
           error={errors.amount?.message}

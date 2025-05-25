@@ -58,7 +58,7 @@ const ExpenseFilters: React.FC<ExpenseFiltersProps> = ({
               onClick={() => handlePeriodChange('day')}
               className={`px-3 py-1 text-sm rounded-md ${
                 filter.period === 'day'
-                  ? 'bg-green-100 text-green-800 dark:bg-black-800 dark:text-green-600'
+                  ? 'bg-green-100 text-green-600 dark:bg-black-800 dark:text-green-400'
                   : 'bg-gray-100 text-gray-700 dark:bg-black-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
@@ -68,7 +68,7 @@ const ExpenseFilters: React.FC<ExpenseFiltersProps> = ({
               onClick={() => handlePeriodChange('week')}
               className={`px-3 py-1 text-sm rounded-md ${
                 filter.period === 'week'
-                  ? 'bg-green-100 text-green-800 dark:bg-black-800 dark:text-green-600'
+                  ? 'bg-green-100 text-green-600 dark:bg-black-800 dark:text-green-400'
                   : 'bg-gray-100 text-gray-700 dark:bg-black-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
@@ -78,7 +78,7 @@ const ExpenseFilters: React.FC<ExpenseFiltersProps> = ({
               onClick={() => handlePeriodChange('month')}
               className={`px-3 py-1 text-sm rounded-md ${
                 filter.period === 'month'
-                  ? 'bg-green-100 text-green-800 dark:bg-black-800 dark:text-green-600'
+                  ? 'bg-green-100 text-green-600 dark:bg-black-800 dark:text-green-400'
                   : 'bg-gray-100 text-gray-700 dark:bg-black-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >

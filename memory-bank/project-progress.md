@@ -24,6 +24,7 @@ Initial setup complete, UI components scaffolded, data persistence issue address
 - [ ] Analytics dashboard (Priority: Medium)
 - [ ] Data persistence (Priority: Medium) - _Addressed accidental clearing, but core persistence is via localStorage as per design._
 - [ ] Responsive design (Priority: Low)
+- [x] TrendChart.tsx updated to use dynamic currency for y-axis ticks (2025-05-25)
 
 ## 4. Known Issues & Bugs
 
@@ -47,3 +48,4 @@ Initial setup complete, UI components scaffolded, data persistence issue address
 - Implement basic expense CRUD operations
 - Set up authentication flow
 - Create analytics dashboard components
+- Verify TrendChart currency formatting

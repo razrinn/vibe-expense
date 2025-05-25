@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Expense } from '../../types';
-import { formatDate } from '../../utils/formatters';
+import { formatDate, formatCurrency } from '../../utils/formatters';
+import { useSettings } from '../../context/SettingsContext';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -33,9 +34,11 @@ interface TrendChartProps {
 
 const TrendChart: React.FC<TrendChartProps> = ({
   expenses,
-  period,
-  dateRange,
+  // period,
+  // dateRange,
 }) => {
+  const { currency } = useSettings();
+
   const { labels, data } = useMemo(() => {
     if (expenses.length === 0) {
       return { labels: [], data: [] };
@@ -117,7 +120,7 @@ const TrendChart: React.FC<TrendChartProps> = ({
         },
         ticks: {
           callback: function (value) {
-            return '$' + value;
+            return formatCurrency(value as number, currency);
           },
         },
       },

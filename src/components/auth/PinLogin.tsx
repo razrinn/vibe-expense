@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { Lock, AlertCircle } from 'lucide-react';
+import { Lock } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
 import Input from '../ui/forms/Input';
 
@@ -82,13 +82,6 @@ const PinLogin: React.FC = () => {
               error={error}
             />
           </div>
-
-          {error && (
-            <div className='flex items-center text-red-600 dark:text-red-400 text-sm'>
-              <AlertCircle className='h-4 w-4 mr-1' />
-              <span>{error}</span>
-            </div>
-          )}
 
           <button
             type='submit'

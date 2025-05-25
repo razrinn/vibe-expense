@@ -12,7 +12,7 @@ const SettingsPage: React.FC = () => {
   const { categories, addCategory, updateCategory, deleteCategory, expenses } =
     useExpenses();
 
-  const { logout } = useAuth();
+  const { resetPinAndLogout } = useAuth();
   const { showToast } = useToast();
   const { currency, setCurrency } = useSettings();
 
@@ -74,8 +74,7 @@ const SettingsPage: React.FC = () => {
         'Are you sure you want to reset your PIN? You will be logged out.'
       )
     ) {
-      localStorage.removeItem('userPin');
-      logout();
+      resetPinAndLogout();
 
       showToast({
         message: 'PIN reset successfully',

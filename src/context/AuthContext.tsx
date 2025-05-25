@@ -13,6 +13,7 @@ interface AuthContextType {
   setupPin: (pin: string) => void;
   verifyPin: (pin: string) => boolean;
   logout: () => void;
+  resetPinAndLogout: () => void; // New function for resetting PIN and logging out
   updateActivity: () => void;
 }
 
@@ -103,7 +104,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setAuth((prev) => ({
       ...prev,
       isAuthenticated: false,
-      hasPin: false, // Set hasPin to false on logout
+      lastActivity: Date.now(),
+    }));
+  };
+
+  const resetPinAndLogout = () => {
+    localStorage.removeItem('userPin'); // Remove PIN from local storage
+    setAuth((prev) => ({
+      ...prev,
+      isAuthenticated: false,
+      hasPin: false, // Set hasPin to false
       lastActivity: Date.now(),
     }));
   };
@@ -117,7 +127,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ auth, setupPin, verifyPin, logout, updateActivity }}
+      value={{
+        auth,
+        setupPin,
+        verifyPin,
+        logout,
+        resetPinAndLogout,
+        updateActivity,
+      }}
     >
       {children}
     </AuthContext.Provider>

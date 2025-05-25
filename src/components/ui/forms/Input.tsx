@@ -1,3 +1,4 @@
+import { AlertCircle } from 'lucide-react';
 import React from 'react';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -36,13 +37,16 @@ const Input: React.FC<InputProps> = ({
         <input
           id={inputId}
           className={`block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm bg-white dark:bg-black-900 text-gray-900 dark:text-white ${
-            error ? 'border-red-500' : ''
-          } ${icon ? 'pl-10' : ''} ${className}`} // Add pl-10 if icon exists
+            error ? 'border-red-500 dark:border-red-500' : ''
+          } ${icon ? 'pl-10' : ''} ${className}`}
           {...props}
         />
       </div>
       {error && (
-        <p className='mt-1 text-sm text-red-600 dark:text-red-400'>{error}</p>
+        <div className='flex items-center mt-2 text-red-600 dark:text-red-400 text-sm'>
+          <AlertCircle className='h-4 w-4 mr-1' />
+          <span>{error}</span>
+        </div>
       )}
     </div>
   );

@@ -54,7 +54,7 @@ const PinSetup: React.FC = () => {
   };
 
   return (
-    <div className='flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-black-950 px-4'>
+    <div className='flex flex-col items-center justify-center min-h-dvh bg-gray-100 dark:bg-black-950 px-4'>
       <div className='w-full max-w-md bg-white dark:bg-black-900 rounded-lg shadow-md p-6 space-y-6'>
         <div className='text-center'>
           <div className='mx-auto w-16 h-16 flex items-center justify-center rounded-full bg-green-100 dark:bg-black-800 mb-4'>

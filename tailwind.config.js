@@ -1,4 +1,5 @@
 import tailwindSafeArea from 'tailwindcss-safe-area';
+import plugin from 'tailwindcss/plugin';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -45,5 +46,28 @@ export default {
       },
     },
   },
-  plugins: [tailwindSafeArea],
+  plugins: [
+    tailwindSafeArea,
+    plugin(function ({ addUtilities }) {
+      const fallbackHeightUtilities = {
+        '@supports not (height: 100dvh)': {
+          '.h-dvh': { height: '100vh' },
+          '.min-h-dvh': { 'min-height': '100vh' },
+          '.max-h-dvh': { 'max-height': '100vh' },
+        },
+        '@supports not (height: 100lvh)': {
+          '.h-lvh': { height: '100vh' },
+          '.min-h-lvh': { 'min-height': '100vh' },
+          '.max-h-lvh': { 'max-height': '100vh' },
+        },
+        '@supports not (height: 100svh)': {
+          '.h-svh': { height: '100vh' },
+          '.min-h-svh': { 'min-height': '100vh' },
+          '.max-h-svh': { 'max-height': '100vh' },
+        },
+      };
+
+      addUtilities(fallbackHeightUtilities, ['responsive']);
+    }),
+  ],
 };

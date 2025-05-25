@@ -54,7 +54,7 @@ const AuthWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   if (!auth.isInitialized) {
     return (
-      <div className='flex items-center justify-center min-h-screen'>
+      <div className='flex items-center justify-center min-h-dvh'>
         <p className='text-gray-500 dark:text-gray-400'>Loading...</p>
       </div>
     );

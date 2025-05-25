@@ -49,7 +49,7 @@ const PinLogin: React.FC = () => {
   }, []);
 
   return (
-    <div className='flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-black-950 px-4'>
+    <div className='flex flex-col items-center justify-center min-h-dvh bg-gray-100 dark:bg-black-950 px-4'>
       <div
         className={`w-full max-w-md bg-white dark:bg-black-900 rounded-lg shadow-md p-6 transition-all ${
           isShaking ? 'animate-shake' : ''

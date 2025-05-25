@@ -152,9 +152,6 @@ const ExpenseFilters: React.FC<ExpenseFiltersProps> = ({
         </div>
         <div className='flex items-center space-x-2'>
           <Filter className='h-4 w-4 text-gray-500 dark:text-gray-400' />
-          <span className='text-sm text-gray-500 dark:text-gray-400'>
-            Filters
-          </span>
         </div>
       </div>
 
@@ -225,7 +222,7 @@ const ExpenseFilters: React.FC<ExpenseFiltersProps> = ({
                   : 'bg-gray-100 text-gray-700 dark:bg-black-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
-              Custom Range
+              Custom
             </button>
           </div>
 

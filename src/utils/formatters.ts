@@ -33,24 +33,46 @@ export const formatDateForInput = (date: string | Date): string => {
   return `${year}-${month}-${day}T${hours}:${minutes}`;
 };
 
-export const formatPeriod = (period: 'day' | 'week' | 'month' | 'custom', start: Date, end: Date): string => {
+export const formatPeriod = (
+  period: 'all' | 'day' | 'week' | 'month' | 'year' | 'custom',
+  start: Date,
+  end: Date,
+  selectedMonth?: number,
+  selectedYear?: number
+): string => {
   const today = new Date();
-  const isToday = start.toDateString() === today.toDateString() && end.toDateString() === today.toDateString();
+  const isToday =
+    start.toDateString() === today.toDateString() &&
+    end.toDateString() === today.toDateString();
   const isThisMonth =
     start.getMonth() === today.getMonth() &&
     start.getFullYear() === today.getFullYear() &&
     end.getMonth() === today.getMonth() &&
     end.getFullYear() === today.getFullYear();
+  const isThisYear = start.getFullYear() === today.getFullYear();
 
   switch (period) {
+    case 'all':
+      return 'All Time';
     case 'day':
       return isToday ? 'Today' : formatDate(start);
     case 'week':
       return `Week of ${formatDate(start)}`;
     case 'month':
+      if (selectedMonth !== undefined && selectedYear !== undefined) {
+        return new Date(selectedYear, selectedMonth, 1).toLocaleDateString(
+          'en-US',
+          { month: 'long', year: 'numeric' }
+        );
+      }
       return isThisMonth
         ? 'This Month'
         : start.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    case 'year':
+      if (selectedYear !== undefined) {
+        return selectedYear.toString();
+      }
+      return isThisYear ? 'This Year' : start.getFullYear().toString();
     case 'custom':
       return `${formatDate(start)} to ${formatDate(end)}`;
     default:

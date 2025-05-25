@@ -19,9 +19,11 @@ export interface DateRange {
 }
 
 export interface ExpenseFilter {
-  period: 'day' | 'week' | 'month' | 'custom';
+  period: 'all' | 'day' | 'week' | 'month' | 'year' | 'custom';
   dateRange: DateRange;
   category?: string;
+  selectedMonth?: number; // 0-11 for Jan-Dec
+  selectedYear?: number;
 }
 
 export interface ExpenseSummary {

@@ -6,13 +6,7 @@ import {
   ReactNode,
 } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import {
-  Expense,
-  Category,
-  ExpenseFilter,
-  DateRange,
-  ExpenseSummary,
-} from '../types';
+import { Expense, Category, ExpenseFilter, ExpenseSummary } from '../types';
 import { getDefaultCategories } from '../utils/categories';
 import {
   startOfDay,
@@ -21,6 +15,8 @@ import {
   endOfWeek,
   startOfMonth,
   endOfMonth,
+  startOfYear,
+  endOfYear,
   isWithinInterval,
 } from 'date-fns';
 
@@ -39,14 +35,11 @@ interface ExpenseContextType {
   setFilter: (filter: Partial<ExpenseFilter>) => void;
 }
 
-const defaultDateRange: DateRange = {
-  start: startOfMonth(new Date()),
-  end: endOfMonth(new Date()),
-};
-
 const defaultFilter: ExpenseFilter = {
-  period: 'month',
-  dateRange: defaultDateRange,
+  period: 'all',
+  dateRange: { start: new Date(0), end: new Date() }, // Default to all time
+  selectedMonth: undefined,
+  selectedYear: undefined,
 };
 
 const ExpenseContext = createContext<ExpenseContextType | undefined>(undefined);
@@ -181,34 +174,89 @@ export const ExpenseProvider = ({ children }: { children: ReactNode }) => {
     setFilterState((prev) => {
       const updated = { ...prev, ...newFilter };
 
-      // Update date range based on period
-      if (newFilter.period) {
+      // Update date range based on period and selected month/year
+      if (newFilter.period !== undefined) {
         const today = new Date();
+        let newStart: Date;
+        let newEnd: Date;
 
         switch (newFilter.period) {
+          case 'all':
+            newStart = new Date(0); // Epoch
+            newEnd = new Date(); // Now
+            break;
           case 'day':
-            updated.dateRange = {
-              start: startOfDay(today),
-              end: endOfDay(today),
-            };
+            newStart = startOfDay(today);
+            newEnd = endOfDay(today);
             break;
           case 'week':
-            updated.dateRange = {
-              start: startOfWeek(today, { weekStartsOn: 1 }),
-              end: endOfWeek(today, { weekStartsOn: 1 }),
-            };
+            newStart = startOfWeek(today, { weekStartsOn: 1 });
+            newEnd = endOfWeek(today, { weekStartsOn: 1 });
             break;
-          case 'month':
-            updated.dateRange = {
-              start: startOfMonth(today),
-              end: endOfMonth(today),
-            };
+          case 'month': {
+            const monthDate =
+              newFilter.selectedYear !== undefined &&
+              newFilter.selectedMonth !== undefined
+                ? new Date(newFilter.selectedYear, newFilter.selectedMonth, 1)
+                : today;
+            newStart = startOfMonth(monthDate);
+            newEnd = endOfMonth(monthDate);
             break;
-          // For custom, keep the existing date range unless explicitly provided
+          }
+          case 'year': {
+            const yearDate =
+              newFilter.selectedYear !== undefined
+                ? new Date(newFilter.selectedYear, 0, 1)
+                : today;
+            newStart = startOfYear(yearDate);
+            newEnd = endOfYear(yearDate);
+            break;
+          }
+          case 'custom':
+            // If custom, use the provided dateRange or keep existing
+            newStart = newFilter.dateRange?.start || prev.dateRange.start;
+            newEnd = endOfDay(newFilter.dateRange?.end || prev.dateRange.end);
+            break;
+          default:
+            newStart = prev.dateRange.start;
+            newEnd = prev.dateRange.end;
+            break;
         }
+        updated.dateRange = { start: newStart, end: newEnd };
+      } else if (
+        // If period is not changed, but month/year are
+        (newFilter.selectedMonth !== undefined ||
+          newFilter.selectedYear !== undefined) &&
+        (prev.period === 'month' || prev.period === 'year')
+      ) {
+        const currentYear =
+          newFilter.selectedYear ??
+          prev.selectedYear ??
+          new Date().getFullYear();
+        const currentMonth =
+          newFilter.selectedMonth ??
+          prev.selectedMonth ??
+          new Date().getMonth();
+
+        if (prev.period === 'month') {
+          const monthDate = new Date(currentYear, currentMonth, 1);
+          updated.dateRange = {
+            start: startOfMonth(monthDate),
+            end: endOfMonth(monthDate),
+          };
+        } else if (prev.period === 'year') {
+          const yearDate = new Date(currentYear, 0, 1);
+          updated.dateRange = {
+            start: startOfYear(yearDate),
+            end: endOfYear(yearDate),
+          };
+        }
+      } else if (newFilter.dateRange) {
+        // If only dateRange is updated (for custom period)
+        updated.dateRange = newFilter.dateRange;
       }
 
-      return updated;
+      return { ...updated, ...newFilter };
     });
   };
 

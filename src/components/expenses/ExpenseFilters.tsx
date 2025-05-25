@@ -1,8 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ExpenseFilter, Category } from '../../types';
-import { formatPeriod } from '../../utils/formatters';
+import { formatPeriod, formatDateForInput } from '../../utils/formatters';
 import { Calendar, Filter } from 'lucide-react';
 import Select from '../ui/forms/Select';
+import Input from '../ui/forms/Input';
+import {
+  format,
+  startOfMonth,
+  endOfMonth,
+  startOfYear,
+  endOfYear,
+  startOfWeek,
+  endOfWeek,
+  startOfDay,
+  endOfDay,
+} from 'date-fns';
 
 interface ExpenseFiltersProps {
   filter: ExpenseFilter;
@@ -15,8 +27,105 @@ const ExpenseFilters: React.FC<ExpenseFiltersProps> = ({
   categories,
   onFilterChange,
 }) => {
-  const handlePeriodChange = (period: 'day' | 'week' | 'month' | 'custom') => {
-    onFilterChange({ period });
+  const [showMonthYearPicker, setShowMonthYearPicker] = useState(
+    filter.period === 'month' || filter.period === 'year'
+  );
+  const [showCustomRangePicker, setShowCustomRangePicker] = useState(
+    filter.period === 'custom'
+  );
+
+  const handlePeriodChange = (
+    period: 'all' | 'day' | 'week' | 'month' | 'year' | 'custom'
+  ) => {
+    let newDateRange = filter.dateRange;
+    let selectedMonth = filter.selectedMonth;
+    let selectedYear = filter.selectedYear;
+
+    const today = new Date();
+
+    setShowMonthYearPicker(period === 'month' || period === 'year');
+    setShowCustomRangePicker(period === 'custom');
+
+    switch (period) {
+      case 'all':
+        newDateRange = { start: new Date(0), end: new Date() }; // Effectively no filter
+        selectedMonth = undefined;
+        selectedYear = undefined;
+        break;
+      case 'day':
+        newDateRange = { start: startOfDay(today), end: endOfDay(today) };
+        selectedMonth = undefined;
+        selectedYear = undefined;
+        break;
+      case 'week':
+        newDateRange = { start: startOfWeek(today), end: endOfWeek(today) };
+        selectedMonth = undefined;
+        selectedYear = undefined;
+        break;
+      case 'month':
+        newDateRange = { start: startOfMonth(today), end: endOfMonth(today) };
+        selectedMonth = today.getMonth();
+        selectedYear = today.getFullYear();
+        break;
+      case 'year':
+        newDateRange = { start: startOfYear(today), end: endOfYear(today) };
+        selectedMonth = undefined;
+        selectedYear = today.getFullYear();
+        break;
+      case 'custom':
+        // Keep existing custom range or set a default
+        newDateRange = filter.dateRange || { start: today, end: today };
+        selectedMonth = undefined;
+        selectedYear = undefined;
+        break;
+    }
+
+    onFilterChange({
+      period,
+      dateRange: newDateRange,
+      selectedMonth,
+      selectedYear,
+    });
+  };
+
+  const handleMonthChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const month = parseInt(e.target.value, 10);
+    const year = filter.selectedYear || new Date().getFullYear();
+    const newDate = new Date(year, month, 1);
+    onFilterChange({
+      selectedMonth: month,
+      selectedYear: year,
+      dateRange: { start: startOfMonth(newDate), end: endOfMonth(newDate) },
+    });
+  };
+
+  const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const year = parseInt(e.target.value, 10);
+    const month = filter.selectedMonth ?? new Date().getMonth(); // Keep current month if selected
+    const newDate = new Date(year, month, 1);
+    onFilterChange({
+      selectedYear: year,
+      selectedMonth: month,
+      dateRange: { start: startOfYear(newDate), end: endOfYear(newDate) },
+    });
+  };
+
+  const handleCustomStartDateChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const startDate = new Date(e.target.value);
+    onFilterChange({
+      dateRange: { start: startDate, end: filter.dateRange.end },
+    });
+  };
+
+  const handleCustomEndDateChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const endDate = new Date(e.target.value);
+    onFilterChange({
+      dateRange: { start: filter.dateRange.start, end: endDate },
+    });
   };
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -30,11 +139,15 @@ const ExpenseFilters: React.FC<ExpenseFiltersProps> = ({
         <div className='flex items-center space-x-2'>
           <Calendar className='h-5 w-5 text-green-500 dark:text-green-400' />
           <h3 className='text-lg font-medium text-gray-900 dark:text-white'>
-            {formatPeriod(
-              filter.period,
-              filter.dateRange.start,
-              filter.dateRange.end
-            )}
+            {filter.period === 'all'
+              ? 'All Time'
+              : formatPeriod(
+                  filter.period,
+                  filter.dateRange.start,
+                  filter.dateRange.end,
+                  filter.selectedMonth,
+                  filter.selectedYear
+                )}
           </h3>
         </div>
         <div className='flex items-center space-x-2'>
@@ -53,7 +166,17 @@ const ExpenseFilters: React.FC<ExpenseFiltersProps> = ({
           >
             Time Period
           </label>
-          <div className='flex space-x-2'>
+          <div className='flex flex-wrap gap-2'>
+            <button
+              onClick={() => handlePeriodChange('all')}
+              className={`px-3 py-1 text-sm rounded-md ${
+                filter.period === 'all'
+                  ? 'bg-green-100 text-green-600 dark:bg-black-800 dark:text-green-400'
+                  : 'bg-gray-100 text-gray-700 dark:bg-black-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+              }`}
+            >
+              All Time
+            </button>
             <button
               onClick={() => handlePeriodChange('day')}
               className={`px-3 py-1 text-sm rounded-md ${
@@ -84,7 +207,79 @@ const ExpenseFilters: React.FC<ExpenseFiltersProps> = ({
             >
               Month
             </button>
+            <button
+              onClick={() => handlePeriodChange('year')}
+              className={`px-3 py-1 text-sm rounded-md ${
+                filter.period === 'year'
+                  ? 'bg-green-100 text-green-600 dark:bg-black-800 dark:text-green-400'
+                  : 'bg-gray-100 text-gray-700 dark:bg-black-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+              }`}
+            >
+              Year
+            </button>
+            <button
+              onClick={() => handlePeriodChange('custom')}
+              className={`px-3 py-1 text-sm rounded-md ${
+                filter.period === 'custom'
+                  ? 'bg-green-100 text-green-600 dark:bg-black-800 dark:text-green-400'
+                  : 'bg-gray-100 text-gray-700 dark:bg-black-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+              }`}
+            >
+              Custom Range
+            </button>
           </div>
+
+          {showMonthYearPicker && (
+            <div className='flex space-x-2 mt-2'>
+              {filter.period === 'month' && (
+                <Select
+                  label='Month'
+                  id='month-select'
+                  value={(
+                    filter.selectedMonth ?? new Date().getMonth()
+                  ).toString()}
+                  onChange={handleMonthChange}
+                  options={[...Array(12).keys()].map((i) => ({
+                    value: i.toString(),
+                    label: format(new Date(2000, i, 1), 'MMM'),
+                  }))}
+                />
+              )}
+              <Select
+                label='Year'
+                id='year-select'
+                value={(
+                  filter.selectedYear ?? new Date().getFullYear()
+                ).toString()}
+                onChange={handleYearChange}
+                options={[...Array(5).keys()]
+                  .map((i) => new Date().getFullYear() - 2 + i)
+                  .map((year) => ({
+                    value: year.toString(),
+                    label: year.toString(),
+                  }))}
+              />
+            </div>
+          )}
+
+          {showCustomRangePicker && (
+            <div className='flex space-x-2 mt-2'>
+              <Input
+                label='Start Date'
+                id='start-date'
+                type='date'
+                value={formatDateForInput(filter.dateRange.start).split('T')[0]}
+                onChange={handleCustomStartDateChange}
+              />
+              <Input
+                label='End Date'
+                id='end-date'
+                type='date'
+                value={formatDateForInput(filter.dateRange.end).split('T')[0]}
+                onChange={handleCustomEndDateChange}
+              />
+            </div>
+          )}
         </div>
 
         <Select

@@ -106,7 +106,7 @@ const SettingsPage: React.FC = () => {
   return (
     <PageContainer>
       <div className='space-y-8 max-w-3xl mx-auto'>
-        <div className='bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-100 dark:border-gray-700'>
+        <div className='bg-white dark:bg-black-900 rounded-lg shadow p-6 borderborder-gray-200 dark:border-gray-700'>
           <h3 className='text-xl font-bold text-gray-900 dark:text-white mb-4'>
             Data Management
           </h3>
@@ -115,7 +115,7 @@ const SettingsPage: React.FC = () => {
             <div>
               <button
                 onClick={handleExportData}
-                className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
+                className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
               >
                 <Download className='h-4 w-4 mr-2' />
                 Export Expenses (CSV)
@@ -128,7 +128,7 @@ const SettingsPage: React.FC = () => {
             <div>
               <button
                 onClick={handleResetPin}
-                className='inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
+                className='inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-black-900 hover:bg-gray-50 dark:hover:bg-black-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
               >
                 Reset PIN
               </button>
@@ -140,7 +140,7 @@ const SettingsPage: React.FC = () => {
             <div>
               <button
                 onClick={handleClearData}
-                className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
+                className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
               >
                 <Trash2 className='h-4 w-4 mr-2' />
                 Clear All Data
@@ -152,7 +152,7 @@ const SettingsPage: React.FC = () => {
           </div>
         </div>
 
-        <div className='bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-100 dark:border-gray-700'>
+        <div className='bg-white dark:bg-black-900 rounded-lg shadow p-6 borderborder-gray-200 dark:border-gray-700'>
           <h3 className='text-xl font-bold text-gray-900 dark:text-white mb-4'>
             Currency Settings
           </h3>
@@ -166,7 +166,7 @@ const SettingsPage: React.FC = () => {
             <select
               id='currency-select'
               name='currency-select'
-              className='mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white'
+              className='mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-md dark:bg-black-800 dark:border-gray-600 dark:text-white'
               value={currency}
               onChange={(e) => setCurrency(e.target.value)}
             >

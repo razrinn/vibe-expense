@@ -5,6 +5,11 @@ export default {
   theme: {
     extend: {
       colors: {
+        black: {
+          950: '#000000',
+          900: '#0A0A0A',
+          800: '#1A1A1A',
+        },
         green: {
           50: '#f0fdf4',
           100: '#dcfce7',
@@ -23,7 +28,7 @@ export default {
         top: '0 -2px 10px rgba(0, 0, 0, 0.1)',
       },
       animation: {
-        'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both',
+        shake: 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both',
       },
       keyframes: {
         shake: {

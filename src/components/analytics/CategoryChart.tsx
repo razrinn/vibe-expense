@@ -81,7 +81,7 @@ const CategoryChart: React.FC<CategoryChartProps> = ({
   };
 
   return (
-    <div className='bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 border border-gray-100 dark:border-gray-700'>
+    <div className='bg-white dark:bg-black-900 rounded-lg shadow p-4 borderborder-gray-200 dark:border-gray-700'>
       <h3 className='text-lg font-medium text-gray-900 dark:text-white mb-4'>
         Spending by Category
       </h3>

@@ -49,7 +49,7 @@ const ExpenseList: React.FC<ExpenseListProps> = ({
         <p className='text-gray-500 dark:text-gray-400'>No expenses found.</p>
         <Link
           to='/add'
-          className='mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
+          className='mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
         >
           Add your first expense
         </Link>
@@ -62,7 +62,7 @@ const ExpenseList: React.FC<ExpenseListProps> = ({
       {expenses.map((expense) => (
         <div
           key={expense.id}
-          className='bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 border border-gray-100 dark:border-gray-700 relative transition-all hover:shadow-md'
+          className='bg-white dark:bg-black-900 rounded-lg shadow p-4 borderborder-gray-200 dark:border-gray-700 relative transition-all hover:shadow-md'
         >
           <div className='flex items-start justify-between'>
             <div className='flex-1 min-w-0'>
@@ -111,8 +111,8 @@ const ExpenseList: React.FC<ExpenseListProps> = ({
           </div>
 
           {confirmDelete === expense.id && (
-            <div className='absolute inset-0 flex items-center justify-center bg-gray-800/30 dark:bg-black/50 backdrop-blur-sm rounded-lg z-10'>
-              <div className='bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg max-w-xs w-full'>
+            <div className='absolute inset-0 flex items-center justify-center bg-black-800/30 dark:bg-black/50 backdrop-blur-sm rounded-lg z-10'>
+              <div className='bg-white dark:bg-black-900 p-4 rounded-lg shadow-lg max-w-xs w-full'>
                 <h4 className='text-lg font-medium text-gray-900 dark:text-white'>
                   Confirm Delete
                 </h4>
@@ -123,7 +123,7 @@ const ExpenseList: React.FC<ExpenseListProps> = ({
                 <div className='mt-4 flex justify-end space-x-2'>
                   <button
                     onClick={handleCancelDelete}
-                    className='px-3 py-1 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md'
+                    className='px-3 py-1 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-black-800 rounded-md'
                   >
                     Cancel
                   </button>

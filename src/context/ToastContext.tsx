@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  ReactNode,
+} from 'react';
 import { ToastOptions } from '../types';
 import Toast from '../components/ui/Toast';
 
@@ -17,7 +23,7 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
     setIsVisible(true);
 
     // Auto-hide the toast after the specified duration
-    const duration = options.duration || 3000;
+    const duration = options.duration || 1500;
     setTimeout(() => {
       setIsVisible(false);
       setTimeout(() => setToast(null), 300); // Remove after fade out animation
@@ -27,7 +33,13 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
   return (
     <ToastContext.Provider value={{ showToast }}>
       {children}
-      {toast && <Toast message={toast.message} type={toast.type} isVisible={isVisible} />}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          isVisible={isVisible}
+        />
+      )}
     </ToastContext.Provider>
   );
 };

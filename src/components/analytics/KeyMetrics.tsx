@@ -120,10 +120,10 @@ const KeyMetrics: React.FC<KeyMetricsProps> = ({ summary, period }) => {
       {metrics.map((metric) => (
         <div
           key={metric.name}
-          className='bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 border border-gray-100 dark:border-gray-700'
+          className='bg-white dark:bg-black-900 rounded-lg shadow p-4 borderborder-gray-200 dark:border-gray-700'
         >
           <div className='flex items-center'>
-            <div className='rounded-full bg-gray-100 dark:bg-gray-700 p-2 mr-3'>
+            <div className='rounded-full bg-gray-100 dark:bg-black-800 p-2 mr-3'>
               {getIcon(metric.name)}
             </div>
             <div>

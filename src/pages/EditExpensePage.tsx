@@ -15,13 +15,13 @@ const EditExpensePage: React.FC = () => {
 
   useEffect(() => {
     if (id) {
-      const foundExpense = expenses.find(exp => exp.id === id);
+      const foundExpense = expenses.find((exp) => exp.id === id);
       if (foundExpense) {
         setExpense(foundExpense);
       } else {
         showToast({
           message: 'Expense not found',
-          type: 'error'
+          type: 'error',
         });
         navigate('/expenses');
       }
@@ -38,8 +38,8 @@ const EditExpensePage: React.FC = () => {
   if (!expense) {
     return (
       <PageContainer>
-        <div className="flex justify-center items-center h-64">
-          <p className="text-gray-500 dark:text-gray-400">Loading expense...</p>
+        <div className='flex justify-center items-center h-64'>
+          <p className='text-gray-500 dark:text-gray-400'>Loading expense...</p>
         </div>
       </PageContainer>
     );
@@ -47,13 +47,15 @@ const EditExpensePage: React.FC = () => {
 
   return (
     <PageContainer>
-      <div className="max-w-2xl mx-auto">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Edit Expense</h2>
-        
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-100 dark:border-gray-700">
-          <ExpenseForm 
-            onSubmit={handleSubmit} 
-            categories={categories} 
+      <div className='max-w-2xl mx-auto'>
+        <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-6'>
+          Edit Expense
+        </h2>
+
+        <div className='bg-white dark:bg-black-900 rounded-lg shadow p-6 borderborder-gray-200 dark:border-gray-700'>
+          <ExpenseForm
+            onSubmit={handleSubmit}
+            categories={categories}
             initialData={expense}
             isEditing={true}
           />

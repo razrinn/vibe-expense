@@ -26,7 +26,7 @@ const ExpensesPage: React.FC = () => {
           onFilterChange={setFilter}
         />
 
-        <div className='bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 border border-gray-100 dark:border-gray-700'>
+        <div className='bg-white dark:bg-black-900 rounded-lg shadow p-4 borderborder-gray-200 dark:border-gray-700'>
           <div className='flex justify-between items-center'>
             <p className='text-gray-500 dark:text-gray-400'>
               {filteredExpenses.length}{' '}

@@ -12,7 +12,7 @@ import {
   Tooltip,
   Legend,
   ChartData,
-  ChartOptions
+  ChartOptions,
 } from 'chart.js';
 
 ChartJS.register(
@@ -31,7 +31,11 @@ interface TrendChartProps {
   dateRange: { start: Date; end: Date };
 }
 
-const TrendChart: React.FC<TrendChartProps> = ({ expenses, period, dateRange }) => {
+const TrendChart: React.FC<TrendChartProps> = ({
+  expenses,
+  period,
+  dateRange,
+}) => {
   const { labels, data } = useMemo(() => {
     if (expenses.length === 0) {
       return { labels: [], data: [] };
@@ -44,8 +48,8 @@ const TrendChart: React.FC<TrendChartProps> = ({ expenses, period, dateRange }) 
 
     // Group by date and calculate daily totals
     const dailyTotals: Record<string, number> = {};
-    
-    sortedExpenses.forEach(expense => {
+
+    sortedExpenses.forEach((expense) => {
       const date = expense.date.split('T')[0]; // Format: YYYY-MM-DD
       if (!dailyTotals[date]) {
         dailyTotals[date] = 0;
@@ -56,9 +60,12 @@ const TrendChart: React.FC<TrendChartProps> = ({ expenses, period, dateRange }) 
     // Create arrays for chart
     const labels: string[] = [];
     const data: number[] = [];
-    
+
     Object.entries(dailyTotals)
-      .sort(([dateA], [dateB]) => new Date(dateA).getTime() - new Date(dateB).getTime())
+      .sort(
+        ([dateA], [dateB]) =>
+          new Date(dateA).getTime() - new Date(dateB).getTime()
+      )
       .forEach(([date, amount]) => {
         labels.push(formatDate(date));
         data.push(amount);
@@ -109,7 +116,7 @@ const TrendChart: React.FC<TrendChartProps> = ({ expenses, period, dateRange }) 
           color: 'rgba(0, 0, 0, 0.05)',
         },
         ticks: {
-          callback: function(value) {
+          callback: function (value) {
             return '$' + value;
           },
         },
@@ -123,14 +130,18 @@ const TrendChart: React.FC<TrendChartProps> = ({ expenses, period, dateRange }) 
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 border border-gray-100 dark:border-gray-700">
-      <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Expense Trend</h3>
-      <div className="h-64">
+    <div className='bg-white dark:bg-black-900 rounded-lg shadow p-4 borderborder-gray-200 dark:border-gray-700'>
+      <h3 className='text-lg font-medium text-gray-900 dark:text-white mb-4'>
+        Expense Trend
+      </h3>
+      <div className='h-64'>
         {data.length > 0 ? (
           <Line data={chartData} options={chartOptions} />
         ) : (
-          <div className="h-full flex items-center justify-center">
-            <p className="text-gray-500 dark:text-gray-400">No data available</p>
+          <div className='h-full flex items-center justify-center'>
+            <p className='text-gray-500 dark:text-gray-400'>
+              No data available
+            </p>
           </div>
         )}
       </div>

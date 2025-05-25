@@ -35,7 +35,7 @@ interface ExpenseContextType {
   deleteExpense: (id: string) => void;
   addCategory: (category: Omit<Category, 'id'>) => void;
   updateCategory: (id: string, category: Omit<Category, 'id'>) => void;
-  deleteCategory: (id: string) => void;
+  deleteCategory: (id: string) => boolean;
   setFilter: (filter: Partial<ExpenseFilter>) => void;
 }
 

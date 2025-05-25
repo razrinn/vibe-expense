@@ -77,7 +77,7 @@ const ExpenseList: React.FC<ExpenseListProps> = ({
                   {getCategoryName(expense.category)}
                 </p>
               </div>
-              <h3 className='text-lg font-medium text-gray-900 dark:text-white truncate'>
+              <h3 className='font-medium text-gray-900 dark:text-white truncate'>
                 {expense.description}
               </h3>
               <p className='mt-1 text-green-600 dark:text-green-400 text-xl font-semibold'>
@@ -113,7 +113,7 @@ const ExpenseList: React.FC<ExpenseListProps> = ({
           {confirmDelete === expense.id && (
             <div className='absolute inset-0 flex items-center justify-center bg-black-800/30 dark:bg-black/50 backdrop-blur-sm rounded-lg z-10'>
               <div className='bg-white dark:bg-black-900 p-4 rounded-lg shadow-lg max-w-xs w-full'>
-                <h4 className='text-lg font-medium text-gray-900 dark:text-white'>
+                <h4 className='font-medium text-gray-900 dark:text-white'>
                   Confirm Delete
                 </h4>
                 <p className='mt-2 text-sm text-gray-600 dark:text-gray-300'>

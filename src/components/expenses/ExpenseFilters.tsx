@@ -146,7 +146,7 @@ const ExpenseFilters: React.FC<ExpenseFiltersProps> = ({
       <div className='flex items-center justify-between'>
         <div className='flex items-center space-x-2'>
           <Calendar className='h-5 w-5 text-green-500 dark:text-green-400' />
-          <h3 className='text-lg font-medium text-gray-900 dark:text-white'>
+          <h3 className='font-medium text-gray-900 dark:text-white'>
             {filter.period === 'all'
               ? 'All Time'
               : formatPeriod(

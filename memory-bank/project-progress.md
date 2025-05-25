@@ -72,6 +72,7 @@ Initial setup complete, UI components scaffolded, data persistence issue address
 - (2025-05-25): Fix: `Input.tsx` now correctly uses `React.forwardRef` to allow `react-hook-form` to register inputs. Rationale: This was the root cause of the 'amount' field submitting as 0 and other potential input issues.
 - (2025-05-25): Clean-up: Removed diagnostic `console.log` from `onFormSubmit` in `ExpenseForm.tsx`.
 - (2025-05-25): Feature: Added month separation dividers to `DailyGroupedExpenseList.tsx`. Rationale: Improves readability and organization of the expense list by visually separating expenses by month.
+- [x] Added daily total expense to `DailyGroupedExpenseList.tsx` (2025-05-25)
 
 ## 6. Next Steps
 

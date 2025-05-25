@@ -90,12 +90,23 @@ const DailyGroupedExpenseList: React.FC<DailyGroupedExpenseListProps> = ({
               </div>
             )}
             <div className='bg-white dark:bg-black-900 rounded-lg shadow p-4 border border-gray-200 dark:border-gray-700'>
-              <h3 className='font-semibold text-gray-900 dark:text-white mb-3'>
-                {new Date(date).toLocaleDateString('en-US', {
-                  weekday: 'short',
-                  day: '2-digit',
-                })}
-              </h3>
+              <div className='flex justify-between items-center mb-3 text-sm font-semibold'>
+                <span className='text-gray-900 dark:text-white'>
+                  {new Date(date).toLocaleDateString('en-US', {
+                    weekday: 'short',
+                    day: '2-digit',
+                  })}
+                </span>
+                <span className=' text-gray-700 dark:text-gray-300'>
+                  {formatCurrency(
+                    groupedExpenses[date].reduce(
+                      (sum, exp) => sum + exp.amount,
+                      0
+                    ),
+                    currency
+                  )}
+                </span>
+              </div>
               <div className='space-y-1'>
                 {groupedExpenses[date].map((expense) => (
                   <div
@@ -109,11 +120,11 @@ const DailyGroupedExpenseList: React.FC<DailyGroupedExpenseListProps> = ({
                           backgroundColor: getCategoryColor(expense.category),
                         }}
                       ></span>
-                      <div className='flex flex-col min-w-0'>
-                        <p className='text-sm font-medium text-gray-900 dark:text-white truncate'>
+                      <div className='flex flex-col min-w-0 overflow-hidden'>
+                        <p className='text-sm font-medium text-gray-900 dark:text-white truncate max-w-full'>
                           {expense.description}
                         </p>
-                        <p className='text-xs text-gray-500 dark:text-gray-400 truncate'>
+                        <p className='text-xs text-gray-500 dark:text-gray-400 truncate max-w-full'>
                           {getCategoryName(expense.category)}
                         </p>
                       </div>

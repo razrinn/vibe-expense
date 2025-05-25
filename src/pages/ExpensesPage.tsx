@@ -32,7 +32,7 @@ const ExpensesPage: React.FC = () => {
               {filteredExpenses.length}{' '}
               {filteredExpenses.length === 1 ? 'expense' : 'expenses'} found
             </p>
-            <p className='text-lg font-medium text-green-600 dark:text-green-400'>
+            <p className='font-medium text-green-600 dark:text-green-400'>
               Total: {formatCurrency(summary.total, currency)}
             </p>
           </div>

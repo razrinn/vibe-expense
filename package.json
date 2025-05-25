@@ -42,5 +42,6 @@
     "vite": "^6.3.5",
     "vite-plugin-pwa": "^0.19.8",
     "wrangler": "^4.16.1"
-  }
+  },
+  "packageManager": "pnpm@10.11.0"
 }

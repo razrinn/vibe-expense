@@ -44,6 +44,9 @@ Initial setup complete, UI components scaffolded, data persistence issue address
 - [x] Refactored `SettingsPage.tsx` to use a list format for sections (2025-05-25)
 - [x] Implemented application update notification (2025-05-25)
 - [x] Displayed app version on Settings page (2025-05-25)
+- [x] Created `scripts/update-version.sh` to update `package.json` and `public/sw.js` versions (2025-05-25)
+- [x] Made `scripts/update-version.sh` executable (2025-05-25)
+- [x] Added `upver` script to `package.json` (2025-05-25)
 
 ## 3. What's Left to Build
 
@@ -84,6 +87,7 @@ Initial setup complete, UI components scaffolded, data persistence issue address
 - (2025-05-25): Fix: Modified `public/sw.js` to include `self.skipWaiting()` and `clients.claim()` and incremented `APP_VERSION` to `v1.0.3`. Rationale: Ensures PWA updates correctly and takes control immediately upon new deployment.
 - (2025-05-25): Feature: Implemented application update notification. Rationale: To inform users when a new version of the application is available.
 - (2025-05-25): Feature: Displayed app version on Settings page. Rationale: To provide users with information about the currently running application version.
+- (2025-05-25): Feature: Implemented version update script. Rationale: To automate the process of updating application version across `package.json` and service worker.
 
 ## 6. Next Steps
 

@@ -1,7 +1,7 @@
 {
   "name": "expense-tracker-pwa",
   "private": true,
-  "version": "0.1.0",
+  "version": "1.0.5",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "preview": "pnpm run build && wrangler dev",
     "deploy": "pnpm run build && wrangler deploy",
-    "cf-typegen": "wrangler types"
+    "cf-typegen": "wrangler types",
+    "upver": "./scripts/update-version.sh"
   },
   "dependencies": {
     "chart.js": "^4.4.9",

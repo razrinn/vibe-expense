@@ -1,6 +1,6 @@
 // Define the version of the cache.
 // Change this version to trigger an update of the service worker and a refresh of the cache.
-const APP_VERSION = 'v1.0.4';
+const APP_VERSION = 'v1.0.5';
 
 // List of URLs to cache during the service worker installation.
 // These are typically the core assets needed for the app shell to work offline.

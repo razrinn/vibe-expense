@@ -11,6 +11,7 @@ const Select: React.FC<SelectProps> = ({
   error,
   id,
   options,
+  className,
   ...props
 }) => {
   const selectId =
@@ -30,7 +31,7 @@ const Select: React.FC<SelectProps> = ({
         id={selectId}
         className={`block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm bg-white dark:bg-black-900 text-gray-900 dark:text-white ${
           error ? 'border-red-500' : ''
-        }`}
+        } ${className}`}
         {...props}
       >
         {options.map((option) => (

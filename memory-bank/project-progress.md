@@ -28,7 +28,7 @@ Initial setup complete, UI components scaffolded, data persistence issue address
 - [x] Diagnostic: Temporarily removed `required` validation from the 'description' field in `ExpenseForm.tsx` to diagnose premature validation error (2025-05-25) - _Confirmed premature validation was the issue._
 - [x] Re-added `required` validation to 'description' field in `ExpenseForm.tsx` (2025-05-25)
 - [x] Re-added `required` and `min` validation to 'amount' field in `ExpenseForm.tsx` (2025-05-25)
-- [x] Fixed: `Input.tsx` now correctly uses `React.forwardRef` to allow `react-hook-form` to register inputs (2025-05-25)
+- [x] Fixed: `Input.tsx`, `Select.tsx`, and `Textarea.tsx` now correctly use `React.forwardRef` to allow `react-hook-form` to register inputs (2025-05-25)
 - [x] Removed diagnostic `console.log` from `onFormSubmit` in `ExpenseForm.tsx` (2025-05-25)
 - [x] Enhanced `ExpenseFilters.tsx` with "All Time", "Year", and "Custom Range" filters. (2025-05-25)
 - [x] Updated `ExpenseFilter` type in `src/types/index.ts` to support new filter options. (2025-05-25)
@@ -72,7 +72,7 @@ Initial setup complete, UI components scaffolded, data persistence issue address
 - (2025-05-25): Diagnostic: Temporarily removed `required` validation from the 'description' field in `ExpenseForm.tsx` to diagnose premature validation error. Rationale: To determine if the "description is required" message is due to validation firing too early or a deeper rendering issue.
 - (2025-05-25): Fix: Re-added `required` validation to 'description' field in `ExpenseForm.tsx`. Rationale: Restored intended validation after diagnostic step.
 - (2025-05-25): Fix: Re-added `required` and `min` validation to 'amount' field in `ExpenseForm.tsx`. Rationale: Restored intended validation.
-- (2025-05-25): Fix: `Input.tsx` now correctly uses `React.forwardRef` to allow `react-hook-form` to register inputs. Rationale: This was the root cause of the 'amount' field submitting as 0 and other potential input issues.
+- (2025-05-25): Fix: `Input.tsx`, `Select.tsx`, and `Textarea.tsx` now correctly use `React.forwardRef` to allow `react-hook-form` to register inputs. Rationale: This was the root cause of the 'amount' field submitting as 0 and other potential input issues, and was extended to Select and Textarea components.
 - (2025-05-25): Clean-up: Removed diagnostic `console.log` from `onFormSubmit` in `ExpenseForm.tsx`.
 - (2025-05-25): Feature: Added month separation dividers to `DailyGroupedExpenseList.tsx`. Rationale: Improves readability and organization of the expense list by visually separating expenses by month.
 - (2025-05-25): Feature: Added PWA installation section to `SettingsPage.tsx` with navigation to `/settings/installation`. Rationale: Provides users with instructions on how to install the PWA for a native app-like experience.

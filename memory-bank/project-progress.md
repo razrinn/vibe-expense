@@ -13,6 +13,8 @@ Initial setup complete, UI components scaffolded, data persistence issue address
 - [x] Analytics page displays category names instead of UUIDs for highest/lowest categories (2025-05-25)
 - [x] Fixed TypeError: Cannot read properties of undefined (reading 'find') in KeyMetrics.tsx (2025-05-25)
 - [x] Refactored KeyMetrics component to directly use `useExpenses` hook for categories (2025-05-25)
+- [x] Implemented user-selectable currency setting with local storage persistence (2025-05-25)
+- [x] Updated `formatCurrency` to use dynamic currency from settings (2025-05-25)
 
 ## 3. What's Left to Build
 
@@ -34,6 +36,9 @@ Initial setup complete, UI components scaffolded, data persistence issue address
 - (2025-05-25): Change: Modified `KeyMetrics.tsx` to display category names instead of UUIDs for highest and lowest categories on the Analytics page. Rationale: Improved user experience and readability of analytics data.
 - (2025-05-25): Bug Fix: Added a check for `categories` being defined and not empty in `getCategoryName` within `KeyMetrics.tsx` to prevent `TypeError`. Rationale: Resolved runtime error when `categories` might be undefined or empty during initial render.
 - (2025-05-25): Refactor: Modified `KeyMetrics.tsx` to directly use `useExpenses` hook for `categories` instead of receiving it as a prop. Rationale: Simplifies prop drilling and makes the component more self-contained.
+- (2025-05-25): Change: Optimized currency formatting to IDR in `src/utils/formatters.ts`. Rationale: Aligns with the project's regional context and provides more accurate currency representation.
+- (2025-05-25): Feature: Implemented user-selectable currency setting in `SettingsPage.tsx` with persistence via `localStorage`. Rationale: Provides user customization and flexibility for currency display.
+- (2025-05-25): Refactor: Modified `formatCurrency` in `src/utils/formatters.ts` to accept currency code and locale as arguments, and updated all consuming components (`ExpensesPage.tsx`, `ExpenseList.tsx`, `KeyMetrics.tsx`, `CategoryChart.tsx`) to use the currency from `SettingsContext`. Rationale: Enables dynamic currency display based on user settings.
 
 ## 6. Next Steps
 

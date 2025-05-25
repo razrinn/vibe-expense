@@ -4,6 +4,7 @@ import CategoryManager from '../components/expenses/CategoryManager';
 import { useExpenses } from '../context/ExpenseContext';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import { useSettings } from '../context/SettingsContext';
 import { Download, Trash2 } from 'lucide-react';
 
 const SettingsPage: React.FC = () => {
@@ -12,6 +13,7 @@ const SettingsPage: React.FC = () => {
 
   const { logout } = useAuth();
   const { showToast } = useToast();
+  const { currency, setCurrency } = useSettings();
 
   const handleExportData = () => {
     try {
@@ -151,6 +153,36 @@ const SettingsPage: React.FC = () => {
                 Permanently delete all expense data
               </p>
             </div>
+          </div>
+        </div>
+
+        <div className='bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-100 dark:border-gray-700'>
+          <h3 className='text-xl font-bold text-gray-900 dark:text-white mb-4'>
+            Currency Settings
+          </h3>
+          <div>
+            <label
+              htmlFor='currency-select'
+              className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1'
+            >
+              Select Currency
+            </label>
+            <select
+              id='currency-select'
+              name='currency-select'
+              className='mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white'
+              value={currency}
+              onChange={(e) => setCurrency(e.target.value)}
+            >
+              <option value='IDR'>IDR - Indonesian Rupiah</option>
+              <option value='USD'>USD - United States Dollar</option>
+              <option value='EUR'>EUR - Euro</option>
+              <option value='GBP'>GBP - British Pound</option>
+              <option value='JPY'>JPY - Japanese Yen</option>
+            </select>
+            <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+              Choose the currency for displaying expenses.
+            </p>
           </div>
         </div>
 

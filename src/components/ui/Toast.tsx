@@ -56,7 +56,7 @@ const Toast: React.FC<ToastProps> = ({ message, type, isVisible }) => {
 
   return (
     <div
-      className={`fixed bottom-4 left-1/2 transform -translate-x-1/2 ${visibilityClasses} transition-all duration-300 ease-in-out z-50 max-w-sm w-full`}
+      className={`fixed top-4 left-1/2 transform -translate-x-1/2 ${visibilityClasses} transition-all duration-300 ease-in-out z-50 max-w-sm w-full`}
       role='alert'
     >
       <div

@@ -3,6 +3,7 @@ import { ExpenseSummary } from '../../types';
 import { formatCurrency } from '../../utils/formatters';
 import { TrendingUp, TrendingDown, Calendar, DollarSign } from 'lucide-react';
 import { useExpenses } from '../../context/ExpenseContext';
+import { useSettings } from '../../context/SettingsContext';
 
 interface KeyMetricsProps {
   summary: ExpenseSummary;
@@ -11,6 +12,7 @@ interface KeyMetricsProps {
 
 const KeyMetrics: React.FC<KeyMetricsProps> = ({ summary, period }) => {
   const { categories } = useExpenses();
+  const { currency } = useSettings();
   const getIcon = (metricName: string) => {
     switch (metricName) {
       case 'Total':
@@ -87,12 +89,12 @@ const KeyMetrics: React.FC<KeyMetricsProps> = ({ summary, period }) => {
   const metrics = [
     {
       name: 'Total',
-      value: formatCurrency(summary.total),
+      value: formatCurrency(summary.total, currency),
       desc: 'Total expenses',
     },
     {
       name: 'Average',
-      value: formatCurrency(summary.average),
+      value: formatCurrency(summary.average, currency),
       desc: `Average ${getAveragePeriod()} spending`,
     },
     {
@@ -100,7 +102,7 @@ const KeyMetrics: React.FC<KeyMetricsProps> = ({ summary, period }) => {
       value: highestCategory.name !== 'None' ? highestCategory.name : 'N/A',
       desc:
         highestCategory.name !== 'None'
-          ? formatCurrency(highestCategory.amount)
+          ? formatCurrency(highestCategory.amount, currency)
           : 'No data',
     },
     {
@@ -108,7 +110,7 @@ const KeyMetrics: React.FC<KeyMetricsProps> = ({ summary, period }) => {
       value: lowestCategory.name !== 'None' ? lowestCategory.name : 'N/A',
       desc:
         lowestCategory.name !== 'None'
-          ? formatCurrency(lowestCategory.amount)
+          ? formatCurrency(lowestCategory.amount, currency)
           : 'No data',
     },
   ];

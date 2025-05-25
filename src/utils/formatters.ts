@@ -1,8 +1,15 @@
-export const formatCurrency = (amount: number): string => {
-  return new Intl.NumberFormat('en-US', {
+export const formatCurrency = (
+  amount: number,
+  currencyCode: string = 'IDR',
+  locale: string = 'id-ID',
+  minimumFractionDigits: number = 0,
+  maximumFractionDigits: number = 0
+): string => {
+  return new Intl.NumberFormat(locale, {
     style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2
+    currency: currencyCode,
+    minimumFractionDigits,
+    maximumFractionDigits,
   }).format(amount);
 };
 

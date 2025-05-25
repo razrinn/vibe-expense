@@ -47,11 +47,13 @@ Initial setup complete, UI components scaffolded, data persistence issue address
 - [ ] Analytics dashboard (Priority: Medium)
 - [ ] Data persistence (Priority: Medium) - _Addressed accidental clearing, but core persistence is via localStorage as per design._
 - [ ] Responsive design (Priority: Low)
+- [x] Fixed PWA not updating by modifying `public/sw.js` (2025-05-25)
 - [ ] PWA Installation Guide Page (Priority: Medium)
 
 ## 4. Known Issues & Bugs
 
 - No critical issues identified.
+- PWA update issue resolved by modifying Service Worker.
 
 ## 5. Key Decisions & Changes Log
 
@@ -77,6 +79,7 @@ Initial setup complete, UI components scaffolded, data persistence issue address
 - (2025-05-25): Refactor: Transformed `SettingsPage.tsx` from card-based sections to a list-based layout. Rationale: User requested a list format for better organization and consistency.
 - [x] Added daily total expense to `DailyGroupedExpenseList.tsx` (2025-05-25)
 - [x] Refactored `SettingsPage.tsx` to use a list format for sections (2025-05-25)
+- (2025-05-25): Fix: Modified `public/sw.js` to include `self.skipWaiting()` and `clients.claim()` and incremented `APP_VERSION` to `v1.0.3`. Rationale: Ensures PWA updates correctly and takes control immediately upon new deployment.
 
 ## 6. Next Steps
 

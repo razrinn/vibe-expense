@@ -1,16 +1,12 @@
-const APP_VERSION = 'v1.0.1';
+const APP_VERSION = 'v1.0.3';
 const urlsToCache = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/icons/icon-72x72.png',
-  '/icons/icon-96x96.png',
-  '/icons/icon-128x128.png',
-  '/icons/icon-144x144.png',
-  '/icons/icon-152x152.png',
-  '/icons/icon-192x192.png',
-  '/icons/icon-384x384.png',
-  '/icons/icon-512x512.png',
+  '/icon-192-maskable.png',
+  '/icon-192.png',
+  '/icon-512-maskable.png',
+  '/icon-512.png',
 ];
 
 // Install service worker
@@ -20,6 +16,7 @@ self.addEventListener('install', (event) => {
       return cache.addAll(urlsToCache);
     })
   );
+  self.skipWaiting(); // Force the new service worker to activate immediately
 });
 
 // Activate service worker
@@ -36,6 +33,7 @@ self.addEventListener('activate', (event) => {
       );
     })
   );
+  clients.claim(); // Take control of existing clients immediately
 });
 
 // Fetch event

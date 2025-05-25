@@ -117,10 +117,8 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
           })}
           error={errors.amount?.message}
           className='pl-7' // Add padding for the currency symbol
+          icon={<span className='text-gray-700 dark:text-gray-300'>$</span>}
         />
-        <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
-          <span className='text-gray-500 dark:text-gray-400'>$</span>
-        </div>
       </div>
 
       <Input

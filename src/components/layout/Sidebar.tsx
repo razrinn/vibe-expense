@@ -24,7 +24,7 @@ const Sidebar: React.FC = () => {
         <div className='flex items-center space-x-2'>
           <DollarSign className='h-8 w-8 text-green-600 dark:text-green-400' />
           <span className='text-xl font-bold text-gray-800 dark:text-white'>
-            ExpenseTrack
+            VibeExpense
           </span>
         </div>
       </div>

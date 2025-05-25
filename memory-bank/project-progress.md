@@ -15,6 +15,7 @@ Initial setup complete, UI components scaffolded, data persistence issue address
 - [x] Refactored KeyMetrics component to directly use `useExpenses` hook for categories (2025-05-25)
 - [x] Implemented user-selectable currency setting with local storage persistence (2025-05-25)
 - [x] Updated `formatCurrency` to use dynamic currency from settings (2025-05-25)
+- [x] Implemented daily grouped compact expense list on ExpensesPage (2025-05-25)
 
 ## 3. What's Left to Build
 
@@ -39,6 +40,7 @@ Initial setup complete, UI components scaffolded, data persistence issue address
 - (2025-05-25): Change: Optimized currency formatting to IDR in `src/utils/formatters.ts`. Rationale: Aligns with the project's regional context and provides more accurate currency representation.
 - (2025-05-25): Feature: Implemented user-selectable currency setting in `SettingsPage.tsx` with persistence via `localStorage`. Rationale: Provides user customization and flexibility for currency display.
 - (2025-05-25): Refactor: Modified `formatCurrency` in `src/utils/formatters.ts` to accept currency code and locale as arguments, and updated all consuming components (`ExpensesPage.tsx`, `ExpenseList.tsx`, `KeyMetrics.tsx`, `CategoryChart.tsx`) to use the currency from `SettingsContext`. Rationale: Enables dynamic currency display based on user settings.
+- (2025-05-25): Feature: Created `DailyGroupedExpenseList.tsx` and integrated it into `ExpensesPage.tsx` to display expenses grouped by day in a compact format. Rationale: Provides a different, more organized view of expenses on the main expenses page.
 
 ## 6. Next Steps
 

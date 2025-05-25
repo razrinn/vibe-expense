@@ -1,6 +1,6 @@
 import React from 'react';
 import PageContainer from '../components/layout/PageContainer';
-import ExpenseList from '../components/expenses/ExpenseList';
+import DailyGroupedExpenseList from '../components/expenses/DailyGroupedExpenseList';
 import ExpenseFilters from '../components/expenses/ExpenseFilters';
 import { useExpenses } from '../context/ExpenseContext';
 import { formatCurrency } from '../utils/formatters';
@@ -38,7 +38,7 @@ const ExpensesPage: React.FC = () => {
           </div>
         </div>
 
-        <ExpenseList
+        <DailyGroupedExpenseList
           expenses={filteredExpenses}
           categories={categories}
           onDelete={deleteExpense}

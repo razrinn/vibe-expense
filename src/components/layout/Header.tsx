@@ -24,7 +24,7 @@ const Header: React.FC = () => {
         if (location.pathname.startsWith('/edit/')) {
           return 'Edit Expense';
         }
-        return 'ExpenseTrack';
+        return 'VibeExpense';
     }
   };
 

@@ -60,7 +60,7 @@ const PinSetup: React.FC = () => {
             <Shield className='h-8 w-8 text-green-600 dark:text-green-300' />
           </div>
           <h1 className='text-2xl font-bold text-gray-900 dark:text-white'>
-            Welcome to ExpenseTrack
+            Welcome to VibeExpense
           </h1>
           <p className='mt-2 text-gray-600 dark:text-gray-300'>
             Set up a PIN to secure your expense data

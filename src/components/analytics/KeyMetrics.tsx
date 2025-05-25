@@ -1,5 +1,5 @@
 import React from 'react';
-import { ExpenseSummary } from '../../types';
+import { ExpenseFilter, ExpenseSummary } from '../../types';
 import { formatCurrency } from '../../utils/formatters';
 import { TrendingUp, TrendingDown, Calendar, DollarSign } from 'lucide-react';
 import { useExpenses } from '../../context/ExpenseContext';
@@ -7,7 +7,7 @@ import { useSettings } from '../../context/SettingsContext';
 
 interface KeyMetricsProps {
   summary: ExpenseSummary;
-  period: 'day' | 'week' | 'month' | 'custom';
+  period: ExpenseFilter['period'];
 }
 
 const KeyMetrics: React.FC<KeyMetricsProps> = ({ summary, period }) => {

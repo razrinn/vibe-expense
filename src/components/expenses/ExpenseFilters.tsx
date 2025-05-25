@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ExpenseFilter, Category } from '../../types';
 import { formatPeriod, formatDateForInput } from '../../utils/formatters';
 import { Calendar, Filter } from 'lucide-react';
@@ -33,7 +33,14 @@ const ExpenseFilters: React.FC<ExpenseFiltersProps> = ({
   const [showCustomRangePicker, setShowCustomRangePicker] = useState(
     filter.period === 'custom'
   );
-  const [showFilters, setShowFilters] = useState(true);
+  const [showFilters, setShowFilters] = useState<boolean>(() => {
+    const savedState = localStorage.getItem('expenseFiltersVisible');
+    return savedState ? JSON.parse(savedState) : true;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('expenseFiltersVisible', JSON.stringify(showFilters));
+  }, [showFilters]);
 
   const handlePeriodChange = (
     period: 'all' | 'day' | 'week' | 'month' | 'year' | 'custom'

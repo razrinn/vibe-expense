@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
-import { Expense } from '../../types';
+import { Expense, ExpenseFilter } from '../../types';
 import { formatDate, formatCurrency } from '../../utils/formatters';
 import { useSettings } from '../../context/SettingsContext';
 import {
@@ -28,7 +28,7 @@ ChartJS.register(
 
 interface TrendChartProps {
   expenses: Expense[];
-  period: 'day' | 'week' | 'month' | 'custom';
+  period: ExpenseFilter['period'];
   dateRange: { start: Date; end: Date };
 }
 

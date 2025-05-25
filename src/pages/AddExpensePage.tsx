@@ -16,14 +16,9 @@ const AddExpensePage: React.FC = () => {
 
   return (
     <PageContainer>
-      <div className="max-w-2xl mx-auto">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Add New Expense</h2>
-        
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-100 dark:border-gray-700">
-          <ExpenseForm 
-            onSubmit={handleSubmit} 
-            categories={categories} 
-          />
+      <div className='max-w-2xl mx-auto'>
+        <div className='bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-100 dark:border-gray-700'>
+          <ExpenseForm onSubmit={handleSubmit} categories={categories} />
         </div>
       </div>
     </PageContainer>

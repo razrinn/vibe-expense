@@ -13,10 +13,6 @@ const AnalyticsPage: React.FC = () => {
   return (
     <PageContainer>
       <div className='space-y-6'>
-        <h2 className='text-2xl font-bold text-gray-900 dark:text-white'>
-          Analytics
-        </h2>
-
         <ExpenseFilters
           filter={filter}
           categories={categories}

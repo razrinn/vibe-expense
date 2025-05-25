@@ -1,11 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import PageContainer from '../components/layout/PageContainer';
 import ExpenseList from '../components/expenses/ExpenseList';
 import ExpenseFilters from '../components/expenses/ExpenseFilters';
 import { useExpenses } from '../context/ExpenseContext';
 import { formatCurrency } from '../utils/formatters';
-import { PlusCircle } from 'lucide-react';
 import { useSettings } from '../context/SettingsContext';
 
 const ExpensesPage: React.FC = () => {
@@ -22,19 +20,6 @@ const ExpensesPage: React.FC = () => {
   return (
     <PageContainer>
       <div className='space-y-4'>
-        <div className='flex justify-between items-center'>
-          <h2 className='text-2xl font-bold text-gray-900 dark:text-white'>
-            Expenses
-          </h2>
-          <Link
-            to='/add'
-            className='inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
-          >
-            <PlusCircle className='h-4 w-4 mr-1' />
-            <span>Add Expense</span>
-          </Link>
-        </div>
-
         <ExpenseFilters
           filter={filter}
           categories={categories}

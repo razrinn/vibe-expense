@@ -7,6 +7,11 @@ import { useToast } from '../context/ToastContext';
 import { useSettings } from '../context/SettingsContext';
 import { Download, Trash2 } from 'lucide-react';
 import Select from '../components/ui/forms/Select';
+import { useNavigate } from 'react-router-dom';
+
+interface NavigatorWithStandalone extends Navigator {
+  standalone?: boolean;
+}
 
 const SettingsPage: React.FC = () => {
   const { categories, addCategory, updateCategory, deleteCategory, expenses } =
@@ -15,6 +20,25 @@ const SettingsPage: React.FC = () => {
   const { resetPinAndLogout } = useAuth();
   const { showToast } = useToast();
   const { currency, setCurrency } = useSettings();
+  const navigate = useNavigate();
+
+  const [isPWA, setIsPWA] = React.useState(false);
+
+  React.useEffect(() => {
+    const mediaQuery = window.matchMedia('(display-mode: standalone)');
+    setIsPWA(
+      mediaQuery.matches || !!(navigator as NavigatorWithStandalone).standalone
+    );
+
+    const handler = (e: MediaQueryListEvent) => {
+      setIsPWA(
+        e.matches || !!(navigator as NavigatorWithStandalone).standalone
+      );
+    };
+
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
 
   const handleExportData = () => {
     try {
@@ -106,6 +130,23 @@ const SettingsPage: React.FC = () => {
   return (
     <PageContainer>
       <div className='space-y-8'>
+        {!isPWA && (
+          <div className='bg-white dark:bg-black-900 rounded-lg shadow p-6 borderborder-gray-200 dark:border-gray-700'>
+            <h3 className='text-xl font-bold text-gray-900 dark:text-white mb-4'>
+              Install Progressive Web App (PWA)
+            </h3>
+            <p className='mt-1 text-sm text-gray-500 dark:text-gray-400 mb-4'>
+              Install this application to your home screen for a native app-like
+              experience.
+            </p>
+            <button
+              className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
+              onClick={() => navigate('/settings/installation')}
+            >
+              How to Install PWA
+            </button>
+          </div>
+        )}
         <div className='bg-white dark:bg-black-900 rounded-lg shadow p-6 borderborder-gray-200 dark:border-gray-700'>
           <h3 className='text-xl font-bold text-gray-900 dark:text-white mb-4'>
             Data Management
@@ -151,7 +192,6 @@ const SettingsPage: React.FC = () => {
             </div>
           </div>
         </div>
-
         <div className='bg-white dark:bg-black-900 rounded-lg shadow p-6 borderborder-gray-200 dark:border-gray-700'>
           <h3 className='text-xl font-bold text-gray-900 dark:text-white mb-4'>
             Currency Settings
@@ -174,7 +214,6 @@ const SettingsPage: React.FC = () => {
             Choose the currency for displaying expenses.
           </p>
         </div>
-
         <CategoryManager
           categories={categories}
           onAddCategory={addCategory}

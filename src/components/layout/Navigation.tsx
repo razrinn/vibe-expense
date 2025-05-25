@@ -6,7 +6,8 @@ const Navigation: React.FC = () => {
   const location = useLocation();
 
   const isActive = (path: string) => {
-    return location.pathname === path
+    return location.pathname === path ||
+      (path !== '/' && location.pathname.startsWith(path))
       ? 'text-green-600 dark:text-green-400'
       : 'text-gray-500 dark:text-gray-400';
   };

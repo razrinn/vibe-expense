@@ -14,6 +14,7 @@ import AddExpensePage from './pages/AddExpensePage';
 import EditExpensePage from './pages/EditExpensePage';
 import AnalyticsPage from './pages/AnalyticsPage';
 import SettingsPage from './pages/SettingsPage';
+import PWAInstallationPage from './pages/PWAInstallationPage';
 
 // Auth Components
 import PinSetup from './components/auth/PinSetup';
@@ -81,6 +82,10 @@ const AppRoutes: React.FC = () => {
         <Route path='/edit/:id' element={<EditExpensePage />} />
         <Route path='/analytics' element={<AnalyticsPage />} />
         <Route path='/settings' element={<SettingsPage />} />
+        <Route
+          path='/settings/installation'
+          element={<PWAInstallationPage />}
+        />
         <Route path='*' element={<Navigate to='/' replace />} />
       </Routes>
     </Router>

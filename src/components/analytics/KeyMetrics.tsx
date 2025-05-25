@@ -2,6 +2,7 @@ import React from 'react';
 import { ExpenseSummary } from '../../types';
 import { formatCurrency } from '../../utils/formatters';
 import { TrendingUp, TrendingDown, Calendar, DollarSign } from 'lucide-react';
+import { useExpenses } from '../../context/ExpenseContext';
 
 interface KeyMetricsProps {
   summary: ExpenseSummary;
@@ -9,16 +10,17 @@ interface KeyMetricsProps {
 }
 
 const KeyMetrics: React.FC<KeyMetricsProps> = ({ summary, period }) => {
+  const { categories } = useExpenses();
   const getIcon = (metricName: string) => {
     switch (metricName) {
       case 'Total':
-        return <DollarSign className="h-5 w-5 text-green-500" />;
+        return <DollarSign className='h-5 w-5 text-green-500' />;
       case 'Average':
-        return <Calendar className="h-5 w-5 text-blue-500" />;
+        return <Calendar className='h-5 w-5 text-blue-500' />;
       case 'Highest Category':
-        return <TrendingUp className="h-5 w-5 text-red-500" />;
+        return <TrendingUp className='h-5 w-5 text-red-500' />;
       case 'Lowest Category':
-        return <TrendingDown className="h-5 w-5 text-purple-500" />;
+        return <TrendingDown className='h-5 w-5 text-purple-500' />;
       default:
         return null;
     }
@@ -37,32 +39,46 @@ const KeyMetrics: React.FC<KeyMetricsProps> = ({ summary, period }) => {
     }
   };
 
+  const getCategoryName = (id: string) => {
+    if (!categories || categories.length === 0) {
+      return 'Unknown Category';
+    }
+    const category = categories.find((cat) => cat.id === id);
+    return category ? category.name : 'Unknown Category';
+  };
+
   const getHighestCategory = () => {
-    let highest = { name: 'None', amount: 0 };
-    
-    Object.entries(summary.byCategory).forEach(([category, amount]) => {
+    let highest = { id: 'None', amount: 0 };
+
+    Object.entries(summary.byCategory).forEach(([categoryId, amount]) => {
       if (amount > highest.amount) {
-        highest = { name: category, amount };
+        highest = { id: categoryId, amount };
       }
     });
-    
-    return highest;
+
+    return {
+      name: highest.id !== 'None' ? getCategoryName(highest.id) : 'None',
+      amount: highest.amount,
+    };
   };
 
   const getLowestCategory = () => {
     if (Object.keys(summary.byCategory).length === 0) {
       return { name: 'None', amount: 0 };
     }
-    
-    let lowest = { name: '', amount: Infinity };
-    
-    Object.entries(summary.byCategory).forEach(([category, amount]) => {
+
+    let lowest = { id: '', amount: Infinity };
+
+    Object.entries(summary.byCategory).forEach(([categoryId, amount]) => {
       if (amount < lowest.amount) {
-        lowest = { name: category, amount };
+        lowest = { id: categoryId, amount };
       }
     });
-    
-    return lowest;
+
+    return {
+      name: lowest.id !== '' ? getCategoryName(lowest.id) : 'None',
+      amount: lowest.amount,
+    };
   };
 
   const highestCategory = getHighestCategory();
@@ -72,40 +88,52 @@ const KeyMetrics: React.FC<KeyMetricsProps> = ({ summary, period }) => {
     {
       name: 'Total',
       value: formatCurrency(summary.total),
-      desc: 'Total expenses'
+      desc: 'Total expenses',
     },
     {
       name: 'Average',
       value: formatCurrency(summary.average),
-      desc: `Average ${getAveragePeriod()} spending`
+      desc: `Average ${getAveragePeriod()} spending`,
     },
     {
       name: 'Highest Category',
       value: highestCategory.name !== 'None' ? highestCategory.name : 'N/A',
-      desc: highestCategory.name !== 'None' ? formatCurrency(highestCategory.amount) : 'No data'
+      desc:
+        highestCategory.name !== 'None'
+          ? formatCurrency(highestCategory.amount)
+          : 'No data',
     },
     {
       name: 'Lowest Category',
       value: lowestCategory.name !== 'None' ? lowestCategory.name : 'N/A',
-      desc: lowestCategory.name !== 'None' ? formatCurrency(lowestCategory.amount) : 'No data'
-    }
+      desc:
+        lowestCategory.name !== 'None'
+          ? formatCurrency(lowestCategory.amount)
+          : 'No data',
+    },
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
       {metrics.map((metric) => (
-        <div 
+        <div
           key={metric.name}
-          className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 border border-gray-100 dark:border-gray-700"
+          className='bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 border border-gray-100 dark:border-gray-700'
         >
-          <div className="flex items-center">
-            <div className="rounded-full bg-gray-100 dark:bg-gray-700 p-2 mr-3">
+          <div className='flex items-center'>
+            <div className='rounded-full bg-gray-100 dark:bg-gray-700 p-2 mr-3'>
               {getIcon(metric.name)}
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{metric.name}</p>
-              <p className="text-xl font-semibold text-gray-900 dark:text-white">{metric.value}</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">{metric.desc}</p>
+              <p className='text-sm font-medium text-gray-500 dark:text-gray-400'>
+                {metric.name}
+              </p>
+              <p className='text-xl font-semibold text-gray-900 dark:text-white'>
+                {metric.value}
+              </p>
+              <p className='text-xs text-gray-500 dark:text-gray-400'>
+                {metric.desc}
+              </p>
             </div>
           </div>
         </div>

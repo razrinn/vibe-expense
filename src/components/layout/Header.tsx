@@ -7,7 +7,7 @@ import { useAuth } from '../../context/AuthContext';
 const Header: React.FC = () => {
   const location = useLocation();
   const { logout } = useAuth();
-  
+
   const getTitle = () => {
     switch (location.pathname) {
       case '/':
@@ -33,18 +33,20 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <h1 className="text-xl font-bold text-gray-900 dark:text-white">{getTitle()}</h1>
-          <div className="flex items-center space-x-4">
+    <header className='bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-10'>
+      <div className='px-4 sm:px-6 lg:px-8'>
+        <div className='flex justify-between items-center h-16'>
+          <h1 className='text-xl font-bold text-gray-900 dark:text-white'>
+            {getTitle()}
+          </h1>
+          <div className='flex items-center space-x-4'>
             <ThemeToggle />
             <button
               onClick={handleLogout}
-              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 focus:outline-none"
-              aria-label="Logout"
+              className='text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 focus:outline-none'
+              aria-label='Logout'
             >
-              <LogOut className="h-5 w-5" />
+              <LogOut className='h-5 w-5' />
             </button>
           </div>
         </div>

@@ -2,7 +2,7 @@
 
 ## 1. Current Overall Status
 
-Initial setup complete, UI components scaffolded, data persistence issue addressed.
+Initial setup complete, UI components scaffolded, data persistence issue addressed, and analytics page updated to show category names. Bug fix for undefined categories applied. Refactored KeyMetrics to use useExpenses hook directly.
 
 ## 2. What Works
 
@@ -10,6 +10,9 @@ Initial setup complete, UI components scaffolded, data persistence issue address
 - [x] Basic UI components scaffolded (2025-05-25)
 - [x] Routing structure defined (2025-05-25)
 - [x] Identified and mitigated accidental data clearing (2025-05-25)
+- [x] Analytics page displays category names instead of UUIDs for highest/lowest categories (2025-05-25)
+- [x] Fixed TypeError: Cannot read properties of undefined (reading 'find') in KeyMetrics.tsx (2025-05-25)
+- [x] Refactored KeyMetrics component to directly use `useExpenses` hook for categories (2025-05-25)
 
 ## 3. What's Left to Build
 
@@ -26,8 +29,11 @@ Initial setup complete, UI components scaffolded, data persistence issue address
 ## 5. Key Decisions & Changes Log
 
 - (2025-05-25): Decision: Use React Context for state management - Rationale: Simple state needs, no need for Redux
-- (2025-05-25): Decision: Local storage for data persistence - Rationale: Single-user app doesn't need backend
+- (25-05-2025): Decision: Local storage for data persistence - Rationale: Single-user app doesn't need backend
 - (2025-05-25): Change: Added explicit confirmation for "Clear All Data" button in SettingsPage to prevent accidental data loss. Rationale: User reported data loss on re-login, found to be caused by accidental activation of clear data function.
+- (2025-05-25): Change: Modified `KeyMetrics.tsx` to display category names instead of UUIDs for highest and lowest categories on the Analytics page. Rationale: Improved user experience and readability of analytics data.
+- (2025-05-25): Bug Fix: Added a check for `categories` being defined and not empty in `getCategoryName` within `KeyMetrics.tsx` to prevent `TypeError`. Rationale: Resolved runtime error when `categories` might be undefined or empty during initial render.
+- (2025-05-25): Refactor: Modified `KeyMetrics.tsx` to directly use `useExpenses` hook for `categories` instead of receiving it as a prop. Rationale: Simplifies prop drilling and makes the component more self-contained.
 
 ## 6. Next Steps
 

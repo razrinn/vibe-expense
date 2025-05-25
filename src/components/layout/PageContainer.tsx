@@ -15,7 +15,9 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
       <div className='flex-1 flex flex-col sm:ml-64'>
         <Header />
 
-        <main className='flex-1 p-4 sm:p-6 pb-20 sm:pb-6'>{children}</main>
+        <main className='flex-1 p-4 sm:p-6 pb-safe-offset-20 sm:pb-6'>
+          {children}
+        </main>
 
         <Navigation />
       </div>

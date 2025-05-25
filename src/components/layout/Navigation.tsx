@@ -12,7 +12,7 @@ const Navigation: React.FC = () => {
   };
 
   return (
-    <nav className='fixed bottom-0 left-0 right-0 bg-white dark:bg-black-900 shadow-top border-t border-gray-200 dark:border-gray-700 z-10 sm:hidden pb-0 pb-safe'>
+    <nav className='fixed bottom-0 left-0 right-0 bg-white dark:bg-black-900 shadow-top border-t border-gray-200 dark:border-gray-700 z-10 sm:hidden pb-safe'>
       <div className='max-w-xl mx-auto px-4'>
         <div className='flex justify-around items-center h-16'>
           <Link
@@ -37,7 +37,7 @@ const Navigation: React.FC = () => {
 
           <Link
             to='/add'
-            className='flex flex-col items-center justify-center text-white bg-green-600 hover:bg-green-700 rounded-full h-14 w-14 shadow-lg -mt-6 transition-colors'
+            className='flex flex-col items-center justify-center text-white bg-green-600 hover:bg-green-700 rounded-xl h-14 w-14 shadow-lg transition-colors'
           >
             <Plus className='h-6 w-6' />
             <span className='text-xs mt-1'>Add</span>

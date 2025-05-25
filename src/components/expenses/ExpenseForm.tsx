@@ -81,7 +81,8 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
           notes: '',
         });
       }
-    } catch (_error) {
+    } catch (error) {
+      console.log(error);
       showToast({
         message: 'Failed to save expense. Please try again.',
         type: 'error',

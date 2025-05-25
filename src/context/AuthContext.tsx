@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from 'react';
 import { AuthState } from '../types';
 import { hashPin } from '../utils/auth';
 
@@ -25,7 +31,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // Check for existing PIN and initialize auth state
   useEffect(() => {
     const hashedPin = localStorage.getItem('userPin');
-    
+
     setAuth({
       isAuthenticated: false,
       isInitialized: true,
@@ -37,7 +43,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const interval = setInterval(() => {
       const lastActivity = auth.lastActivity;
       const now = Date.now();
-      
+
       if (auth.isAuthenticated && now - lastActivity > SESSION_TIMEOUT) {
         logout();
       }
@@ -49,17 +55,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // Track user activity
   useEffect(() => {
     const activityEvents = ['mousedown', 'keydown', 'touchstart', 'scroll'];
-    
+
     const handleActivity = () => {
       updateActivity();
     };
-    
-    activityEvents.forEach(event => {
+
+    activityEvents.forEach((event) => {
       window.addEventListener(event, handleActivity);
     });
-    
+
     return () => {
-      activityEvents.forEach(event => {
+      activityEvents.forEach((event) => {
         window.removeEventListener(event, handleActivity);
       });
     };
@@ -68,8 +74,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const setupPin = (pin: string) => {
     const hashedPin = hashPin(pin);
     localStorage.setItem('userPin', hashedPin);
-    
-    setAuth(prev => ({
+
+    setAuth((prev) => ({
       ...prev,
       hasPin: true,
       isAuthenticated: true,
@@ -80,36 +86,39 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const verifyPin = (pin: string) => {
     const hashedPin = localStorage.getItem('userPin');
     const inputHashedPin = hashPin(pin);
-    
+
     if (hashedPin === inputHashedPin) {
-      setAuth(prev => ({
+      setAuth((prev) => ({
         ...prev,
         isAuthenticated: true,
         lastActivity: Date.now(),
       }));
       return true;
     }
-    
+
     return false;
   };
 
   const logout = () => {
-    setAuth(prev => ({
+    setAuth((prev) => ({
       ...prev,
       isAuthenticated: false,
+      hasPin: false, // Set hasPin to false on logout
       lastActivity: Date.now(),
     }));
   };
 
   const updateActivity = () => {
-    setAuth(prev => ({
+    setAuth((prev) => ({
       ...prev,
       lastActivity: Date.now(),
     }));
   };
 
   return (
-    <AuthContext.Provider value={{ auth, setupPin, verifyPin, logout, updateActivity }}>
+    <AuthContext.Provider
+      value={{ auth, setupPin, verifyPin, logout, updateActivity }}
+    >
       {children}
     </AuthContext.Provider>
   );

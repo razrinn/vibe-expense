@@ -27,6 +27,7 @@ Initial setup complete, UI components scaffolded, data persistence issue address
 
 ## 3. What's Left to Build
 
+- [x] Fixed PIN reset bug: Redirects to setup PIN page instead of input PIN page after reset (2025-05-25)
 - [ ] Expense CRUD functionality (Priority: High)
 - [ ] Authentication system (Priority: High)
 - [ ] Analytics dashboard (Priority: Medium)
@@ -51,6 +52,7 @@ Initial setup complete, UI components scaffolded, data persistence issue address
 - (2025-05-25): Feature: Created `DailyGroupedExpenseList.tsx` and integrated it into `ExpensesPage.tsx` to display expenses grouped by day in a compact format. Rationale: Provides a different, more organized view of expenses on the main expenses page.
 - (2025-05-25): Refactor: Created reusable `Input`, `Select`, and `Textarea` components in `src/components/ui/forms` and applied them to `ExpenseForm.tsx` for consistent styling and improved maintainability. Rationale: Addresses the user's request for nicely styled form inputs and improves code reusability.
 - (2025-05-25): Refactor: Extended the application of `Input`, `Select`, and `Textarea` components to all relevant files (`CategoryManager.tsx`, `PinLogin.tsx`, `PinSetup.tsx`, `SettingsPage.tsx`, `ExpenseFilters.tsx`) for consistent UI and improved maintainability. Rationale: User requested to apply the new components throughout the application.
+- (2025-05-25): Bug Fix: Modified `logout` function in `AuthContext.tsx` to set `hasPin` to `false` when a user logs out or resets their PIN. Rationale: Ensures the application correctly redirects to the PIN setup page after a PIN reset, resolving the bug where it would incorrectly go to the PIN input page.
 
 ## 6. Next Steps
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Lock, AlertCircle } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
+import Input from '../ui/forms/Input';
 
 const PinLogin: React.FC = () => {
   const [pin, setPin] = useState('');
@@ -68,19 +69,18 @@ const PinLogin: React.FC = () => {
 
         <form onSubmit={handleSubmit} className='space-y-4'>
           <div>
-            <div className='mt-1 relative rounded-md shadow'>
-              <input
-                type='password'
-                id='pin'
-                className='block w-full px-4 py-3 text-center text-xl border border-gray-300 dark:border-gray-600 rounded-md dark:bg-black-800 dark:text-white focus:outline-none focus:ring-green-500 focus:border-green-500'
-                value={pin}
-                onChange={handlePinChange}
-                inputMode='numeric'
-                autoComplete='current-password'
-                placeholder='• • • •'
-                required
-              />
-            </div>
+            <Input
+              type='password'
+              id='pin'
+              className='text-center text-xl'
+              value={pin}
+              onChange={handlePinChange}
+              inputMode='numeric'
+              autoComplete='current-password'
+              placeholder='• • • •'
+              required
+              error={error}
+            />
           </div>
 
           {error && (

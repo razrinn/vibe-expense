@@ -3,6 +3,7 @@ import { Category } from '../../types';
 import { validateCategoryName } from '../../utils/categories';
 import { Plus, Edit, Trash2, Check, X, AlertCircle } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
+import Input from '../ui/forms/Input';
 
 interface CategoryManagerProps {
   categories: Category[];
@@ -151,23 +152,16 @@ const CategoryManager: React.FC<CategoryManagerProps> = ({
       {isAddingCategory && (
         <div className='bg-gray-50 dark:bg-black-800 p-4 rounded-md'>
           <div className='space-y-3'>
-            <div>
-              <label
-                htmlFor='newCategoryName'
-                className='block text-sm font-medium text-gray-700 dark:text-gray-300'
-              >
-                Category Name
-              </label>
-              <input
-                type='text'
-                id='newCategoryName'
-                value={newCategoryName}
-                onChange={(e) => setNewCategoryName(e.target.value)}
-                className='mt-1 block w-full rounded-md border-gray-300 dark:border-black-900 shadow focus:border-green-500 focus:ring-green-500 dark:bg-black-900 dark:text-white'
-                placeholder='Enter category name'
-                autoFocus
-              />
-            </div>
+            <Input
+              label='Category Name'
+              id='newCategoryName'
+              type='text'
+              value={newCategoryName}
+              onChange={(e) => setNewCategoryName(e.target.value)}
+              placeholder='Enter category name'
+              autoFocus
+              error={error} // Pass error prop
+            />
             <div>
               <label
                 htmlFor='newCategoryColor'
@@ -183,11 +177,10 @@ const CategoryManager: React.FC<CategoryManagerProps> = ({
                   onChange={(e) => setNewCategoryColor(e.target.value)}
                   className='h-8 w-8 rounded-md border-0 cursor-pointer'
                 />
-                <input
+                <Input
                   type='text'
                   value={newCategoryColor}
                   onChange={(e) => setNewCategoryColor(e.target.value)}
-                  className='block w-full rounded-md border-gray-300 dark:border-black-900 shadow focus:border-green-500 focus:ring-green-500 dark:bg-black-900 dark:text-white'
                   placeholder='#HEX'
                 />
               </div>
@@ -218,22 +211,15 @@ const CategoryManager: React.FC<CategoryManagerProps> = ({
             <li key={category.id} className='p-4'>
               {editingCategoryId === category.id ? (
                 <div className='space-y-3'>
-                  <div>
-                    <label
-                      htmlFor={`edit-${category.id}-name`}
-                      className='block text-sm font-medium text-gray-700 dark:text-gray-300'
-                    >
-                      Category Name
-                    </label>
-                    <input
-                      type='text'
-                      id={`edit-${category.id}-name`}
-                      value={editName}
-                      onChange={(e) => setEditName(e.target.value)}
-                      className='mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow focus:border-green-500 focus:ring-green-500 dark:bg-black-800 dark:text-white'
-                      autoFocus
-                    />
-                  </div>
+                  <Input
+                    label='Category Name'
+                    id={`edit-${category.id}-name`}
+                    type='text'
+                    value={editName}
+                    onChange={(e) => setEditName(e.target.value)}
+                    autoFocus
+                    error={error}
+                  />
                   <div>
                     <label
                       htmlFor={`edit-${category.id}-color`}
@@ -249,11 +235,10 @@ const CategoryManager: React.FC<CategoryManagerProps> = ({
                         onChange={(e) => setEditColor(e.target.value)}
                         className='h-8 w-8 rounded-md border-0 cursor-pointer'
                       />
-                      <input
+                      <Input
                         type='text'
                         value={editColor}
                         onChange={(e) => setEditColor(e.target.value)}
-                        className='block w-full rounded-md border-gray-300 dark:border-gray-600 shadow focus:border-green-500 focus:ring-green-500 dark:bg-black-800 dark:text-white'
                       />
                     </div>
                   </div>

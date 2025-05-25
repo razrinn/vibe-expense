@@ -3,6 +3,7 @@ import { useAuth } from '../../context/AuthContext';
 import { validatePin } from '../../utils/auth';
 import { useToast } from '../../context/ToastContext';
 import { Shield, KeyRound } from 'lucide-react';
+import Input from '../ui/forms/Input';
 
 const PinSetup: React.FC = () => {
   const [pin, setPin] = useState('');
@@ -68,57 +69,35 @@ const PinSetup: React.FC = () => {
         </div>
 
         <form onSubmit={handleSubmit} className='space-y-4'>
-          <div>
-            <label
-              htmlFor='pin'
-              className='block text-sm font-medium text-gray-700 dark:text-gray-200'
-            >
-              Create PIN (4 or 6 digits)
-            </label>
-            <div className='mt-1 relative rounded-md shadow'>
-              <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
-                <KeyRound className='h-5 w-5 text-gray-400' />
-              </div>
-              <input
-                type='password'
-                id='pin'
-                className='block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-black-800 dark:text-white focus:outline-none focus:ring-green-500 focus:border-green-500'
-                value={pin}
-                onChange={handlePinChange}
-                inputMode='numeric'
-                pattern='\d{4}|\d{6}'
-                autoComplete='new-password'
-                placeholder='Enter 4 or 6 digits'
-                required
-              />
-            </div>
-          </div>
+          <Input
+            label='Create PIN (4 or 6 digits)'
+            id='pin'
+            type='password'
+            value={pin}
+            onChange={handlePinChange}
+            inputMode='numeric'
+            pattern='\d{4}|\d{6}'
+            autoComplete='new-password'
+            placeholder='Enter 4 or 6 digits'
+            required
+            error={error}
+            icon={<KeyRound className='h-5 w-5 text-gray-400' />}
+          />
 
-          <div>
-            <label
-              htmlFor='confirmPin'
-              className='block text-sm font-medium text-gray-700 dark:text-gray-200'
-            >
-              Confirm PIN
-            </label>
-            <div className='mt-1 relative rounded-md shadow'>
-              <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
-                <KeyRound className='h-5 w-5 text-gray-400' />
-              </div>
-              <input
-                type='password'
-                id='confirmPin'
-                className='block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-black-800 dark:text-white focus:outline-none focus:ring-green-500 focus:border-green-500'
-                value={confirmPin}
-                onChange={handleConfirmPinChange}
-                inputMode='numeric'
-                pattern='\d{4}|\d{6}'
-                autoComplete='new-password'
-                placeholder='Confirm your PIN'
-                required
-              />
-            </div>
-          </div>
+          <Input
+            label='Confirm PIN'
+            id='confirmPin'
+            type='password'
+            value={confirmPin}
+            onChange={handleConfirmPinChange}
+            inputMode='numeric'
+            pattern='\d{4}|\d{6}'
+            autoComplete='new-password'
+            placeholder='Confirm your PIN'
+            required
+            error={error}
+            icon={<KeyRound className='h-5 w-5 text-gray-400' />}
+          />
 
           {error && (
             <p className='text-sm text-red-600 dark:text-red-400'>{error}</p>

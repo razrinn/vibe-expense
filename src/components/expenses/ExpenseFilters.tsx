@@ -2,6 +2,7 @@ import React from 'react';
 import { ExpenseFilter, Category } from '../../types';
 import { formatPeriod } from '../../utils/formatters';
 import { Calendar, Filter } from 'lucide-react';
+import Select from '../ui/forms/Select';
 
 interface ExpenseFiltersProps {
   filter: ExpenseFilter;
@@ -86,27 +87,19 @@ const ExpenseFilters: React.FC<ExpenseFiltersProps> = ({
           </div>
         </div>
 
-        <div>
-          <label
-            htmlFor='category'
-            className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1'
-          >
-            Category
-          </label>
-          <select
-            id='category'
-            value={filter.category || 'all'}
-            onChange={handleCategoryChange}
-            className='mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-md dark:bg-black-800 dark:border-gray-600 dark:text-white'
-          >
-            <option value='all'>All Categories</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        <Select
+          label='Category'
+          id='category'
+          value={filter.category || 'all'}
+          onChange={handleCategoryChange}
+          options={[
+            { value: 'all', label: 'All Categories' },
+            ...categories.map((category) => ({
+              value: category.id,
+              label: category.name,
+            })),
+          ]}
+        />
       </div>
     </div>
   );

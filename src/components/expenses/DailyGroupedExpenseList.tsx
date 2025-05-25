@@ -90,11 +90,10 @@ const DailyGroupedExpenseList: React.FC<DailyGroupedExpenseListProps> = ({
               </div>
             )}
             <div className='bg-white dark:bg-black-900 rounded-lg shadow p-4 border border-gray-200 dark:border-gray-700'>
-              <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-3'>
+              <h3 className='font-semibold text-gray-900 dark:text-white mb-3'>
                 {new Date(date).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
+                  weekday: 'short',
+                  day: '2-digit',
                 })}
               </h3>
               <div className='space-y-1'>

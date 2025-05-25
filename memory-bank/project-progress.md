@@ -74,7 +74,9 @@ Initial setup complete, UI components scaffolded, data persistence issue address
 - (2025-05-25): Clean-up: Removed diagnostic `console.log` from `onFormSubmit` in `ExpenseForm.tsx`.
 - (2025-05-25): Feature: Added month separation dividers to `DailyGroupedExpenseList.tsx`. Rationale: Improves readability and organization of the expense list by visually separating expenses by month.
 - (2025-05-25): Feature: Added PWA installation section to `SettingsPage.tsx` with navigation to `/settings/installation`. Rationale: Provides users with instructions on how to install the PWA for a native app-like experience.
+- (2025-05-25): Refactor: Transformed `SettingsPage.tsx` from card-based sections to a list-based layout. Rationale: User requested a list format for better organization and consistency.
 - [x] Added daily total expense to `DailyGroupedExpenseList.tsx` (2025-05-25)
+- [x] Refactored `SettingsPage.tsx` to use a list format for sections (2025-05-25)
 
 ## 6. Next Steps
 

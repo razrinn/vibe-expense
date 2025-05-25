@@ -129,10 +129,10 @@ const SettingsPage: React.FC = () => {
 
   return (
     <PageContainer>
-      <div className='space-y-8'>
+      <ul className='divide-y divide-gray-200 dark:divide-gray-700'>
         {!isPWA && (
-          <div className='bg-white dark:bg-black-900 rounded-lg shadow p-6 borderborder-gray-200 dark:border-gray-700'>
-            <h3 className='text-xl font-bold text-gray-900 dark:text-white mb-4'>
+          <li className='py-4'>
+            <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
               Install Progressive Web App (PWA)
             </h3>
             <p className='mt-1 text-sm text-gray-500 dark:text-gray-400 mb-4'>
@@ -145,10 +145,10 @@ const SettingsPage: React.FC = () => {
             >
               How to Install PWA
             </button>
-          </div>
+          </li>
         )}
-        <div className='bg-white dark:bg-black-900 rounded-lg shadow p-6 borderborder-gray-200 dark:border-gray-700'>
-          <h3 className='text-xl font-bold text-gray-900 dark:text-white mb-4'>
+        <li className='py-4'>
+          <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
             Data Management
           </h3>
 
@@ -191,9 +191,9 @@ const SettingsPage: React.FC = () => {
               </p>
             </div>
           </div>
-        </div>
-        <div className='bg-white dark:bg-black-900 rounded-lg shadow p-6 borderborder-gray-200 dark:border-gray-700'>
-          <h3 className='text-xl font-bold text-gray-900 dark:text-white mb-4'>
+        </li>
+        <li className='py-4'>
+          <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
             Currency Settings
           </h3>
           <Select
@@ -213,14 +213,19 @@ const SettingsPage: React.FC = () => {
           <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
             Choose the currency for displaying expenses.
           </p>
-        </div>
-        <CategoryManager
-          categories={categories}
-          onAddCategory={addCategory}
-          onUpdateCategory={updateCategory}
-          onDeleteCategory={deleteCategory}
-        />
-      </div>
+        </li>
+        <li className='py-4'>
+          <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
+            Category Management
+          </h3>
+          <CategoryManager
+            categories={categories}
+            onAddCategory={addCategory}
+            onUpdateCategory={updateCategory}
+            onDeleteCategory={deleteCategory}
+          />
+        </li>
+      </ul>
     </PageContainer>
   );
 };

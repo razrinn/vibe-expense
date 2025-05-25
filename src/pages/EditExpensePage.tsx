@@ -47,19 +47,13 @@ const EditExpensePage: React.FC = () => {
 
   return (
     <PageContainer>
-      <div className='max-w-2xl mx-auto'>
-        <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-6'>
-          Edit Expense
-        </h2>
-
-        <div className='bg-white dark:bg-black-900 rounded-lg shadow p-6 borderborder-gray-200 dark:border-gray-700'>
-          <ExpenseForm
-            onSubmit={handleSubmit}
-            categories={categories}
-            initialData={expense}
-            isEditing={true}
-          />
-        </div>
+      <div className='bg-white dark:bg-black-900 rounded-lg shadow p-6 borderborder-gray-200 dark:border-gray-700'>
+        <ExpenseForm
+          onSubmit={handleSubmit}
+          categories={categories}
+          initialData={expense}
+          isEditing={true}
+        />
       </div>
     </PageContainer>
   );

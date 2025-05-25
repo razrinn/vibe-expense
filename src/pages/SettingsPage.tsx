@@ -105,7 +105,7 @@ const SettingsPage: React.FC = () => {
 
   return (
     <PageContainer>
-      <div className='space-y-8 max-w-3xl mx-auto'>
+      <div className='space-y-8'>
         <div className='bg-white dark:bg-black-900 rounded-lg shadow p-6 borderborder-gray-200 dark:border-gray-700'>
           <h3 className='text-xl font-bold text-gray-900 dark:text-white mb-4'>
             Data Management

@@ -2,7 +2,7 @@
 
 ## 1. Current Overall Status
 
-Initial setup complete, UI components scaffolded, data persistence issue addressed, and analytics page updated to show category names. Bug fix for undefined categories applied. Refactored KeyMetrics to use useExpenses hook directly. Form input components have been refactored and applied throughout the application. The issue with ExpenseForm.tsx where the 'amount' field submitted as 0 and premature validation was occurring has been addressed. Month separation dividers have been added to the expense list.
+Initial setup complete, UI components scaffolded, data persistence issue addressed, and analytics page updated to show category names. Bug fix for undefined categories applied. Refactored KeyMetrics to use useExpenses hook directly. Form input components have been refactored and applied throughout the application. The issue with ExpenseForm.tsx where the 'amount' field submitted as 0 and premature validation was occurring has been addressed. Month separation dividers have been added to the expense list. Application update notification and version display implemented.
 
 ## 2. What Works
 
@@ -39,6 +39,11 @@ Initial setup complete, UI components scaffolded, data persistence issue address
 - [x] Ensured custom date range is inclusive of end date in `ExpenseContext.tsx`. (2025-05-25)
 - [x] Adjusted typing and filtering logic in `useExpenses` hook (`src/context/ExpenseContext.tsx`) to support new filter options. (2025-05-25)
 - [x] Added month separation dividers to `DailyGroupedExpenseList.tsx` (2025-05-25)
+- [x] Fixed PWA not updating by modifying `public/sw.js` (2025-05-25)
+- [x] Added daily total expense to `DailyGroupedExpenseList.tsx` (2025-05-25)
+- [x] Refactored `SettingsPage.tsx` to use a list format for sections (2025-05-25)
+- [x] Implemented application update notification (2025-05-25)
+- [x] Displayed app version on Settings page (2025-05-25)
 
 ## 3. What's Left to Build
 
@@ -47,7 +52,6 @@ Initial setup complete, UI components scaffolded, data persistence issue address
 - [ ] Analytics dashboard (Priority: Medium)
 - [ ] Data persistence (Priority: Medium) - _Addressed accidental clearing, but core persistence is via localStorage as per design._
 - [ ] Responsive design (Priority: Low)
-- [x] Fixed PWA not updating by modifying `public/sw.js` (2025-05-25)
 - [ ] PWA Installation Guide Page (Priority: Medium)
 
 ## 4. Known Issues & Bugs
@@ -77,9 +81,9 @@ Initial setup complete, UI components scaffolded, data persistence issue address
 - (2025-05-25): Feature: Added month separation dividers to `DailyGroupedExpenseList.tsx`. Rationale: Improves readability and organization of the expense list by visually separating expenses by month.
 - (2025-05-25): Feature: Added PWA installation section to `SettingsPage.tsx` with navigation to `/settings/installation`. Rationale: Provides users with instructions on how to install the PWA for a native app-like experience.
 - (2025-05-25): Refactor: Transformed `SettingsPage.tsx` from card-based sections to a list-based layout. Rationale: User requested a list format for better organization and consistency.
-- [x] Added daily total expense to `DailyGroupedExpenseList.tsx` (2025-05-25)
-- [x] Refactored `SettingsPage.tsx` to use a list format for sections (2025-05-25)
 - (2025-05-25): Fix: Modified `public/sw.js` to include `self.skipWaiting()` and `clients.claim()` and incremented `APP_VERSION` to `v1.0.3`. Rationale: Ensures PWA updates correctly and takes control immediately upon new deployment.
+- (2025-05-25): Feature: Implemented application update notification. Rationale: To inform users when a new version of the application is available.
+- (2025-05-25): Feature: Displayed app version on Settings page. Rationale: To provide users with information about the currently running application version.
 
 ## 6. Next Steps
 

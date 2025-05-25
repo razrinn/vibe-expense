@@ -8,6 +8,7 @@ import { useSettings } from '../context/SettingsContext';
 import { Download, Trash2 } from 'lucide-react';
 import Select from '../components/ui/forms/Select';
 import { useNavigate } from 'react-router-dom';
+import packageJson from '../../package.json'; // Import package.json
 
 interface NavigatorWithStandalone extends Navigator {
   standalone?: boolean;
@@ -224,6 +225,9 @@ const SettingsPage: React.FC = () => {
             onUpdateCategory={updateCategory}
             onDeleteCategory={deleteCategory}
           />
+        </li>
+        <li className='py-4 text-center text-gray-500 dark:text-gray-400 text-sm'>
+          App Version: {packageJson.version}
         </li>
       </ul>
     </PageContainer>

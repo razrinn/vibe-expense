@@ -65,7 +65,17 @@ self.addEventListener('activate', (event) => {
   // clients.claim() allows an active service worker to take control of all clients
   // (e.g., open tabs) that are in its scope. This ensures that clients
   // are controlled by this version of the service worker immediately after activation.
-  return self.clients.claim();
+  self.clients.claim();
+
+  // Send a message to all controlled clients that a new version is available.
+  self.clients.matchAll().then((clients) => {
+    clients.forEach((client) => {
+      client.postMessage({
+        type: 'NEW_VERSION_AVAILABLE',
+        version: APP_VERSION,
+      });
+    });
+  });
 });
 
 // Fetch event:

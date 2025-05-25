@@ -11,28 +11,28 @@ const Toast: React.FC<ToastProps> = ({ message, type, isVisible }) => {
   const getIcon = () => {
     switch (type) {
       case 'success':
-        return <CheckCircle className="h-5 w-5 text-green-500" />;
+        return <CheckCircle className='h-5 w-5 text-green-500' />;
       case 'error':
-        return <XCircle className="h-5 w-5 text-red-500" />;
+        return <XCircle className='h-5 w-5 text-red-500' />;
       case 'warning':
-        return <AlertCircle className="h-5 w-5 text-yellow-500" />;
+        return <AlertCircle className='h-5 w-5 text-yellow-500' />;
       case 'info':
       default:
-        return <Info className="h-5 w-5 text-blue-500" />;
+        return <Info className='h-5 w-5 text-blue-500' />;
     }
   };
 
   const getBackgroundColor = () => {
     switch (type) {
       case 'success':
-        return 'bg-green-50 dark:bg-green-900/30 border-green-500';
+        return 'bg-green-50 dark:bg-green-900 border-green-500';
       case 'error':
-        return 'bg-red-50 dark:bg-red-900/30 border-red-500';
+        return 'bg-red-50 dark:bg-red-900 border-red-500';
       case 'warning':
-        return 'bg-yellow-50 dark:bg-yellow-900/30 border-yellow-500';
+        return 'bg-yellow-50 dark:bg-yellow-900 border-yellow-500';
       case 'info':
       default:
-        return 'bg-blue-50 dark:bg-blue-900/30 border-blue-500';
+        return 'bg-blue-50 dark:bg-blue-900 border-blue-500';
     }
   };
 
@@ -57,14 +57,14 @@ const Toast: React.FC<ToastProps> = ({ message, type, isVisible }) => {
   return (
     <div
       className={`fixed bottom-4 left-1/2 transform -translate-x-1/2 ${visibilityClasses} transition-all duration-300 ease-in-out z-50 max-w-sm w-full`}
-      role="alert"
+      role='alert'
     >
-      <div className={`flex items-center p-4 rounded-lg shadow-lg border-l-4 ${getBackgroundColor()}`}>
-        <div className="flex-shrink-0">
-          {getIcon()}
-        </div>
+      <div
+        className={`flex items-center p-4 rounded-lg shadow-lg border-l-4 ${getBackgroundColor()}`}
+      >
+        <div className='flex-shrink-0'>{getIcon()}</div>
         <div className={`ml-3 ${getTextColor()}`}>
-          <p className="text-sm font-medium">{message}</p>
+          <p className='text-sm font-medium'>{message}</p>
         </div>
       </div>
     </div>

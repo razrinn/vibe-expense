@@ -1,10 +1,27 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { Expense, Category, ExpenseFilter, DateRange, ExpenseSummary } from '../types';
+import {
+  Expense,
+  Category,
+  ExpenseFilter,
+  DateRange,
+  ExpenseSummary,
+} from '../types';
 import { getDefaultCategories } from '../utils/categories';
-import { 
-  startOfDay, endOfDay, startOfWeek, endOfWeek, 
-  startOfMonth, endOfMonth, isWithinInterval 
+import {
+  startOfDay,
+  endOfDay,
+  startOfWeek,
+  endOfWeek,
+  startOfMonth,
+  endOfMonth,
+  isWithinInterval,
 } from 'date-fns';
 
 interface ExpenseContextType {
@@ -24,7 +41,7 @@ interface ExpenseContextType {
 
 const defaultDateRange: DateRange = {
   start: startOfMonth(new Date()),
-  end: endOfMonth(new Date())
+  end: endOfMonth(new Date()),
 };
 
 const defaultFilter: ExpenseFilter = {
@@ -35,34 +52,23 @@ const defaultFilter: ExpenseFilter = {
 const ExpenseContext = createContext<ExpenseContextType | undefined>(undefined);
 
 export const ExpenseProvider = ({ children }: { children: ReactNode }) => {
-  const [expenses, setExpenses] = useState<Expense[]>([]);
-  const [categories, setCategories] = useState<Category[]>(getDefaultCategories());
+  const [expenses, setExpenses] = useState<Expense[]>(() => {
+    const savedExpenses = localStorage.getItem('expenses');
+    return savedExpenses ? JSON.parse(savedExpenses) : [];
+  });
+  const [categories, setCategories] = useState<Category[]>(() => {
+    const savedCategories = localStorage.getItem('categories');
+    return savedCategories
+      ? JSON.parse(savedCategories)
+      : getDefaultCategories();
+  });
   const [filter, setFilterState] = useState<ExpenseFilter>(defaultFilter);
   const [filteredExpenses, setFilteredExpenses] = useState<Expense[]>([]);
   const [summary, setSummary] = useState<ExpenseSummary>({
     total: 0,
     average: 0,
-    byCategory: {}
+    byCategory: {},
   });
-
-  // Load expenses and categories from localStorage
-  useEffect(() => {
-    const savedExpenses = localStorage.getItem('expenses');
-    const savedCategories = localStorage.getItem('categories');
-    
-    if (savedExpenses) {
-      setExpenses(JSON.parse(savedExpenses));
-    }
-    
-    if (savedCategories) {
-      setCategories(JSON.parse(savedCategories));
-    } else {
-      // If no saved categories, use defaults and save them
-      const defaultCategories = getDefaultCategories();
-      setCategories(defaultCategories);
-      localStorage.setItem('categories', JSON.stringify(defaultCategories));
-    }
-  }, []);
 
   // Save expenses and categories to localStorage when they change
   useEffect(() => {
@@ -77,46 +83,54 @@ export const ExpenseProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     // Apply filters
     let filtered = [...expenses];
-    
+
     // Filter by date range
-    filtered = filtered.filter(expense => {
+    filtered = filtered.filter((expense) => {
       const expenseDate = new Date(expense.date);
       return isWithinInterval(expenseDate, {
         start: filter.dateRange.start,
-        end: filter.dateRange.end
+        end: filter.dateRange.end,
       });
     });
-    
+
     // Filter by category if specified
     if (filter.category) {
-      filtered = filtered.filter(expense => expense.category === filter.category);
+      filtered = filtered.filter(
+        (expense) => expense.category === filter.category
+      );
     }
-    
+
     // Sort by date (most recent first)
-    filtered = filtered.sort((a, b) => 
-      new Date(b.date).getTime() - new Date(a.date).getTime()
+    filtered = filtered.sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     );
-    
+
     setFilteredExpenses(filtered);
-    
+
     // Calculate summary
     const total = filtered.reduce((sum, expense) => sum + expense.amount, 0);
-    const days = Math.max(1, Math.ceil((filter.dateRange.end.getTime() - filter.dateRange.start.getTime()) / (1000 * 60 * 60 * 24)));
+    const days = Math.max(
+      1,
+      Math.ceil(
+        (filter.dateRange.end.getTime() - filter.dateRange.start.getTime()) /
+          (1000 * 60 * 60 * 24)
+      )
+    );
     const average = total / days;
-    
+
     // Calculate by category
     const byCategory: Record<string, number> = {};
-    filtered.forEach(expense => {
+    filtered.forEach((expense) => {
       if (!byCategory[expense.category]) {
         byCategory[expense.category] = 0;
       }
       byCategory[expense.category] += expense.amount;
     });
-    
+
     setSummary({
       total,
       average,
-      byCategory
+      byCategory,
     });
   }, [expenses, filter, categories]);
 
@@ -125,21 +139,17 @@ export const ExpenseProvider = ({ children }: { children: ReactNode }) => {
       ...expense,
       id: uuidv4(),
     };
-    setExpenses(prev => [...prev, newExpense]);
+    setExpenses((prev) => [...prev, newExpense]);
   };
 
   const updateExpense = (id: string, expense: Omit<Expense, 'id'>) => {
-    setExpenses(prev => 
-      prev.map(item => 
-        item.id === id 
-          ? { ...expense, id } 
-          : item
-      )
+    setExpenses((prev) =>
+      prev.map((item) => (item.id === id ? { ...expense, id } : item))
     );
   };
 
   const deleteExpense = (id: string) => {
-    setExpenses(prev => prev.filter(expense => expense.id !== id));
+    setExpenses((prev) => prev.filter((expense) => expense.id !== id));
   };
 
   const addCategory = (category: Omit<Category, 'id'>) => {
@@ -147,80 +157,78 @@ export const ExpenseProvider = ({ children }: { children: ReactNode }) => {
       ...category,
       id: uuidv4(),
     };
-    setCategories(prev => [...prev, newCategory]);
+    setCategories((prev) => [...prev, newCategory]);
   };
 
   const updateCategory = (id: string, category: Omit<Category, 'id'>) => {
-    setCategories(prev => 
-      prev.map(item => 
-        item.id === id 
-          ? { ...category, id } 
-          : item
-      )
+    setCategories((prev) =>
+      prev.map((item) => (item.id === id ? { ...category, id } : item))
     );
   };
 
   const deleteCategory = (id: string) => {
     // Don't delete categories that are in use
-    const inUse = expenses.some(expense => expense.category === id);
+    const inUse = expenses.some((expense) => expense.category === id);
     if (inUse) {
       return false;
     }
-    
-    setCategories(prev => prev.filter(category => category.id !== id));
+
+    setCategories((prev) => prev.filter((category) => category.id !== id));
     return true;
   };
 
   const setFilter = (newFilter: Partial<ExpenseFilter>) => {
-    setFilterState(prev => {
+    setFilterState((prev) => {
       const updated = { ...prev, ...newFilter };
-      
+
       // Update date range based on period
       if (newFilter.period) {
         const today = new Date();
-        
+
         switch (newFilter.period) {
           case 'day':
             updated.dateRange = {
               start: startOfDay(today),
-              end: endOfDay(today)
+              end: endOfDay(today),
             };
             break;
           case 'week':
             updated.dateRange = {
               start: startOfWeek(today, { weekStartsOn: 1 }),
-              end: endOfWeek(today, { weekStartsOn: 1 })
+              end: endOfWeek(today, { weekStartsOn: 1 }),
             };
             break;
           case 'month':
             updated.dateRange = {
               start: startOfMonth(today),
-              end: endOfMonth(today)
+              end: endOfMonth(today),
             };
             break;
           // For custom, keep the existing date range unless explicitly provided
         }
       }
-      
+
       return updated;
     });
   };
 
   return (
-    <ExpenseContext.Provider value={{
-      expenses,
-      filteredExpenses,
-      categories,
-      filter,
-      summary,
-      addExpense,
-      updateExpense,
-      deleteExpense,
-      addCategory,
-      updateCategory,
-      deleteCategory,
-      setFilter,
-    }}>
+    <ExpenseContext.Provider
+      value={{
+        expenses,
+        filteredExpenses,
+        categories,
+        filter,
+        summary,
+        addExpense,
+        updateExpense,
+        deleteExpense,
+        addCategory,
+        updateCategory,
+        deleteCategory,
+        setFilter,
+      }}
+    >
       {children}
     </ExpenseContext.Provider>
   );

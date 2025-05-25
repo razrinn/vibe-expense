@@ -12,7 +12,7 @@ const Navigation: React.FC = () => {
   };
 
   return (
-    <nav className='fixed bottom-0 left-0 right-0 bg-white dark:bg-black-900 shadow-top border-t border-gray-200 dark:border-gray-700 z-10 sm:hidden'>
+    <nav className='fixed bottom-0 left-0 right-0 bg-white dark:bg-black-900 shadow-top border-t border-gray-200 dark:border-gray-700 z-10 sm:hidden pb-0 pb-safe'>
       <div className='max-w-xl mx-auto px-4'>
         <div className='flex justify-around items-center h-16'>
           <Link

@@ -107,29 +107,29 @@ const DailyGroupedExpenseList: React.FC<DailyGroupedExpenseListProps> = ({
                   )}
                 </span>
               </div>
-              <div className='space-y-1'>
+              <div className='space-y-1 w-full'>
                 {groupedExpenses[date].map((expense) => (
                   <div
                     key={expense.id}
                     className='flex items-center justify-between py-1 border-b border-gray-100 dark:border-gray-800 last:border-b-0'
                   >
-                    <div className='flex items-center flex-1 min-w-0'>
+                    <div className='flex items-center min-w-0 flex-1'>
                       <span
                         className='w-2 h-2 rounded-full mr-2 flex-shrink-0'
                         style={{
                           backgroundColor: getCategoryColor(expense.category),
                         }}
                       ></span>
-                      <div className='flex flex-col min-w-0 overflow-hidden'>
-                        <p className='text-sm font-medium text-gray-900 dark:text-white truncate max-w-full'>
+                      <div className='flex flex-col overflow-hidden'>
+                        <p className='text-sm font-medium text-gray-900 dark:text-white truncate min-w-0'>
                           {expense.description}
                         </p>
-                        <p className='text-xs text-gray-500 dark:text-gray-400 truncate max-w-full'>
+                        <p className='text-xs text-gray-500 dark:text-gray-400 truncate'>
                           {getCategoryName(expense.category)}
                         </p>
                       </div>
                     </div>
-                    <div className='flex items-center ml-4 flex-shrink-0'>
+                    <div className='flex items-center ml-4 justify-end flex-1 flex-shrink-0'>
                       <p className='text-sm font-semibold text-green-600 dark:text-green-400 mr-3'>
                         {formatCurrency(expense.amount, currency)}
                       </p>

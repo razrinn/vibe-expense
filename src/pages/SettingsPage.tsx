@@ -24,14 +24,17 @@ const SettingsPage: React.FC = () => {
   const { currency, setCurrency } = useSettings();
   const navigate = useNavigate();
 
-  const [isPWA, setIsPWA] = React.useState(false);
+  const getIsPWA = () => {
+    const mediaQuery = window.matchMedia('(display-mode: standalone)');
+    return (
+      mediaQuery.matches || !!(navigator as NavigatorWithStandalone).standalone
+    );
+  };
+
+  const [isPWA, setIsPWA] = React.useState(getIsPWA());
 
   React.useEffect(() => {
     const mediaQuery = window.matchMedia('(display-mode: standalone)');
-    setIsPWA(
-      mediaQuery.matches || !!(navigator as NavigatorWithStandalone).standalone
-    );
-
     const handler = (e: MediaQueryListEvent) => {
       setIsPWA(
         e.matches || !!(navigator as NavigatorWithStandalone).standalone

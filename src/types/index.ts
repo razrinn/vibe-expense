@@ -36,7 +36,6 @@ export interface AuthState {
   isAuthenticated: boolean;
   isInitialized: boolean;
   hasPin: boolean;
-  lastActivity: number;
 }
 
 export interface ToastOptions {

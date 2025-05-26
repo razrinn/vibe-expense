@@ -13,11 +13,32 @@ interface AuthContextType {
   setupPin: (pin: string) => void;
   verifyPin: (pin: string) => boolean;
   logout: () => void;
-  resetPinAndLogout: () => void; // New function for resetting PIN and logging out
-  updateActivity: () => void;
+  resetPinAndLogout: () => void;
 }
 
-const SESSION_TIMEOUT = 15 * 60 * 1000; // 15 minutes in milliseconds
+const SESSION_COOKIE_NAME = 'vibe_session';
+const SESSION_EXPIRATION_MINUTES = 10; // 10 minutes
+
+// Helper functions for cookie management
+const setCookie = (name: string, value: string, minutes: number) => {
+  const expires = new Date(Date.now() + minutes * 60 * 1000).toUTCString();
+  document.cookie = `${name}=${value}; expires=${expires}; path=/; SameSite=Lax`;
+};
+
+const getCookie = (name: string): string | undefined => {
+  const nameEQ = name + '=';
+  const ca = document.cookie.split(';');
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+  }
+  return undefined;
+};
+
+const deleteCookie = (name: string) => {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+};
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -26,61 +47,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     isAuthenticated: false,
     isInitialized: false,
     hasPin: false,
-    lastActivity: Date.now(),
   });
 
-  // Check for existing PIN and initialize auth state
+  // Check for existing PIN and session cookie on mount
   useEffect(() => {
     const hashedPin = localStorage.getItem('userPin');
+    const sessionId = getCookie(SESSION_COOKIE_NAME);
 
     setAuth({
-      isAuthenticated: false,
+      isAuthenticated: !!sessionId, // Authenticated if session cookie exists
       isInitialized: true,
       hasPin: !!hashedPin,
-      lastActivity: Date.now(),
     });
-
-    // Set up inactivity checker
-    const interval = setInterval(() => {
-      const lastActivity = auth.lastActivity;
-      const now = Date.now();
-
-      if (auth.isAuthenticated && now - lastActivity > SESSION_TIMEOUT) {
-        logout();
-      }
-    }, 60000); // Check every minute
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Track user activity
-  useEffect(() => {
-    const activityEvents = ['mousedown', 'keydown', 'touchstart', 'scroll'];
-
-    const handleActivity = () => {
-      updateActivity();
-    };
-
-    activityEvents.forEach((event) => {
-      window.addEventListener(event, handleActivity);
-    });
-
-    return () => {
-      activityEvents.forEach((event) => {
-        window.removeEventListener(event, handleActivity);
-      });
-    };
   }, []);
 
   const setupPin = (pin: string) => {
     const hashedPin = hashPin(pin);
     localStorage.setItem('userPin', hashedPin);
+    const newSessionId = Date.now().toString(); // Simple session ID
+    setCookie(SESSION_COOKIE_NAME, newSessionId, SESSION_EXPIRATION_MINUTES);
 
     setAuth((prev) => ({
       ...prev,
       hasPin: true,
       isAuthenticated: true,
-      lastActivity: Date.now(),
     }));
   };
 
@@ -89,10 +79,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const inputHashedPin = hashPin(pin);
 
     if (hashedPin === inputHashedPin) {
+      const newSessionId = Date.now().toString(); // Simple session ID
+      setCookie(SESSION_COOKIE_NAME, newSessionId, SESSION_EXPIRATION_MINUTES);
       setAuth((prev) => ({
         ...prev,
         isAuthenticated: true,
-        lastActivity: Date.now(),
       }));
       return true;
     }
@@ -101,27 +92,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = () => {
+    deleteCookie(SESSION_COOKIE_NAME);
     setAuth((prev) => ({
       ...prev,
       isAuthenticated: false,
-      lastActivity: Date.now(),
     }));
   };
 
   const resetPinAndLogout = () => {
-    localStorage.removeItem('userPin'); // Remove PIN from local storage
+    localStorage.removeItem('userPin');
+    deleteCookie(SESSION_COOKIE_NAME);
     setAuth((prev) => ({
       ...prev,
       isAuthenticated: false,
-      hasPin: false, // Set hasPin to false
-      lastActivity: Date.now(),
-    }));
-  };
-
-  const updateActivity = () => {
-    setAuth((prev) => ({
-      ...prev,
-      lastActivity: Date.now(),
+      hasPin: false,
     }));
   };
 
@@ -133,7 +117,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         verifyPin,
         logout,
         resetPinAndLogout,
-        updateActivity,
       }}
     >
       {children}

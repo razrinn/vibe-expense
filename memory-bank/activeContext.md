@@ -16,3 +16,5 @@ This file tracks the project's current status, including recent changes, current
 ## Open Questions/Issues
 
 -
+
+[2025-05-26 22:57:33] - Current Focus: Modified authentication system to use cookie-based session management.

@@ -24,3 +24,5 @@ This file tracks the project's progress using a task list format.
 [2025-05-26 22:57:38] - Task Completed: Implemented cookie-based session management in `AuthContext.tsx` and updated `AuthState` in `types/index.ts`.
 
 [2025-05-26 23:04:34] - Modified `handleClearData` in `src/pages/SettingsPage.tsx` to use IndexedDB for clearing data and added the necessary import for `db`.
+
+[2025-05-26 23:19:04] - Disabled right-click/long-press on links by adding a global `contextmenu` event listener in `src/main.tsx`.

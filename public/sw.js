@@ -1,6 +1,6 @@
 // Define the version of the cache.
 // Change this version to trigger an update of the service worker and a refresh of the cache.
-const APP_VERSION = 'v1.0.6';
+const APP_VERSION = 'v1.0.8';
 
 // List of URLs to cache during the service worker installation.
 // These are typically the core assets needed for the app shell to work offline.
@@ -8,6 +8,8 @@ const urlsToCache = [
   '/',
   '/index.html',
   '/manifest.json',
+  '/favicon.ico',
+  '/apple-touch-icon.png',
   '/icon-191-maskable.png',
   '/icon-192.png',
   '/icon-512-maskable.png',

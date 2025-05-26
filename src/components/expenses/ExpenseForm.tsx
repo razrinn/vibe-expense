@@ -8,7 +8,7 @@ import Select from '../ui/forms/Select';
 import Textarea from '../ui/forms/Textarea';
 
 interface ExpenseFormProps {
-  onSubmit: (data: Omit<Expense, 'id'>) => void;
+  onSubmit: (data: Omit<Expense, 'id'>) => Promise<void>;
   categories: Category[];
   initialData?: Expense;
   isEditing?: boolean;
@@ -61,7 +61,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
         amount: parseFloat(data.amount.toString()),
       };
 
-      onSubmit(formattedData);
+      await onSubmit(formattedData);
 
       // Show success message
       showToast({

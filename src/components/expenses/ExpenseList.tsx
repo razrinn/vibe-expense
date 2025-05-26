@@ -9,7 +9,7 @@ import { useSettings } from '../../context/SettingsContext';
 interface ExpenseListProps {
   expenses: Expense[];
   categories: Category[];
-  onDelete: (id: string) => void;
+  onDelete: (id: string) => Promise<void>;
 }
 
 const ExpenseList: React.FC<ExpenseListProps> = ({
@@ -24,8 +24,8 @@ const ExpenseList: React.FC<ExpenseListProps> = ({
     setConfirmDelete(id);
   };
 
-  const handleConfirmDelete = (id: string) => {
-    onDelete(id);
+  const handleConfirmDelete = async (id: string) => {
+    await onDelete(id);
     setConfirmDelete(null);
   };
 

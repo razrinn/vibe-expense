@@ -9,7 +9,7 @@ import { Edit, Trash2 } from 'lucide-react';
 interface DailyGroupedExpenseListProps {
   expenses: Expense[];
   categories: Category[];
-  onDelete: (id: string) => void;
+  onDelete: (id: string) => Promise<void>;
 }
 
 const DailyGroupedExpenseList: React.FC<DailyGroupedExpenseListProps> = ({

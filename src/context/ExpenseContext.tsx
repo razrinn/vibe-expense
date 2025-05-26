@@ -4,6 +4,7 @@ import {
   useState,
   useEffect,
   ReactNode,
+  useCallback,
 } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Expense, Category, ExpenseFilter, ExpenseSummary } from '../types';
@@ -19,6 +20,17 @@ import {
   endOfYear,
   isWithinInterval,
 } from 'date-fns';
+import {
+  db,
+  getExpensesFromDB,
+  addExpenseToDB,
+  updateExpenseInDB,
+  deleteExpenseFromDB,
+  getCategoriesFromDB,
+  addCategoryToDB,
+  updateCategoryInDB,
+  deleteCategoryFromDB,
+} from '../utils/indexedDB';
 
 interface ExpenseContextType {
   expenses: Expense[];
@@ -26,12 +38,12 @@ interface ExpenseContextType {
   categories: Category[];
   filter: ExpenseFilter;
   summary: ExpenseSummary;
-  addExpense: (expense: Omit<Expense, 'id'>) => void;
-  updateExpense: (id: string, expense: Omit<Expense, 'id'>) => void;
-  deleteExpense: (id: string) => void;
-  addCategory: (category: Omit<Category, 'id'>) => void;
-  updateCategory: (id: string, category: Omit<Category, 'id'>) => void;
-  deleteCategory: (id: string) => boolean;
+  addExpense: (expense: Omit<Expense, 'id'>) => Promise<void>;
+  updateExpense: (id: string, expense: Omit<Expense, 'id'>) => Promise<void>;
+  deleteExpense: (id: string) => Promise<void>;
+  addCategory: (category: Omit<Category, 'id'>) => Promise<void>;
+  updateCategory: (id: string, category: Omit<Category, 'id'>) => Promise<void>;
+  deleteCategory: (id: string) => Promise<boolean>;
   setFilter: (filter: Partial<ExpenseFilter>) => void;
 }
 
@@ -45,16 +57,8 @@ const defaultFilter: ExpenseFilter = {
 const ExpenseContext = createContext<ExpenseContextType | undefined>(undefined);
 
 export const ExpenseProvider = ({ children }: { children: ReactNode }) => {
-  const [expenses, setExpenses] = useState<Expense[]>(() => {
-    const savedExpenses = localStorage.getItem('expenses');
-    return savedExpenses ? JSON.parse(savedExpenses) : [];
-  });
-  const [categories, setCategories] = useState<Category[]>(() => {
-    const savedCategories = localStorage.getItem('categories');
-    return savedCategories
-      ? JSON.parse(savedCategories)
-      : getDefaultCategories();
-  });
+  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [filter, setFilterState] = useState<ExpenseFilter>(defaultFilter);
   const [filteredExpenses, setFilteredExpenses] = useState<Expense[]>([]);
   const [summary, setSummary] = useState<ExpenseSummary>({
@@ -63,14 +67,19 @@ export const ExpenseProvider = ({ children }: { children: ReactNode }) => {
     byCategory: {},
   });
 
-  // Save expenses and categories to localStorage when they change
+  // Load initial data from IndexedDB
   useEffect(() => {
-    localStorage.setItem('expenses', JSON.stringify(expenses));
-  }, [expenses]);
-
-  useEffect(() => {
-    localStorage.setItem('categories', JSON.stringify(categories));
-  }, [categories]);
+    const loadData = async () => {
+      await db.open(); // Ensure DB is open and migration runs if needed
+      const loadedExpenses = await getExpensesFromDB();
+      const loadedCategories = await getCategoriesFromDB();
+      setExpenses(loadedExpenses);
+      setCategories(
+        loadedCategories.length > 0 ? loadedCategories : getDefaultCategories()
+      );
+    };
+    loadData();
+  }, []); // Run only once on component mount
 
   // Update filtered expenses and summary when expenses, filter, or categories change
   useEffect(() => {
@@ -127,48 +136,64 @@ export const ExpenseProvider = ({ children }: { children: ReactNode }) => {
     });
   }, [expenses, filter, categories]);
 
-  const addExpense = (expense: Omit<Expense, 'id'>) => {
+  const addExpense = useCallback(async (expense: Omit<Expense, 'id'>) => {
     const newExpense: Expense = {
       ...expense,
       id: uuidv4(),
     };
-    setExpenses((prev) => [...prev, newExpense]);
-  };
+    await addExpenseToDB(newExpense);
+    const updatedExpenses = await getExpensesFromDB();
+    setExpenses(updatedExpenses);
+  }, []);
 
-  const updateExpense = (id: string, expense: Omit<Expense, 'id'>) => {
-    setExpenses((prev) =>
-      prev.map((item) => (item.id === id ? { ...expense, id } : item))
-    );
-  };
+  const updateExpense = useCallback(
+    async (id: string, expense: Omit<Expense, 'id'>) => {
+      await updateExpenseInDB(id, expense);
+      const updatedExpenses = await getExpensesFromDB();
+      setExpenses(updatedExpenses);
+    },
+    []
+  );
 
-  const deleteExpense = (id: string) => {
-    setExpenses((prev) => prev.filter((expense) => expense.id !== id));
-  };
+  const deleteExpense = useCallback(async (id: string) => {
+    await deleteExpenseFromDB(id);
+    const updatedExpenses = await getExpensesFromDB();
+    setExpenses(updatedExpenses);
+  }, []);
 
-  const addCategory = (category: Omit<Category, 'id'>) => {
+  const addCategory = useCallback(async (category: Omit<Category, 'id'>) => {
     const newCategory: Category = {
       ...category,
       id: uuidv4(),
     };
-    setCategories((prev) => [...prev, newCategory]);
-  };
+    await addCategoryToDB(newCategory);
+    const updatedCategories = await getCategoriesFromDB();
+    setCategories(updatedCategories);
+  }, []);
 
-  const updateCategory = (id: string, category: Omit<Category, 'id'>) => {
-    setCategories((prev) =>
-      prev.map((item) => (item.id === id ? { ...category, id } : item))
-    );
-  };
+  const updateCategory = useCallback(
+    async (id: string, category: Omit<Category, 'id'>) => {
+      await updateCategoryInDB(id, category);
+      const updatedCategories = await getCategoriesFromDB();
+      setCategories(updatedCategories);
+    },
+    []
+  );
 
-  const deleteCategory = (id: string) => {
-    // Don't delete categories that are in use
-    const inUse = expenses.some((expense) => expense.category === id);
-    if (inUse) {
-      return false;
-    }
-
-    setCategories((prev) => prev.filter((category) => category.id !== id));
-    return true;
-  };
+  const deleteCategory = useCallback(
+    async (id: string) => {
+      // Don't delete categories that are in use
+      const inUse = expenses.some((expense) => expense.category === id);
+      if (inUse) {
+        return false;
+      }
+      await deleteCategoryFromDB(id);
+      const updatedCategories = await getCategoriesFromDB();
+      setCategories(updatedCategories);
+      return true;
+    },
+    [expenses]
+  );
 
   const setFilter = (newFilter: Partial<ExpenseFilter>) => {
     setFilterState((prev) => {

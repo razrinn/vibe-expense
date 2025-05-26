@@ -7,9 +7,12 @@ import Input from '../ui/forms/Input';
 
 interface CategoryManagerProps {
   categories: Category[];
-  onAddCategory: (category: Omit<Category, 'id'>) => void;
-  onUpdateCategory: (id: string, category: Omit<Category, 'id'>) => void;
-  onDeleteCategory: (id: string) => boolean;
+  onAddCategory: (category: Omit<Category, 'id'>) => Promise<void>;
+  onUpdateCategory: (
+    id: string,
+    category: Omit<Category, 'id'>
+  ) => Promise<void>;
+  onDeleteCategory: (id: string) => Promise<boolean>;
 }
 
 const CategoryManager: React.FC<CategoryManagerProps> = ({
@@ -43,7 +46,7 @@ const CategoryManager: React.FC<CategoryManagerProps> = ({
     setError('');
   };
 
-  const handleSaveCategory = () => {
+  const handleSaveCategory = async () => {
     if (!validateCategoryName(newCategoryName, categories)) {
       setError(
         newCategoryName.trim()
@@ -53,7 +56,7 @@ const CategoryManager: React.FC<CategoryManagerProps> = ({
       return;
     }
 
-    onAddCategory({
+    await onAddCategory({
       name: newCategoryName.trim(),
       color: newCategoryColor,
     });
@@ -69,7 +72,7 @@ const CategoryManager: React.FC<CategoryManagerProps> = ({
     });
   };
 
-  const handleUpdateCategory = (id: string) => {
+  const handleUpdateCategory = async (id: string) => {
     if (!validateCategoryName(editName, categories, id)) {
       setError(
         editName.trim()
@@ -79,7 +82,7 @@ const CategoryManager: React.FC<CategoryManagerProps> = ({
       return;
     }
 
-    onUpdateCategory(id, {
+    await onUpdateCategory(id, {
       name: editName.trim(),
       color: editColor,
     });
@@ -95,8 +98,8 @@ const CategoryManager: React.FC<CategoryManagerProps> = ({
     });
   };
 
-  const handleDeleteCategory = (id: string) => {
-    const success = onDeleteCategory(id);
+  const handleDeleteCategory = async (id: string) => {
+    const success = await onDeleteCategory(id);
 
     if (success) {
       showToast({

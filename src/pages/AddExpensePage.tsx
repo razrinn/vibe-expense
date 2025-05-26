@@ -9,8 +9,8 @@ const AddExpensePage: React.FC = () => {
   const { addExpense, categories } = useExpenses();
   const navigate = useNavigate();
 
-  const handleSubmit = (expense: Omit<Expense, 'id'>) => {
-    addExpense(expense);
+  const handleSubmit = async (expense: Omit<Expense, 'id'>) => {
+    await addExpense(expense);
     navigate('/expenses');
   };
 

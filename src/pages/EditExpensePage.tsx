@@ -28,9 +28,9 @@ const EditExpensePage: React.FC = () => {
     }
   }, [id, expenses, navigate, showToast]);
 
-  const handleSubmit = (data: Omit<Expense, 'id'>) => {
+  const handleSubmit = async (data: Omit<Expense, 'id'>) => {
     if (id) {
-      updateExpense(id, data);
+      await updateExpense(id, data);
       navigate('/expenses');
     }
   };

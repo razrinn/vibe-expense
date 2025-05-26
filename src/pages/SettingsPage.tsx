@@ -1,3 +1,4 @@
+import { db } from '../utils/indexedDB';
 import React from 'react';
 import PageContainer from '../components/layout/PageContainer';
 import CategoryManager from '../components/expenses/CategoryManager';
@@ -113,8 +114,8 @@ const SettingsPage: React.FC = () => {
       'This action will permanently delete ALL your expense data. Type "DELETE" to confirm:'
     );
     if (confirmation === 'DELETE') {
-      localStorage.removeItem('expenses');
-      window.location.reload();
+      await db.expenses.clear();
+      // No need to reload the window, as the context providers will react to the DB changes
 
       showToast({
         message: 'All data cleared successfully',

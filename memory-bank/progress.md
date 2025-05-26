@@ -22,3 +22,5 @@ This file tracks the project's progress using a task list format.
 [2025-05-26 22:43:07] - Completed IndexedDB migration: Dexie.js installed, `src/utils/indexedDB.ts` created with IndexedDB setup and migration logic, and `src/context/ExpenseContext.tsx` updated to use IndexedDB for expense and category CRUD operations.
 
 [2025-05-26 22:57:38] - Task Completed: Implemented cookie-based session management in `AuthContext.tsx` and updated `AuthState` in `types/index.ts`.
+
+[2025-05-26 23:04:34] - Modified `handleClearData` in `src/pages/SettingsPage.tsx` to use IndexedDB for clearing data and added the necessary import for `db`.

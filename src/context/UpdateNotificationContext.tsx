@@ -42,8 +42,6 @@ export const UpdateNotificationProvider: React.FC<{
         if (localStorage.getItem('updateNotificationDismissed') !== 'true') {
           setShowUpdateNotification(true);
         }
-        // Reset dismissal status for the new version
-        localStorage.removeItem('updateNotificationDismissed');
       }
     };
 

@@ -4,6 +4,7 @@ import TrendChart from '../components/analytics/TrendChart';
 import KeyMetrics from '../components/analytics/KeyMetrics';
 import ExpenseFilters from '../components/expenses/ExpenseFilters';
 import { useExpenses } from '../context/ExpenseContext';
+import CategoryBudgetOverview from '../components/budgets/CategoryBudgetOverview';
 
 const AnalyticsPage: React.FC = () => {
   const { filteredExpenses, categories, filter, setFilter, summary } =
@@ -18,6 +19,8 @@ const AnalyticsPage: React.FC = () => {
       />
 
       <KeyMetrics summary={summary} />
+
+      <CategoryBudgetOverview includeZeroBudget />
 
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
         <CategoryChart

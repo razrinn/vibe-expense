@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Expense, Category } from '../../types';
 import { formatCurrency } from '../../utils/formatters';
 import { getCategoryById } from '../../utils/categories';
@@ -18,6 +18,16 @@ const DailyGroupedExpenseList: React.FC<DailyGroupedExpenseListProps> = ({
   onDelete,
 }) => {
   const { currency } = useSettings();
+  const [collapsedMonths, setCollapsedMonths] = useState<
+    Record<string, boolean>
+  >({});
+
+  const toggleMonthCollapse = (monthYear: string) => {
+    setCollapsedMonths((prevState) => ({
+      ...prevState,
+      [monthYear]: !prevState[monthYear],
+    }));
+  };
 
   // Group expenses by date
   const groupedExpenses = expenses.reduce((acc, expense) => {
@@ -61,7 +71,7 @@ const DailyGroupedExpenseList: React.FC<DailyGroupedExpenseListProps> = ({
   let lastMonthYear = '';
 
   return (
-    <div className='space-y-3'>
+    <div>
       {sortedDates.map((date) => {
         const currentDate = new Date(date);
         const currentMonthYear = currentDate.toLocaleDateString('en-US', {
@@ -75,15 +85,53 @@ const DailyGroupedExpenseList: React.FC<DailyGroupedExpenseListProps> = ({
         return (
           <React.Fragment key={date}>
             {showMonthDivider && (
-              <div className='sticky top-20 z-10 my-6'>
+              <div className='sticky top-20 z-10 my-3'>
                 <div className='relative flex justify-center'>
-                  <span className='bg-gray-100 dark:bg-black-800 px-3 text-base font-semibold text-gray-900 dark:text-white rounded-full'>
-                    {currentMonthYear}
-                  </span>
+                  <button
+                    onClick={() => toggleMonthCollapse(currentMonthYear)}
+                    className='bg-gray-100 dark:bg-black-800 px-3 py-1 text-base font-semibold text-gray-900 dark:text-white rounded-full flex items-center space-x-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
+                  >
+                    <span>{currentMonthYear}</span>
+                    {collapsedMonths[currentMonthYear] ? (
+                      <svg
+                        className='h-4 w-4 transform rotate-90'
+                        fill='none'
+                        viewBox='0 0 24 24'
+                        stroke='currentColor'
+                      >
+                        <path
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          strokeWidth='2'
+                          d='M9 5l7 7-7 7'
+                        ></path>
+                      </svg>
+                    ) : (
+                      <svg
+                        className='h-4 w-4 transform -rotate-90'
+                        fill='none'
+                        viewBox='0 0 24 24'
+                        stroke='currentColor'
+                      >
+                        <path
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          strokeWidth='2'
+                          d='M9 5l7 7-7 7'
+                        ></path>
+                      </svg>
+                    )}
+                  </button>
                 </div>
               </div>
             )}
-            <div className='bg-white dark:bg-black-900 rounded-lg shadow p-4 border border-gray-200 dark:border-gray-700'>
+            <div
+              className={`bg-white dark:bg-black-900 rounded-lg shadow border border-gray-200 dark:border-gray-700 transition-all duration-150 ease-in-out overflow-hidden ${
+                collapsedMonths[currentMonthYear]
+                  ? 'max-h-0 p-0 border-0'
+                  : 'max-h-screen p-4 mb-3'
+              }`}
+            >
               <div className='flex justify-between items-center mb-3 text-sm font-semibold'>
                 <span className='text-gray-900 dark:text-white'>
                   {new Date(date).toLocaleDateString('en-US', {

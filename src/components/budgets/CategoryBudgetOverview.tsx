@@ -18,13 +18,6 @@ const CategoryBudgetOverview = ({
   const { currency } = useSettings();
   const navigate = useNavigate();
 
-  const budgetedCategories = categories.filter((cat) => {
-    if (includeZeroBudget) {
-      return true;
-    }
-    return cat.budget !== undefined && cat.budget > 0;
-  });
-
   const dateRange = useMemo(() => {
     const monthDate = new Date();
     const newStart = startOfMonth(monthDate);
@@ -36,19 +29,42 @@ const CategoryBudgetOverview = ({
     };
   }, []);
 
+  const budgetedCategories = categories.filter((cat) => {
+    if (includeZeroBudget) {
+      return true;
+    }
+    return cat.budget !== undefined && cat.budget > 0;
+  });
+
+  const sortedBudgetedCategories = useMemo(() => {
+    return budgetedCategories
+      .map((category) => {
+        const categorySpecificSummary = calculateExpenseSummary(expenses, {
+          period: 'month',
+          category: category.id,
+          dateRange,
+        });
+        const spentAmount = categorySpecificSummary.total || 0;
+        const budget = category.budget || 0;
+        const progress = budget > 0 ? spentAmount / budget : 0;
+        return { ...category, progress };
+      })
+      .sort((a, b) => b.progress - a.progress);
+  }, [budgetedCategories, expenses, dateRange]);
+
   const handleClickCategory = (category: Category) => {
     if (category?.budget) return;
 
     navigate('/settings/category');
   };
 
-  if (budgetedCategories.length === 0) {
+  if (sortedBudgetedCategories.length === 0) {
     return null; // Don't render if no categories have budgets
   }
 
   return (
     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-      {budgetedCategories.map((category) => {
+      {sortedBudgetedCategories.map((category) => {
         const categorySpecificSummary = calculateExpenseSummary(expenses, {
           period: 'month',
           category: category.id,

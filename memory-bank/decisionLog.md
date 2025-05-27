@@ -42,3 +42,5 @@ Implementation Details:
 - Updated `getDefaultCategories` in `src/utils/categories.ts` to set a default budget of 0.
 - Updated `indexedDB.ts` to include `budget` in the categories store schema and incremented the database version.
 - Modified `csvUtils.ts` to handle `budget` during category CSV export and import.
+
+[2025-05-28 12:24:02] - Decision: Moved `dateRange` `useMemo` hook to an earlier position in `CategoryBudgetOverview.tsx` to resolve "used before declaration" errors for `sortedBudgetedCategories`.

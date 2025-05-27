@@ -39,3 +39,5 @@ This file tracks the project's current status, including recent changes, current
 - Updated `csvUtils.ts` for budget handling in CSV import/export.
   [2025-05-27 18:53:23] - Open Questions/Issues:
 - `Papa.parse` type error workaround using `any` cast in `src/utils/csvUtils.ts` persists.
+
+[2025-05-28 12:23:53] - Current focus: Implementing category sorting based on spending/limit ratio in `src/components/budgets/CategoryBudgetOverview.tsx`.

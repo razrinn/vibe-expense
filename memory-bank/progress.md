@@ -48,3 +48,6 @@ This file tracks the project's progress using a task list format.
 [2025-05-27 17:24:02] - Modified `src/pages/SettingsPage.tsx` to call `loadExpenses` and `loadCategories` after successful import operations.
 
 [2025-05-27 18:53:32] - Task Completed: Implemented monthly budgeting feature for categories.
+
+[2025-05-28 12:23:58] - Started task: Sort categories in `CategoryBudgetOverview.tsx` by spending/limit ratio.
+[2025-05-28 12:23:58] - Progress: Implemented initial sorting logic. Encountered and resolved `dateRange` scope errors by repositioning its `useMemo` hook.

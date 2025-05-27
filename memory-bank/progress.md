@@ -34,3 +34,5 @@ This file tracks the project's progress using a task list format.
 [2025-05-27 12:39:22] - Updated `src/pages/SettingsPage.tsx` to utilize the new `clearAllExpenses` from `ExpenseContext`.
 [2025-05-27 12:39:22] - Removed unused `db` import from `src/pages/SettingsPage.tsx`.
 [2025-05-27 12:39:22] - Task completed: `clear data` now instantly updates context state.
+
+[2025-05-27 14:40:44] - Task "mapped category become unknown on created expenses after i reopen the app in PWA" completed.

@@ -75,9 +75,15 @@ export const ExpenseProvider = ({ children }: { children: ReactNode }) => {
       const loadedExpenses = await getExpensesFromDB();
       const loadedCategories = await getCategoriesFromDB();
       setExpenses(loadedExpenses);
-      setCategories(
-        loadedCategories.length > 0 ? loadedCategories : getDefaultCategories()
-      );
+      let initialCategories = loadedCategories;
+      if (loadedCategories.length === 0) {
+        const defaultCategories = getDefaultCategories();
+        for (const category of defaultCategories) {
+          await addCategoryToDB(category);
+        }
+        initialCategories = defaultCategories;
+      }
+      setCategories(initialCategories);
     };
     loadData();
   }, []); // Run only once on component mount

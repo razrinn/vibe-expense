@@ -71,11 +71,11 @@ export const formatCategoryName = (name: string): string => {
 export const validateCategoryName = (name: string, categories: Category[], currentId?: string): boolean => {
   // Check if empty
   if (!name.trim()) return false;
-  
+
   // Check if duplicate (ignore current category when editing)
   const duplicate = categories.find(
     cat => cat.name.toLowerCase() === name.toLowerCase() && cat.id !== currentId
   );
-  
+
   return !duplicate;
 };

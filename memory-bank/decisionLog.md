@@ -24,3 +24,5 @@ This file records architectural and implementation decisions using a list format
 [2025-05-27 12:39:30] - Centralized data clearing logic for expenses.
 Rationale: Initially, `db.expenses.clear()` was called directly in `SettingsPage.tsx`, followed by a `refreshExpenses()` call from `ExpenseContext`. This led to a less cohesive design. By moving the `db.expenses.clear()` and `setExpenses([])` into a new `clearAllExpenses` function within `ExpenseContext`, the responsibility for managing expense data state and persistence is fully encapsulated within the context. This improves maintainability, reduces potential for inconsistencies, and provides a cleaner API for components.
 Implications: Components needing to clear all expense data now only need to call `clearAllExpenses()` from `useExpenses`, simplifying their logic.
+
+[2025-05-27 14:40:39] - Decision: Instead of hardcoding UUIDs for default categories, the approach was changed to persist default categories to IndexedDB if the category store is initially empty. This ensures consistency across sessions without relying on fixed UUIDs in code.

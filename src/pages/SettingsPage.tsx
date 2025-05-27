@@ -6,10 +6,11 @@ import { useExpenses } from '../context/ExpenseContext';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useSettings } from '../context/SettingsContext';
-import { Download, Trash2 } from 'lucide-react';
+import { Download, Trash2, LogOut } from 'lucide-react';
 import Select from '../components/ui/forms/Select';
 import { useNavigate } from 'react-router-dom';
 import packageJson from '../../package.json'; // Import package.json
+import ThemeToggle from '../components/layout/ThemeToggle';
 
 interface NavigatorWithStandalone extends Navigator {
   standalone?: boolean;
@@ -19,10 +20,14 @@ const SettingsPage: React.FC = () => {
   const { categories, addCategory, updateCategory, deleteCategory, expenses } =
     useExpenses();
 
-  const { resetPinAndLogout } = useAuth();
+  const { resetPinAndLogout, logout } = useAuth();
   const { showToast } = useToast();
   const { currency, setCurrency } = useSettings();
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+  };
 
   const getIsPWA = () => {
     const mediaQuery = window.matchMedia('(display-mode: standalone)');
@@ -232,6 +237,32 @@ const SettingsPage: React.FC = () => {
         </li>
         <li className='py-4 text-center text-gray-500 dark:text-gray-400 text-sm'>
           App Version: {packageJson.version}
+        </li>
+        <li className='py-4'>
+          <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
+            Theme Settings
+          </h3>
+          <div className='flex items-center justify-between'>
+            <p className='text-sm text-gray-500 dark:text-gray-400'>
+              Toggle between light and dark themes.
+            </p>
+            <ThemeToggle />
+          </div>
+        </li>
+        <li className='py-4'>
+          <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
+            Account Actions
+          </h3>
+          <button
+            onClick={handleLogout}
+            className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
+          >
+            <LogOut className='h-4 w-4 mr-2' />
+            Logout
+          </button>
+          <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+            Log out from your account.
+          </p>
         </li>
       </ul>
     </PageContainer>

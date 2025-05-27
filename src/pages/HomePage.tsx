@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import ExpenseList from '../components/expenses/ExpenseList';
 import KeyMetrics from '../components/analytics/KeyMetrics';
+import CategoryBudgetOverview from '../components/budgets/CategoryBudgetOverview';
 import { useExpenses } from '../context/ExpenseContext';
 import { PlusCircle, ArrowRight } from 'lucide-react';
 
@@ -20,6 +21,8 @@ const HomePage: React.FC = () => {
         </h2>
         <KeyMetrics summary={summary} />
       </div>
+
+      <CategoryBudgetOverview />
 
       <div className='flex items-center justify-between'>
         <h2 className='text-2xl font-bold text-gray-900 dark:text-white'>

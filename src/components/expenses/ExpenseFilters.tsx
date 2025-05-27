@@ -299,19 +299,21 @@ const ExpenseFilters: React.FC<ExpenseFiltersProps> = ({
             </div>
           )}
 
-          <Select
-            label='Category'
-            id='category'
-            value={filter.category || 'all'}
-            onChange={handleCategoryChange}
-            options={[
-              { value: 'all', label: 'All Categories' },
-              ...categories.map((category) => ({
-                value: category.id,
-                label: category.name,
-              })),
-            ]}
-          />
+          {categories.length > 0 && (
+            <Select
+              label='Category'
+              id='category'
+              value={filter.category || 'all'}
+              onChange={handleCategoryChange}
+              options={[
+                { value: 'all', label: 'All Categories' },
+                ...categories.map((category) => ({
+                  value: category.id,
+                  label: category.name,
+                })),
+              ]}
+            />
+          )}
         </div>
       </div>
     </div>

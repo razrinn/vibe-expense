@@ -4,6 +4,8 @@ import { useSettings } from '../../context/SettingsContext';
 import { formatCurrency } from '../../utils/formatters';
 import { calculateExpenseSummary } from '../../utils/expenseCalculations';
 import { endOfMonth, startOfMonth } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
+import { Category } from '../../types';
 
 interface CategoryBudgetOverviewProps {
   includeZeroBudget?: boolean;
@@ -14,6 +16,7 @@ const CategoryBudgetOverview = ({
 }: CategoryBudgetOverviewProps) => {
   const { categories, expenses } = useExpenses();
   const { currency } = useSettings();
+  const navigate = useNavigate();
 
   const budgetedCategories = categories.filter((cat) => {
     if (includeZeroBudget) {
@@ -32,6 +35,12 @@ const CategoryBudgetOverview = ({
       end: newEnd,
     };
   }, []);
+
+  const handleClickCategory = (category: Category) => {
+    if (category?.budget) return;
+
+    navigate('/settings/category');
+  };
 
   if (budgetedCategories.length === 0) {
     return null; // Don't render if no categories have budgets
@@ -57,6 +66,7 @@ const CategoryBudgetOverview = ({
           <div
             key={category.id}
             className='bg-white dark:bg-black-900 rounded-lg shadow p-4'
+            onClick={() => handleClickCategory(category)}
           >
             <div className='flex justify-between items-center mb-2'>
               <h3 className='text-lg font-semibold text-gray-800 dark:text-gray-100'>
@@ -75,7 +85,7 @@ const CategoryBudgetOverview = ({
                 )}
               </span>
             </div>
-            <div className='w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700'>
+            <div className='w-full bg-gray-300 rounded-full h-2.5 dark:bg-black-800'>
               <div
                 className='h-2.5 rounded-full'
                 style={{

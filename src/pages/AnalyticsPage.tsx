@@ -14,7 +14,7 @@ const AnalyticsPage: React.FC = () => {
     <div className='space-y-4'>
       <ExpenseFilters
         filter={filter}
-        categories={categories}
+        categories={[]}
         onFilterChange={setFilter}
       />
 

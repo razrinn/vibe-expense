@@ -1,15 +1,28 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useExpenses } from '../../context/ExpenseContext';
 import { useSettings } from '../../context/SettingsContext';
 import { formatCurrency } from '../../utils/formatters';
+import { calculateExpenseSummary } from '../../utils/expenseCalculations';
+import { endOfMonth, startOfMonth } from 'date-fns';
 
 const CategoryBudgetOverview: React.FC = () => {
-  const { categories, summary } = useExpenses();
+  const { categories, expenses } = useExpenses();
   const { currency } = useSettings();
 
   const budgetedCategories = categories.filter(
     (cat) => cat.budget !== undefined && cat.budget > 0
   );
+
+  const dateRange = useMemo(() => {
+    const monthDate = new Date();
+    const newStart = startOfMonth(monthDate);
+    const newEnd = endOfMonth(monthDate);
+
+    return {
+      start: newStart,
+      end: newEnd,
+    };
+  }, []);
 
   if (budgetedCategories.length === 0) {
     return null; // Don't render if no categories have budgets
@@ -22,7 +35,12 @@ const CategoryBudgetOverview: React.FC = () => {
       </h2>
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
         {budgetedCategories.map((category) => {
-          const spentAmount = summary.byCategory[category.id] || 0;
+          const categorySpecificSummary = calculateExpenseSummary(expenses, {
+            period: 'month',
+            category: category.id,
+            dateRange,
+          });
+          const spentAmount = categorySpecificSummary.total || 0;
           const budget = category.budget || 0;
           const progress =
             budget > 0 ? Math.min(100, (spentAmount / budget) * 100) : 0;

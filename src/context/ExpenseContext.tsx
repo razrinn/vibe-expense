@@ -9,6 +9,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { Expense, Category, ExpenseFilter, ExpenseSummary } from '../types';
 import { getDefaultCategories } from '../utils/categories';
+import { calculateExpenseSummary } from '../utils/expenseCalculations';
 import {
   startOfDay,
   endOfDay,
@@ -93,56 +94,29 @@ export const ExpenseProvider = ({ children }: { children: ReactNode }) => {
   // Update filtered expenses and summary when expenses, filter, or categories change
   useEffect(() => {
     // Apply filters
-    let filtered = [...expenses];
-
-    // Filter by date range
-    filtered = filtered.filter((expense) => {
-      const expenseDate = new Date(expense.date);
-      return isWithinInterval(expenseDate, {
-        start: filter.dateRange.start,
-        end: filter.dateRange.end,
-      });
-    });
-
-    // Filter by category if specified
-    if (filter.category) {
-      filtered = filtered.filter(
-        (expense) => expense.category === filter.category
-      );
-    }
-
-    // Sort by date (most recent first)
-    filtered = filtered.sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    const newSummary = calculateExpenseSummary(expenses, filter);
+    setFilteredExpenses(
+      // The calculateExpenseSummary function returns the filtered expenses as part of the summary calculation.
+      // We need to extract them from the summary object if we want to set them separately.
+      // For now, we'll re-filter here to avoid changing the calculateExpenseSummary return type.
+      // A better approach might be to have calculateExpenseSummary return both filtered expenses and summary.
+      expenses
+        .filter((expense) => {
+          const expenseDate = new Date(expense.date);
+          return isWithinInterval(expenseDate, {
+            start: filter.dateRange.start,
+            end: filter.dateRange.end,
+          });
+        })
+        .filter((expense) => {
+          if (filter.category) {
+            return expense.category === filter.category;
+          }
+          return true;
+        })
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     );
-
-    setFilteredExpenses(filtered);
-
-    // Calculate summary
-    const total = filtered.reduce((sum, expense) => sum + expense.amount, 0);
-    const days = Math.max(
-      1,
-      Math.ceil(
-        (filter.dateRange.end.getTime() - filter.dateRange.start.getTime()) /
-          (1000 * 60 * 60 * 24)
-      )
-    );
-    const average = total / days;
-
-    // Calculate by category
-    const byCategory: Record<string, number> = {};
-    filtered.forEach((expense) => {
-      if (!byCategory[expense.category]) {
-        byCategory[expense.category] = 0;
-      }
-      byCategory[expense.category] += expense.amount;
-    });
-
-    setSummary({
-      total,
-      average,
-      byCategory,
-    });
+    setSummary(newSummary);
   }, [expenses, filter, categories]);
 
   const addExpense = useCallback(async (expense: Omit<Expense, 'id'>) => {

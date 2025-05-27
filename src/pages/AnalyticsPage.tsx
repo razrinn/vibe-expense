@@ -17,7 +17,7 @@ const AnalyticsPage: React.FC = () => {
         onFilterChange={setFilter}
       />
 
-      <KeyMetrics summary={summary} period={filter.period} />
+      <KeyMetrics summary={summary} />
 
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
         <CategoryChart

@@ -46,6 +46,8 @@ interface ExpenseContextType {
   deleteCategory: (id: string) => Promise<boolean>;
   setFilter: (filter: Partial<ExpenseFilter>) => void;
   clearAllExpenses: () => Promise<void>;
+  loadExpenses: () => Promise<void>; // New function to reload expenses
+  loadCategories: () => Promise<void>; // New function to reload categories
 }
 
 const defaultFilter: ExpenseFilter = {
@@ -297,6 +299,16 @@ export const ExpenseProvider = ({ children }: { children: ReactNode }) => {
     setExpenses([]);
   }, []);
 
+  const loadExpenses = useCallback(async () => {
+    const loadedExpenses = await getExpensesFromDB();
+    setExpenses(loadedExpenses);
+  }, []);
+
+  const loadCategories = useCallback(async () => {
+    const loadedCategories = await getCategoriesFromDB();
+    setCategories(loadedCategories);
+  }, []);
+
   return (
     <ExpenseContext.Provider
       value={{
@@ -313,6 +325,8 @@ export const ExpenseProvider = ({ children }: { children: ReactNode }) => {
         deleteCategory,
         setFilter,
         clearAllExpenses,
+        loadExpenses, // Expose new function
+        loadCategories, // Expose new function
       }}
     >
       {children}

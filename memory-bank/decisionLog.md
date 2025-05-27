@@ -28,3 +28,7 @@ Implications: Components needing to clear all expense data now only need to call
 [2025-05-27 14:40:39] - Decision: Instead of hardcoding UUIDs for default categories, the approach was changed to persist default categories to IndexedDB if the category store is initially empty. This ensures consistency across sessions without relying on fixed UUIDs in code.
 
 [2025-05-27 15:18:38] - Decision: Replaced 'Average daily spending' metric with 'Number of Transactions' in 'KeyMetrics.tsx'. Rationale: User feedback indicated 'Average daily spending' was not useful. 'Number of Transactions' provides a more direct and easily understandable metric for activity. Implications: Required updates to 'KeyMetrics.tsx' and 'HomePage.tsx' to remove unused 'period' prop and 'filter' variable.
+
+[2025-05-27 16:54:05] - Decision: CSV Import Strategy
+Rationale: User preference is to overwrite existing records if their ID matches, and add new records if the ID does not exist.
+Implementation Details: Utilize Dexie's `bulkPut()` method for both expenses and categories during CSV import. This method handles both insertion of new records and updating of existing records based on their primary key (`id`).

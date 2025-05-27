@@ -3,18 +3,26 @@ import { useExpenses } from '../context/ExpenseContext';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useSettings } from '../context/SettingsContext';
-import { Download, Trash2, LogOut } from 'lucide-react';
+import { Download, Trash2, LogOut, Upload } from 'lucide-react';
 import Select from '../components/ui/forms/Select';
 import { useNavigate } from 'react-router-dom';
 import packageJson from '../../package.json'; // Import package.json
 import ThemeToggle from '../components/layout/ThemeToggle';
+import {
+  exportExpensesToCsv,
+  exportCategoriesToCsv,
+  importExpensesFromCsv,
+  importCategoriesFromCsv,
+} from '../utils/csvUtils';
 
 interface NavigatorWithStandalone extends Navigator {
   standalone?: boolean;
 }
 
 const SettingsPage: React.FC = () => {
-  const { categories, expenses, clearAllExpenses } = useExpenses();
+  const { clearAllExpenses, loadExpenses, loadCategories } = useExpenses();
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const categoryFileInputRef = React.useRef<HTMLInputElement>(null);
 
   const { resetPinAndLogout, logout } = useAuth();
   const { showToast } = useToast();
@@ -46,55 +54,47 @@ const SettingsPage: React.FC = () => {
     return () => mediaQuery.removeEventListener('change', handler);
   }, []);
 
-  const handleExportData = () => {
-    try {
-      // Create CSV content
-      const headers = ['Date', 'Category', 'Description', 'Amount', 'Notes'];
+  const handleExportExpenses = async () => {
+    const result = await exportExpensesToCsv();
+    showToast(result);
+  };
 
-      let csvContent = headers.join(',') + '\n';
+  const handleExportCategories = async () => {
+    const result = await exportCategoriesToCsv();
+    showToast(result);
+  };
 
-      // Add expense data
-      expenses.forEach((expense) => {
-        const category = categories.find((c) => c.id === expense.category);
-        const categoryName = category ? category.name : 'Unknown';
+  const handleImportExpenses = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const result = await importExpensesFromCsv(file);
+      showToast(result);
+      if (result.success) {
+        // Only reload if import was successful
+        await loadExpenses();
+      }
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''; // Clear the input
+      }
+    }
+  };
 
-        const row = [
-          expense.date,
-          categoryName,
-          `"${expense.description.replace(/"/g, '""')}"`, // Escape quotes
-          expense.amount,
-          `"${(expense.notes || '').replace(/"/g, '""')}"`, // Escape quotes
-        ];
-
-        csvContent += row.join(',') + '\n';
-      });
-
-      // Create and download file
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-
-      link.setAttribute('href', url);
-      link.setAttribute(
-        'download',
-        `expenses_${new Date().toISOString().split('T')[0]}.csv`
-      );
-      link.style.visibility = 'hidden';
-
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      showToast({
-        message: 'Data exported successfully',
-        type: 'success',
-      });
-    } catch (error) {
-      console.log('EXPORT DATA err: ', error);
-      showToast({
-        message: 'Failed to export data',
-        type: 'error',
-      });
+  const handleImportCategories = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const result = await importCategoriesFromCsv(file);
+      showToast(result);
+      if (result.success) {
+        // Only reload if import was successful
+        await loadCategories();
+      }
+      if (categoryFileInputRef.current) {
+        categoryFileInputRef.current.value = ''; // Clear the input
+      }
     }
   };
 
@@ -170,14 +170,68 @@ const SettingsPage: React.FC = () => {
           </div>
           <div>
             <button
-              onClick={handleExportData}
+              onClick={handleExportExpenses}
               className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
             >
               <Download className='h-4 w-4 mr-2' />
               Export Expenses (CSV)
             </button>
             <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
-              Download all your expense data as a CSV file
+              Download all your expense data as a CSV file.
+            </p>
+          </div>
+          <div>
+            <button
+              onClick={handleExportCategories}
+              className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
+            >
+              <Download className='h-4 w-4 mr-2' />
+              Export Categories (CSV)
+            </button>
+            <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+              Download all your category data as a CSV file.
+            </p>
+          </div>
+          <div>
+            <label
+              htmlFor='import-expenses-csv'
+              className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer'
+            >
+              <Upload className='h-4 w-4 mr-2' />
+              Import Expenses (CSV)
+            </label>
+            <input
+              id='import-expenses-csv'
+              type='file'
+              accept='.csv'
+              onChange={handleImportExpenses}
+              ref={fileInputRef}
+              className='hidden'
+            />
+            <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+              Upload a CSV file to import expense data. Existing expenses with
+              matching IDs will be updated.
+            </p>
+          </div>
+          <div>
+            <label
+              htmlFor='import-categories-csv'
+              className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer'
+            >
+              <Upload className='h-4 w-4 mr-2' />
+              Import Categories (CSV)
+            </label>
+            <input
+              id='import-categories-csv'
+              type='file'
+              accept='.csv'
+              onChange={handleImportCategories}
+              ref={categoryFileInputRef}
+              className='hidden'
+            />
+            <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+              Upload a CSV file to import category data. Existing categories
+              with matching IDs will be updated.
             </p>
           </div>
         </div>

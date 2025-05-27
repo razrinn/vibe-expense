@@ -28,3 +28,9 @@ This file tracks the project's progress using a task list format.
 [2025-05-26 23:19:04] - Disabled right-click/long-press on links by adding a global `contextmenu` event listener in `src/main.tsx`.
 
 [2025-05-27 12:13:03] - Changed page imports to dynamic imports in src/App.tsx.
+
+[2025-05-27 12:39:22] - Task started: Address issue with `clear data` not instantly updating context state in `src/pages/SettingsPage.tsx`.
+[2025-05-27 12:39:22] - Implemented `clearAllExpenses` function in `src/context/ExpenseContext.tsx` to centralize data clearing and state reset.
+[2025-05-27 12:39:22] - Updated `src/pages/SettingsPage.tsx` to utilize the new `clearAllExpenses` from `ExpenseContext`.
+[2025-05-27 12:39:22] - Removed unused `db` import from `src/pages/SettingsPage.tsx`.
+[2025-05-27 12:39:22] - Task completed: `clear data` now instantly updates context state.

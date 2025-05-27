@@ -45,6 +45,7 @@ interface ExpenseContextType {
   updateCategory: (id: string, category: Omit<Category, 'id'>) => Promise<void>;
   deleteCategory: (id: string) => Promise<boolean>;
   setFilter: (filter: Partial<ExpenseFilter>) => void;
+  clearAllExpenses: () => Promise<void>;
 }
 
 const defaultFilter: ExpenseFilter = {
@@ -285,6 +286,11 @@ export const ExpenseProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
+  const clearAllExpenses = useCallback(async () => {
+    await db.expenses.clear();
+    setExpenses([]);
+  }, []);
+
   return (
     <ExpenseContext.Provider
       value={{
@@ -300,6 +306,7 @@ export const ExpenseProvider = ({ children }: { children: ReactNode }) => {
         updateCategory,
         deleteCategory,
         setFilter,
+        clearAllExpenses,
       }}
     >
       {children}

@@ -18,3 +18,6 @@ This file tracks the project's current status, including recent changes, current
 -
 
 [2025-05-26 22:57:33] - Current Focus: Modified authentication system to use cookie-based session management.
+
+[2025-05-27 12:39:37] - Current Focus: Ensuring immediate UI updates after data manipulation, specifically for clearing all expense data.
+[2025-05-27 12:39:37] - Recent Changes: Refactored expense data clearing logic to be centralized within `ExpenseContext` via `clearAllExpenses` function. This ensures state consistency and instant UI reflection.

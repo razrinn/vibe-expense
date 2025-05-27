@@ -1,4 +1,3 @@
-import { db } from '../utils/indexedDB';
 import React from 'react';
 import { useExpenses } from '../context/ExpenseContext';
 import { useAuth } from '../context/AuthContext';
@@ -15,7 +14,7 @@ interface NavigatorWithStandalone extends Navigator {
 }
 
 const SettingsPage: React.FC = () => {
-  const { categories, expenses } = useExpenses();
+  const { categories, expenses, clearAllExpenses } = useExpenses();
 
   const { resetPinAndLogout, logout } = useAuth();
   const { showToast } = useToast();
@@ -119,8 +118,7 @@ const SettingsPage: React.FC = () => {
       'This action will permanently delete ALL your expense data. Type "DELETE" to confirm:'
     );
     if (confirmation === 'DELETE') {
-      await db.expenses.clear();
-      // No need to reload the window, as the context providers will react to the DB changes
+      await clearAllExpenses();
 
       showToast({
         message: 'All data cleared successfully',

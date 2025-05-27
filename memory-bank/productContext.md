@@ -28,3 +28,5 @@ This file provides a high-level overview of the project and the expected product
 - Data stored locally (no backend), currently use localStorage & planning to migrate to indexedDB
 - Browser-based (no mobile app)
 - use PWA to allow offline access & shortcut to home screen
+
+[2025-05-27 17:24:24] - Added CSV export/import functionality for expenses and categories.

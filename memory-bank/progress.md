@@ -38,3 +38,11 @@ This file tracks the project's progress using a task list format.
 [2025-05-27 14:40:44] - Task "mapped category become unknown on created expenses after i reopen the app in PWA" completed.
 
 [2025-05-27 15:18:38] - Completed task: Simplified UI of 'src/components/analytics/KeyMetrics.tsx' and replaced 'Average daily spending' metric with 'Number of Transactions'. Cleaned up related code in 'KeyMetrics.tsx' and 'HomePage.tsx'.
+
+[2025-05-27 17:24:02] - Started implementing CSV export/import functionality.
+[2025-05-27 17:24:02] - Created `src/utils/csvUtils.ts` for CSV export and import logic.
+[2025-05-27 17:24:02] - Implemented `exportExpensesToCsv` and `exportCategoriesToCsv` in `src/utils/csvUtils.ts`.
+[2025-05-27 17:24:02] - Implemented placeholder `importExpensesFromCsv` and `importCategoriesFromCsv` in `src/utils/csvUtils.ts` using `FileReader` and `papaparse` (with `any` cast workaround for type error).
+[2025-05-27 17:24:02] - Updated `src/pages/SettingsPage.tsx` to integrate new export/import buttons and logic.
+[2025-05-27 17:24:02] - Updated `src/context/ExpenseContext.tsx` to include `loadExpenses` and `loadCategories` functions for refreshing context state.
+[2025-05-27 17:24:02] - Modified `src/pages/SettingsPage.tsx` to call `loadExpenses` and `loadCategories` after successful import operations.

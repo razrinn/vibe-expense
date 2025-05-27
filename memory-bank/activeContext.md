@@ -25,3 +25,7 @@ This file tracks the project's current status, including recent changes, current
 [2025-05-27 14:40:33] - Current Focus: Resolved issue where mapped categories become "unknown" on created expenses after reopening the PWA.
 
 [2025-05-27 15:18:38] - Current Focus: UI simplification and metric refinement for analytics components.
+
+[2025-05-27 17:24:12] - Current Focus: Implementing CSV export/import functionality and ensuring context state updates after import.
+[2025-05-27 17:24:12] - Recent Changes: - CSV export/import logic moved to `src/utils/csvUtils.ts`. - `src/pages/SettingsPage.tsx` updated with UI for export/import. - `src/context/ExpenseContext.tsx` modified to allow reloading of expenses and categories after import.
+[2025-05-27 17:24:12] - Open Questions/Issues: - `Papa.parse` type error workaround using `any` cast in `src/utils/csvUtils.ts` (technical debt).

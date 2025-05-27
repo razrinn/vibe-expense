@@ -32,3 +32,13 @@ Implications: Components needing to clear all expense data now only need to call
 [2025-05-27 16:54:05] - Decision: CSV Import Strategy
 Rationale: User preference is to overwrite existing records if their ID matches, and add new records if the ID does not exist.
 Implementation Details: Utilize Dexie's `bulkPut()` method for both expenses and categories during CSV import. This method handles both insertion of new records and updating of existing records based on their primary key (`id`).
+
+[2025-05-27 18:53:15] - Decision: Implemented monthly budgeting feature for categories.
+Rationale: User requested a budgeting feature to help track spending per category on a monthly basis.
+Implementation Details:
+
+- Added `budget?: number;` to the `Category` interface in `src/types/index.ts`.
+- Modified `CategoryManager.tsx` to include input fields for budget and display the budget using `formatCurrency`.
+- Updated `getDefaultCategories` in `src/utils/categories.ts` to set a default budget of 0.
+- Updated `indexedDB.ts` to include `budget` in the categories store schema and incremented the database version.
+- Modified `csvUtils.ts` to handle `budget` during category CSV export and import.

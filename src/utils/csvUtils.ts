@@ -1,6 +1,6 @@
 import { getExpensesFromDB, getCategoriesFromDB, db } from './indexedDB';
 import { Expense, Category, ToastOptions } from '../types';
-import Papa, { ParseResult, ParseError } from 'papaparse';
+import Papa, { ParseResult } from 'papaparse';
 
 // Helper function to escape CSV values
 const escapeCsvValue = (value: unknown): string => {
@@ -68,7 +68,7 @@ export const exportCategoriesToCsv = async (): Promise<CsvOperationResult> => {
   try {
     const categories = await getCategoriesFromDB();
 
-    const headers = ['id', 'name', 'color'];
+    const headers = ['id', 'name', 'color', 'budget'];
 
     const csvRows = [
       headers.join(','), // Add headers as the first row
@@ -77,6 +77,7 @@ export const exportCategoriesToCsv = async (): Promise<CsvOperationResult> => {
           escapeCsvValue(category.id),
           escapeCsvValue(category.name),
           escapeCsvValue(category.color),
+          escapeCsvValue(category.budget),
         ].join(',');
       })
     ];
@@ -107,7 +108,7 @@ export const importExpensesFromCsv = async (file: File): Promise<CsvOperationRes
     const reader = new FileReader();
     reader.onload = (e) => {
       const csvString = e.target?.result as string;
-      (Papa.parse  as any)(csvString, { // Cast to any as a workaround for type error
+      Papa.parse<Expense>(csvString, {
         header: true,
         skipEmptyLines: true,
         complete: async (results: ParseResult<Expense>) => {
@@ -154,7 +155,7 @@ export const importExpensesFromCsv = async (file: File): Promise<CsvOperationRes
             resolve({ success: false, message: 'Failed to import expenses to database.', type: 'error' });
           }
         },
-        error: (err: ParseError) => {
+        error: (err: Error) => {
           console.error('CSV parsing error:', err);
           resolve({ success: false, message: `CSV parsing error: ${err.message}`, type: 'error' });
         },
@@ -172,7 +173,7 @@ export const importCategoriesFromCsv = async (file: File): Promise<CsvOperationR
     const reader = new FileReader();
     reader.onload = (e) => {
       const csvString = e.target?.result as string;
-      (Papa.parse as any)(csvString, { //
+      Papa.parse<Category>(csvString, {
         header: true,
         skipEmptyLines: true,
         complete: async (results: ParseResult<Category>) => {
@@ -184,6 +185,7 @@ export const importCategoriesFromCsv = async (file: File): Promise<CsvOperationR
               id: row.id,
               name: row.name,
               color: row.color,
+              budget: row.budget ? parseFloat(String(row.budget)) : 0, // Parse budget as number, default to 0
             };
 
             if (!category.id || !category.name || !category.color) {
@@ -207,7 +209,7 @@ export const importCategoriesFromCsv = async (file: File): Promise<CsvOperationR
             resolve({ success: false, message: 'Failed to import categories to database.', type: 'error' });
           }
         },
-        error: (err: ParseError) => {
+        error: (err: Error) => {
           console.error('CSV parsing error:', err);
           resolve({ success: false, message: `CSV parsing error: ${err.message}`, type: 'error' });
         },

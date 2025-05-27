@@ -7,9 +7,9 @@ export class VibeExpenseDB extends Dexie {
 
   constructor() {
     super('vibe-expense-db');
-    this.version(1).stores({
+    this.version(2).stores({
       expenses: 'id, date, category', // Primary key 'id', indexed 'date' and 'category'
-      categories: 'id, name', // Primary key 'id', indexed 'name'
+      categories: 'id, name, budget', // Primary key 'id', indexed 'name' and 'budget'
     });
 
     // Migration from localStorage to IndexedDB

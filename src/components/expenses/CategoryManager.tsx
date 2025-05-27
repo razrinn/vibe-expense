@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Category } from '../../types';
 import { validateCategoryName } from '../../utils/categories';
+import { formatCurrency } from '../../utils/formatters';
 import { Plus, Edit, Trash2, Check, X, AlertCircle } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
 import Input from '../ui/forms/Input';
+import { useSettings } from '../../context/SettingsContext';
 
 interface CategoryManagerProps {
   categories: Category[];
@@ -27,15 +29,19 @@ const CategoryManager: React.FC<CategoryManagerProps> = ({
   );
   const [newCategoryName, setNewCategoryName] = useState('');
   const [newCategoryColor, setNewCategoryColor] = useState('#4CAF50');
+  const [newCategoryBudget, setNewCategoryBudget] = useState<number>(0);
   const [editName, setEditName] = useState('');
   const [editColor, setEditColor] = useState('');
+  const [editBudget, setEditBudget] = useState<number>(0);
   const [error, setError] = useState('');
   const { showToast } = useToast();
+  const { currency } = useSettings();
 
   const handleAddCategory = () => {
     setIsAddingCategory(true);
     setNewCategoryName('');
     setNewCategoryColor('#4CAF50');
+    setNewCategoryBudget(0);
     setError('');
   };
 
@@ -43,6 +49,7 @@ const CategoryManager: React.FC<CategoryManagerProps> = ({
     setEditingCategoryId(category.id);
     setEditName(category.name);
     setEditColor(category.color);
+    setEditBudget(category.budget || 0); // Set to existing budget or 0 if undefined
     setError('');
   };
 
@@ -59,11 +66,13 @@ const CategoryManager: React.FC<CategoryManagerProps> = ({
     await onAddCategory({
       name: newCategoryName.trim(),
       color: newCategoryColor,
+      budget: newCategoryBudget,
     });
 
     setIsAddingCategory(false);
     setNewCategoryName('');
     setNewCategoryColor('#4CAF50');
+    setNewCategoryBudget(0);
     setError('');
 
     showToast({
@@ -85,11 +94,13 @@ const CategoryManager: React.FC<CategoryManagerProps> = ({
     await onUpdateCategory(id, {
       name: editName.trim(),
       color: editColor,
+      budget: editBudget,
     });
 
     setEditingCategoryId(null);
     setEditName('');
     setEditColor('');
+    setEditBudget(0);
     setError('');
 
     showToast({
@@ -165,6 +176,15 @@ const CategoryManager: React.FC<CategoryManagerProps> = ({
               autoFocus
               error={error} // Pass error prop
             />
+            <Input
+              label='Monthly Budget'
+              id='newCategoryBudget'
+              type='number'
+              value={newCategoryBudget.toString()}
+              onChange={(e) => setNewCategoryBudget(Number(e.target.value))}
+              placeholder='0'
+              min='0'
+            />
             <div>
               <label
                 htmlFor='newCategoryColor'
@@ -223,6 +243,15 @@ const CategoryManager: React.FC<CategoryManagerProps> = ({
                     autoFocus
                     error={error}
                   />
+                  <Input
+                    label='Monthly Budget'
+                    id={`edit-${category.id}-budget`}
+                    type='number'
+                    value={editBudget.toString()}
+                    onChange={(e) => setEditBudget(Number(e.target.value))}
+                    placeholder='0'
+                    min='0'
+                  />
                   <div>
                     <label
                       htmlFor={`edit-${category.id}-color`}
@@ -272,6 +301,11 @@ const CategoryManager: React.FC<CategoryManagerProps> = ({
                     <span className='text-gray-900 dark:text-white'>
                       {category.name}
                     </span>
+                    {category.budget !== undefined && (
+                      <span className='ml-2 text-sm text-gray-500 dark:text-gray-400'>
+                        (Budget: {formatCurrency(category.budget, currency)})
+                      </span>
+                    )}
                   </div>
                   <div className='flex space-x-2'>
                     <button

@@ -11,6 +11,7 @@ export interface Category {
   id: string;
   name: string;
   color: string;
+  budget?: number; // Monthly budget for the category
 }
 
 export interface DateRange {

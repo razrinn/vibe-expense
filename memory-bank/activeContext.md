@@ -29,3 +29,13 @@ This file tracks the project's current status, including recent changes, current
 [2025-05-27 17:24:12] - Current Focus: Implementing CSV export/import functionality and ensuring context state updates after import.
 [2025-05-27 17:24:12] - Recent Changes: - CSV export/import logic moved to `src/utils/csvUtils.ts`. - `src/pages/SettingsPage.tsx` updated with UI for export/import. - `src/context/ExpenseContext.tsx` modified to allow reloading of expenses and categories after import.
 [2025-05-27 17:24:12] - Open Questions/Issues: - `Papa.parse` type error workaround using `any` cast in `src/utils/csvUtils.ts` (technical debt).
+
+[2025-05-27 18:53:23] - Current Focus: Implementing monthly budgeting feature for categories.
+[2025-05-27 18:53:23] - Recent Changes:
+
+- Added `budget` property to `Category` interface and related components (`CategoryManager.tsx`, `CategoryManagementPage.tsx`).
+- Updated `getDefaultCategories` to include default budget.
+- Modified `indexedDB.ts` schema for categories to persist budget.
+- Updated `csvUtils.ts` for budget handling in CSV import/export.
+  [2025-05-27 18:53:23] - Open Questions/Issues:
+- `Papa.parse` type error workaround using `any` cast in `src/utils/csvUtils.ts` persists.

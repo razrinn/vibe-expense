@@ -46,3 +46,5 @@ This file tracks the project's progress using a task list format.
 [2025-05-27 17:24:02] - Updated `src/pages/SettingsPage.tsx` to integrate new export/import buttons and logic.
 [2025-05-27 17:24:02] - Updated `src/context/ExpenseContext.tsx` to include `loadExpenses` and `loadCategories` functions for refreshing context state.
 [2025-05-27 17:24:02] - Modified `src/pages/SettingsPage.tsx` to call `loadExpenses` and `loadCategories` after successful import operations.
+
+[2025-05-27 18:53:32] - Task Completed: Implemented monthly budgeting feature for categories.

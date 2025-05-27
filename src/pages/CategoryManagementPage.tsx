@@ -11,6 +11,10 @@ const CategoryManagementPage: React.FC = () => {
       <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>
         Category Management
       </h2>
+      <p className='text-gray-700 dark:text-gray-300 mb-4'>
+        You can now set a monthly budget for each category. This budget will
+        help you track your spending more effectively.
+      </p>
       <CategoryManager
         categories={categories}
         onAddCategory={addCategory}

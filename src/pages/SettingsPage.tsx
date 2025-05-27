@@ -175,31 +175,6 @@ const SettingsPage: React.FC = () => {
                 Download all your expense data as a CSV file
               </p>
             </div>
-
-            <div>
-              <button
-                onClick={handleResetPin}
-                className='inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-black-900 hover:bg-gray-50 dark:hover:bg-black-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
-              >
-                Reset PIN
-              </button>
-              <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
-                Reset your PIN and create a new one
-              </p>
-            </div>
-
-            <div>
-              <button
-                onClick={handleClearData}
-                className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
-              >
-                <Trash2 className='h-4 w-4 mr-2' />
-                Clear All Data
-              </button>
-              <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
-                Permanently delete all expense data
-              </p>
-            </div>
           </div>
         </li>
         <li className='py-4'>
@@ -235,9 +210,6 @@ const SettingsPage: React.FC = () => {
             onDeleteCategory={deleteCategory}
           />
         </li>
-        <li className='py-4 text-center text-gray-500 dark:text-gray-400 text-sm'>
-          App Version: {packageJson.version}
-        </li>
         <li className='py-4'>
           <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
             Theme Settings
@@ -253,16 +225,47 @@ const SettingsPage: React.FC = () => {
           <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
             Account Actions
           </h3>
-          <button
-            onClick={handleLogout}
-            className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
-          >
-            <LogOut className='h-4 w-4 mr-2' />
-            Logout
-          </button>
-          <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
-            Log out from your account.
-          </p>
+          <div className='space-y-4'>
+            <div>
+              <button
+                onClick={handleResetPin}
+                className='inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-black-900 hover:bg-gray-50 dark:hover:bg-black-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
+              >
+                Reset PIN
+              </button>
+              <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+                Reset your PIN and create a new one
+              </p>
+            </div>
+
+            <div>
+              <button
+                onClick={handleClearData}
+                className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
+              >
+                <Trash2 className='h-4 w-4 mr-2' />
+                Clear All Data
+              </button>
+              <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+                Permanently delete all expense data
+              </p>
+            </div>
+            <div>
+              <button
+                onClick={handleLogout}
+                className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
+              >
+                <LogOut className='h-4 w-4 mr-2' />
+                Logout
+              </button>
+              <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+                Log out from your account.
+              </p>
+            </div>
+          </div>
+        </li>
+        <li className='py-4 text-center text-gray-500 dark:text-gray-400 text-sm'>
+          App Version: {packageJson.version}
         </li>
       </ul>
     </PageContainer>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -8,14 +8,18 @@ import {
 import { useAuth } from './context/AuthContext';
 
 // Pages
-import HomePage from './pages/HomePage';
-import ExpensesPage from './pages/ExpensesPage';
-import AddExpensePage from './pages/AddExpensePage';
-import EditExpensePage from './pages/EditExpensePage';
-import AnalyticsPage from './pages/AnalyticsPage';
-import SettingsPage from './pages/SettingsPage';
-import PWAInstallationPage from './pages/PWAInstallationPage';
-import CategoryManagementPage from './pages/CategoryManagementPage';
+const HomePage = React.lazy(() => import('./pages/HomePage'));
+const ExpensesPage = React.lazy(() => import('./pages/ExpensesPage'));
+const AddExpensePage = React.lazy(() => import('./pages/AddExpensePage'));
+const EditExpensePage = React.lazy(() => import('./pages/EditExpensePage'));
+const AnalyticsPage = React.lazy(() => import('./pages/AnalyticsPage'));
+const SettingsPage = React.lazy(() => import('./pages/SettingsPage'));
+const PWAInstallationPage = React.lazy(
+  () => import('./pages/PWAInstallationPage')
+);
+const CategoryManagementPage = React.lazy(
+  () => import('./pages/CategoryManagementPage')
+);
 
 // Auth Components
 import PinSetup from './components/auth/PinSetup';
@@ -79,19 +83,69 @@ const AppRoutes: React.FC = () => {
     <Router>
       <Routes>
         <Route path='/' element={<PageLayout />}>
-          <Route index element={<HomePage />} />
-          <Route path='/expenses' element={<ExpensesPage />} />
-          <Route path='/add' element={<AddExpensePage />} />
-          <Route path='/edit/:id' element={<EditExpensePage />} />
-          <Route path='/analytics' element={<AnalyticsPage />} />
-          <Route path='/settings' element={<SettingsPage />} />
+          <Route
+            index
+            element={
+              <Suspense>
+                <HomePage />
+              </Suspense>
+            }
+          />
+          <Route
+            path='/expenses'
+            element={
+              <Suspense>
+                <ExpensesPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path='/add'
+            element={
+              <Suspense>
+                <AddExpensePage />
+              </Suspense>
+            }
+          />
+          <Route
+            path='/edit/:id'
+            element={
+              <Suspense>
+                <EditExpensePage />
+              </Suspense>
+            }
+          />
+          <Route
+            path='/analytics'
+            element={
+              <Suspense>
+                <AnalyticsPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path='/settings'
+            element={
+              <Suspense>
+                <SettingsPage />
+              </Suspense>
+            }
+          />
           <Route
             path='/settings/installation'
-            element={<PWAInstallationPage />}
+            element={
+              <Suspense>
+                <PWAInstallationPage />
+              </Suspense>
+            }
           />
           <Route
             path='/settings/category'
-            element={<CategoryManagementPage />}
+            element={
+              <Suspense>
+                <CategoryManagementPage />
+              </Suspense>
+            }
           />
           <Route path='*' element={<Navigate to='/' replace />} />
         </Route>

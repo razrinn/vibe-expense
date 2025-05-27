@@ -18,3 +18,5 @@ This file records architectural and implementation decisions using a list format
 -
 
 [2025-05-26 22:57:27] - Decision: Implement manual cookie handling for session management. Rationale: User denied installation of `js-cookie` library. Implications: Custom cookie functions were added to `AuthContext.tsx`.
+
+[2025-05-27 12:13:07] - Implemented dynamic imports for page components in src/App.tsx using React.lazy and React.Suspense to improve initial load performance.

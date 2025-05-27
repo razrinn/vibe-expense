@@ -26,3 +26,5 @@ This file tracks the project's progress using a task list format.
 [2025-05-26 23:04:34] - Modified `handleClearData` in `src/pages/SettingsPage.tsx` to use IndexedDB for clearing data and added the necessary import for `db`.
 
 [2025-05-26 23:19:04] - Disabled right-click/long-press on links by adding a global `contextmenu` event listener in `src/main.tsx`.
+
+[2025-05-27 12:13:03] - Changed page imports to dynamic imports in src/App.tsx.

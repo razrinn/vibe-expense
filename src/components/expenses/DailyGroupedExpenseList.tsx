@@ -75,7 +75,7 @@ const DailyGroupedExpenseList: React.FC<DailyGroupedExpenseListProps> = ({
         return (
           <React.Fragment key={date}>
             {showMonthDivider && (
-              <div className='relative my-6'>
+              <div className='sticky top-20 z-10 my-6'>
                 <div
                   className='absolute inset-0 flex items-center'
                   aria-hidden='true'

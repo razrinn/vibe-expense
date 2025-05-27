@@ -156,7 +156,7 @@ const SettingsPage: React.FC = () => {
           Data Management
         </h3>
 
-        <div className='space-y-4'>
+        <div className='space-y-6'>
           <div>
             <button
               onClick={() => navigate('/settings/category')}
@@ -165,73 +165,74 @@ const SettingsPage: React.FC = () => {
               Manage Categories
             </button>
             <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
-              Add, edit, or delete expense categories
+              Add, edit, or delete expense categories.
             </p>
           </div>
+
           <div>
-            <button
-              onClick={handleExportExpenses}
-              className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
-            >
-              <Download className='h-4 w-4 mr-2' />
-              Export Expenses (CSV)
-            </button>
-            <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
-              Download all your expense data as a CSV file.
+            <h4 className='text-md font-semibold text-gray-800 dark:text-gray-200 mb-2'>
+              Export Data
+            </h4>
+            <div className='flex gap-2'>
+              <button
+                onClick={handleExportExpenses}
+                className='inline-flex w-full items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
+              >
+                <Download className='h-4 w-4 mr-2' />
+                Export Expenses (CSV)
+              </button>
+              <button
+                onClick={handleExportCategories}
+                className='inline-flex w-full items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
+              >
+                <Download className='h-4 w-4 mr-2' />
+                Export Categories (CSV)
+              </button>
+            </div>
+            <p className='mt-2 text-sm text-gray-500 dark:text-gray-400'>
+              Download your expense and category data as CSV files.
             </p>
           </div>
+
           <div>
-            <button
-              onClick={handleExportCategories}
-              className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
-            >
-              <Download className='h-4 w-4 mr-2' />
-              Export Categories (CSV)
-            </button>
-            <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
-              Download all your category data as a CSV file.
-            </p>
-          </div>
-          <div>
-            <label
-              htmlFor='import-expenses-csv'
-              className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer'
-            >
-              <Upload className='h-4 w-4 mr-2' />
-              Import Expenses (CSV)
-            </label>
-            <input
-              id='import-expenses-csv'
-              type='file'
-              accept='.csv'
-              onChange={handleImportExpenses}
-              ref={fileInputRef}
-              className='hidden'
-            />
-            <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
-              Upload a CSV file to import expense data. Existing expenses with
-              matching IDs will be updated.
-            </p>
-          </div>
-          <div>
-            <label
-              htmlFor='import-categories-csv'
-              className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer'
-            >
-              <Upload className='h-4 w-4 mr-2' />
-              Import Categories (CSV)
-            </label>
-            <input
-              id='import-categories-csv'
-              type='file'
-              accept='.csv'
-              onChange={handleImportCategories}
-              ref={categoryFileInputRef}
-              className='hidden'
-            />
-            <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
-              Upload a CSV file to import category data. Existing categories
-              with matching IDs will be updated.
+            <h4 className='text-md font-semibold text-gray-800 dark:text-gray-200 mb-2'>
+              Import Data
+            </h4>
+            <div className='flex gap-2'>
+              <label
+                htmlFor='import-expenses-csv'
+                className='inline-flex w-full items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer'
+              >
+                <Upload className='h-4 w-4 mr-2' />
+                Import Expenses (CSV)
+              </label>
+              <input
+                id='import-expenses-csv'
+                type='file'
+                accept='.csv'
+                onChange={handleImportExpenses}
+                ref={fileInputRef}
+                className='hidden'
+              />
+              <label
+                htmlFor='import-categories-csv'
+                className='inline-flex w-full items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer'
+              >
+                <Upload className='h-4 w-4 mr-2' />
+                Import Categories (CSV)
+              </label>
+              <input
+                id='import-categories-csv'
+                type='file'
+                accept='.csv'
+                onChange={handleImportCategories}
+                ref={categoryFileInputRef}
+                className='hidden'
+              />
+            </div>
+            <p className='mt-2 text-sm text-gray-500 dark:text-gray-400'>
+              Upload CSV files to import expense or category data. Existing
+              entries with matching IDs will be updated.
             </p>
           </div>
         </div>

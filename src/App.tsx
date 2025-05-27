@@ -27,6 +27,7 @@ import { AuthProvider } from './context/AuthContext';
 import { ExpenseProvider } from './context/ExpenseContext';
 import { ToastProvider } from './context/ToastContext';
 import { SettingsProvider } from './context/SettingsContext';
+import PageLayout from './components/layout/PageLayout';
 
 // Add the following style to prevent content jump when scrollbar appears/disappears
 const scrollbarStyle = `
@@ -77,18 +78,23 @@ const AppRoutes: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path='/' element={<HomePage />} />
-        <Route path='/expenses' element={<ExpensesPage />} />
-        <Route path='/add' element={<AddExpensePage />} />
-        <Route path='/edit/:id' element={<EditExpensePage />} />
-        <Route path='/analytics' element={<AnalyticsPage />} />
-        <Route path='/settings' element={<SettingsPage />} />
-        <Route
-          path='/settings/installation'
-          element={<PWAInstallationPage />}
-        />
-        <Route path='/settings/category' element={<CategoryManagementPage />} />
-        <Route path='*' element={<Navigate to='/' replace />} />
+        <Route path='/' element={<PageLayout />}>
+          <Route index element={<HomePage />} />
+          <Route path='/expenses' element={<ExpensesPage />} />
+          <Route path='/add' element={<AddExpensePage />} />
+          <Route path='/edit/:id' element={<EditExpensePage />} />
+          <Route path='/analytics' element={<AnalyticsPage />} />
+          <Route path='/settings' element={<SettingsPage />} />
+          <Route
+            path='/settings/installation'
+            element={<PWAInstallationPage />}
+          />
+          <Route
+            path='/settings/category'
+            element={<CategoryManagementPage />}
+          />
+          <Route path='*' element={<Navigate to='/' replace />} />
+        </Route>
       </Routes>
     </Router>
   );

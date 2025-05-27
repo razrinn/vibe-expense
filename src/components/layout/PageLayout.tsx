@@ -1,13 +1,8 @@
-import React, { ReactNode } from 'react';
 import Header from './Header';
 import Navigation from './Navigation';
 import Sidebar from './Sidebar';
-
-interface PageContainerProps {
-  children: ReactNode;
-}
-
-const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
+import { Outlet } from 'react-router-dom';
+const PageLayout = () => {
   return (
     <div className='flex min-h-dvh bg-gray-100 dark:bg-black-950'>
       <Sidebar />
@@ -16,7 +11,7 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
         <Header />
 
         <main className='flex-1 p-4 sm:p-6 pb-safe-offset-20 sm:pb-6'>
-          {children}
+          <Outlet />
         </main>
 
         <Navigation />
@@ -25,4 +20,4 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
   );
 };
 
-export default PageContainer;
+export default PageLayout;

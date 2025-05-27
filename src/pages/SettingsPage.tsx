@@ -1,6 +1,5 @@
 import { db } from '../utils/indexedDB';
 import React from 'react';
-import PageContainer from '../components/layout/PageContainer';
 import { useExpenses } from '../context/ExpenseContext';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
@@ -136,137 +135,135 @@ const SettingsPage: React.FC = () => {
   };
 
   return (
-    <PageContainer>
-      <ul className='divide-y divide-gray-200 dark:divide-gray-700'>
-        {!isPWA && (
-          <li className='py-4'>
-            <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
-              Install Progressive Web App (PWA)
-            </h3>
-            <p className='mt-1 text-sm text-gray-500 dark:text-gray-400 mb-4'>
-              Install this application to your home screen for a native app-like
-              experience.
-            </p>
-            <button
-              className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
-              onClick={() => navigate('/settings/installation')}
-            >
-              How to Install PWA
-            </button>
-          </li>
-        )}
+    <ul className='divide-y divide-gray-200 dark:divide-gray-700'>
+      {!isPWA && (
         <li className='py-4'>
           <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
-            Data Management
+            Install Progressive Web App (PWA)
           </h3>
-
-          <div className='space-y-4'>
-            <div>
-              <button
-                onClick={() => navigate('/settings/category')}
-                className='inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-black-900 hover:bg-gray-50 dark:hover:bg-black-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
-              >
-                Manage Categories
-              </button>
-              <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
-                Add, edit, or delete expense categories
-              </p>
-            </div>
-            <div>
-              <button
-                onClick={handleExportData}
-                className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
-              >
-                <Download className='h-4 w-4 mr-2' />
-                Export Expenses (CSV)
-              </button>
-              <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
-                Download all your expense data as a CSV file
-              </p>
-            </div>
-          </div>
-        </li>
-        <li className='py-4'>
-          <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
-            Currency Settings
-          </h3>
-          <Select
-            label='Select Currency'
-            id='currency-select'
-            name='currency-select'
-            value={currency}
-            onChange={(e) => setCurrency(e.target.value)}
-            options={[
-              { value: 'IDR', label: 'IDR - Indonesian Rupiah' },
-              { value: 'USD', label: 'USD - United States Dollar' },
-              { value: 'EUR', label: 'EUR - Euro' },
-              { value: 'GBP', label: 'GBP - British Pound' },
-              { value: 'JPY', label: 'JPY - Japanese Yen' },
-            ]}
-          />
-          <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
-            Choose the currency for displaying expenses.
+          <p className='mt-1 text-sm text-gray-500 dark:text-gray-400 mb-4'>
+            Install this application to your home screen for a native app-like
+            experience.
           </p>
+          <button
+            className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
+            onClick={() => navigate('/settings/installation')}
+          >
+            How to Install PWA
+          </button>
         </li>
-        <li className='py-4'>
-          <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
-            Theme Settings
-          </h3>
-          <div className='flex items-center justify-between'>
-            <p className='text-sm text-gray-500 dark:text-gray-400'>
-              Toggle between light and dark themes.
-            </p>
-            <ThemeToggle />
-          </div>
-        </li>
-        <li className='py-4'>
-          <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
-            Account Actions
-          </h3>
-          <div className='space-y-4'>
-            <div>
-              <button
-                onClick={handleResetPin}
-                className='inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-black-900 hover:bg-gray-50 dark:hover:bg-black-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
-              >
-                Reset PIN
-              </button>
-              <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
-                Reset your PIN and create a new one
-              </p>
-            </div>
+      )}
+      <li className='py-4'>
+        <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
+          Data Management
+        </h3>
 
-            <div>
-              <button
-                onClick={handleClearData}
-                className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
-              >
-                <Trash2 className='h-4 w-4 mr-2' />
-                Clear All Data
-              </button>
-              <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
-                Permanently delete all expense data
-              </p>
-            </div>
-            <div>
-              <button
-                onClick={handleLogout}
-                className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
-              >
-                <LogOut className='h-4 w-4 mr-2' />
-                Logout
-              </button>
-              <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
-                Log out from your account.
-              </p>
-            </div>
+        <div className='space-y-4'>
+          <div>
+            <button
+              onClick={() => navigate('/settings/category')}
+              className='inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-black-900 hover:bg-gray-50 dark:hover:bg-black-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
+            >
+              Manage Categories
+            </button>
+            <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+              Add, edit, or delete expense categories
+            </p>
           </div>
-        </li>
-        <li className='py-4 text-center text-gray-500 dark:text-gray-400 text-sm'>
-          App Version: {packageJson.version}
-        </li>
-      </ul>
-    </PageContainer>
+          <div>
+            <button
+              onClick={handleExportData}
+              className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
+            >
+              <Download className='h-4 w-4 mr-2' />
+              Export Expenses (CSV)
+            </button>
+            <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+              Download all your expense data as a CSV file
+            </p>
+          </div>
+        </div>
+      </li>
+      <li className='py-4'>
+        <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
+          Currency Settings
+        </h3>
+        <Select
+          label='Select Currency'
+          id='currency-select'
+          name='currency-select'
+          value={currency}
+          onChange={(e) => setCurrency(e.target.value)}
+          options={[
+            { value: 'IDR', label: 'IDR - Indonesian Rupiah' },
+            { value: 'USD', label: 'USD - United States Dollar' },
+            { value: 'EUR', label: 'EUR - Euro' },
+            { value: 'GBP', label: 'GBP - British Pound' },
+            { value: 'JPY', label: 'JPY - Japanese Yen' },
+          ]}
+        />
+        <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+          Choose the currency for displaying expenses.
+        </p>
+      </li>
+      <li className='py-4'>
+        <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
+          Theme Settings
+        </h3>
+        <div className='flex items-center justify-between'>
+          <p className='text-sm text-gray-500 dark:text-gray-400'>
+            Toggle between light and dark themes.
+          </p>
+          <ThemeToggle />
+        </div>
+      </li>
+      <li className='py-4'>
+        <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
+          Account Actions
+        </h3>
+        <div className='space-y-4'>
+          <div>
+            <button
+              onClick={handleResetPin}
+              className='inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-black-900 hover:bg-gray-50 dark:hover:bg-black-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
+            >
+              Reset PIN
+            </button>
+            <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+              Reset your PIN and create a new one
+            </p>
+          </div>
+
+          <div>
+            <button
+              onClick={handleClearData}
+              className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
+            >
+              <Trash2 className='h-4 w-4 mr-2' />
+              Clear All Data
+            </button>
+            <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+              Permanently delete all expense data
+            </p>
+          </div>
+          <div>
+            <button
+              onClick={handleLogout}
+              className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
+            >
+              <LogOut className='h-4 w-4 mr-2' />
+              Logout
+            </button>
+            <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+              Log out from your account.
+            </p>
+          </div>
+        </div>
+      </li>
+      <li className='py-4 text-center text-gray-500 dark:text-gray-400 text-sm'>
+        App Version: {packageJson.version}
+      </li>
+    </ul>
   );
 };
 

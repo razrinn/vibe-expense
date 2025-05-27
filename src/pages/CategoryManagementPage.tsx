@@ -1,5 +1,4 @@
 import React from 'react';
-import PageContainer from '../components/layout/PageContainer';
 import CategoryManager from '../components/expenses/CategoryManager';
 import { useExpenses } from '../context/ExpenseContext';
 
@@ -8,7 +7,7 @@ const CategoryManagementPage: React.FC = () => {
     useExpenses();
 
   return (
-    <PageContainer>
+    <>
       <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>
         Category Management
       </h2>
@@ -18,7 +17,7 @@ const CategoryManagementPage: React.FC = () => {
         onUpdateCategory={updateCategory}
         onDeleteCategory={deleteCategory}
       />
-    </PageContainer>
+    </>
   );
 };
 

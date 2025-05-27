@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import PageContainer from '../components/layout/PageContainer';
 import ExpenseForm from '../components/expenses/ExpenseForm';
 import { useExpenses } from '../context/ExpenseContext';
 import { useToast } from '../context/ToastContext';
@@ -37,25 +36,21 @@ const EditExpensePage: React.FC = () => {
 
   if (!expense) {
     return (
-      <PageContainer>
-        <div className='flex justify-center items-center h-64'>
-          <p className='text-gray-500 dark:text-gray-400'>Loading expense...</p>
-        </div>
-      </PageContainer>
+      <div className='flex justify-center items-center h-64'>
+        <p className='text-gray-500 dark:text-gray-400'>Loading expense...</p>
+      </div>
     );
   }
 
   return (
-    <PageContainer>
-      <div className='bg-white dark:bg-black-900 rounded-lg shadow p-6 borderborder-gray-200 dark:border-gray-700'>
-        <ExpenseForm
-          onSubmit={handleSubmit}
-          categories={categories}
-          initialData={expense}
-          isEditing={true}
-        />
-      </div>
-    </PageContainer>
+    <div className='bg-white dark:bg-black-900 rounded-lg shadow p-6 borderborder-gray-200 dark:border-gray-700'>
+      <ExpenseForm
+        onSubmit={handleSubmit}
+        categories={categories}
+        initialData={expense}
+        isEditing={true}
+      />
+    </div>
   );
 };
 

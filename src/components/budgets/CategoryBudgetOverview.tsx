@@ -65,51 +65,53 @@ const CategoryBudgetOverview = ({
         return (
           <div
             key={category.id}
-            className='bg-white dark:bg-black-900 rounded-lg shadow p-4'
+            className='bg-white dark:bg-black-900 rounded-lg shadow p-3'
             onClick={() => handleClickCategory(category)}
           >
-            <div className='flex justify-between items-center mb-2'>
-              <h3 className='text-lg font-semibold text-gray-800 dark:text-gray-100'>
+            <div className='flex justify-between items-start mb-1'>
+              <h3 className='text-base font-semibold text-gray-800 dark:text-gray-100'>
                 {category.name}
               </h3>
-              <span className='text-sm font-medium text-gray-600 dark:text-gray-300'>
-                {budget > 0 ? (
-                  <>
-                    {formatCurrency(spentAmount, currency)} /{' '}
-                    {formatCurrency(budget, currency)}
-                  </>
-                ) : (
-                  <span className='text-gray-500 dark:text-gray-400'>
-                    No budget set
-                  </span>
+              <div className='text-right'>
+                <span className='text-xs font-medium text-gray-600 dark:text-gray-300 block'>
+                  {budget > 0 ? (
+                    <>
+                      {formatCurrency(spentAmount, currency)} /{' '}
+                      {formatCurrency(budget, currency)}
+                    </>
+                  ) : (
+                    <span className='text-gray-500 dark:text-gray-400'>
+                      No budget
+                    </span>
+                  )}
+                </span>
+                {budget > 0 && (
+                  <p
+                    className={`text-xs ${
+                      remaining < 0
+                        ? 'text-red-500'
+                        : 'text-gray-500 dark:text-gray-400'
+                    }`}
+                  >
+                    {remaining >= 0
+                      ? `${formatCurrency(remaining, currency)} remaining`
+                      : `${formatCurrency(
+                          Math.abs(remaining),
+                          currency
+                        )} over budget`}
+                  </p>
                 )}
-              </span>
+              </div>
             </div>
-            <div className='w-full bg-gray-300 rounded-full h-2.5 dark:bg-black-800'>
+            <div className='w-full bg-gray-300 rounded-full h-1.5 dark:bg-black-800'>
               <div
-                className='h-2.5 rounded-full'
+                className='h-1.5 rounded-full'
                 style={{
                   width: `${progress}%`,
                   backgroundColor: progressBarColor,
                 }}
               ></div>
             </div>
-            {budget > 0 && (
-              <p
-                className={`text-sm mt-2 ${
-                  remaining < 0
-                    ? 'text-red-500'
-                    : 'text-gray-500 dark:text-gray-400'
-                }`}
-              >
-                {remaining >= 0
-                  ? `${formatCurrency(remaining, currency)} remaining`
-                  : `${formatCurrency(
-                      Math.abs(remaining),
-                      currency
-                    )} over budget`}
-              </p>
-            )}
           </div>
         );
       })}

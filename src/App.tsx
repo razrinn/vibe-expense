@@ -168,19 +168,17 @@ function App() {
 
   return (
     <ThemeProvider>
-      <SettingsProvider>
-        {' '}
-        {/* Wrap with SettingsProvider */}
-        <AuthProvider>
-          <ToastProvider>
+      <ToastProvider>
+        <SettingsProvider>
+          <AuthProvider>
             <ExpenseProvider>
               <AuthWrapper>
                 <AppRoutes />
               </AuthWrapper>
             </ExpenseProvider>
-          </ToastProvider>
-        </AuthProvider>
-      </SettingsProvider>
+          </AuthProvider>
+        </SettingsProvider>
+      </ToastProvider>
     </ThemeProvider>
   );
 }

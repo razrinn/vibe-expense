@@ -1,7 +1,6 @@
 import { db } from '../utils/indexedDB';
 import React from 'react';
 import PageContainer from '../components/layout/PageContainer';
-import CategoryManager from '../components/expenses/CategoryManager';
 import { useExpenses } from '../context/ExpenseContext';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
@@ -17,8 +16,7 @@ interface NavigatorWithStandalone extends Navigator {
 }
 
 const SettingsPage: React.FC = () => {
-  const { categories, addCategory, updateCategory, deleteCategory, expenses } =
-    useExpenses();
+  const { categories, expenses } = useExpenses();
 
   const { resetPinAndLogout, logout } = useAuth();
   const { showToast } = useToast();
@@ -165,6 +163,17 @@ const SettingsPage: React.FC = () => {
           <div className='space-y-4'>
             <div>
               <button
+                onClick={() => navigate('/settings/category')}
+                className='inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-black-900 hover:bg-gray-50 dark:hover:bg-black-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
+              >
+                Manage Categories
+              </button>
+              <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+                Add, edit, or delete expense categories
+              </p>
+            </div>
+            <div>
+              <button
                 onClick={handleExportData}
                 className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
               >
@@ -198,17 +207,6 @@ const SettingsPage: React.FC = () => {
           <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
             Choose the currency for displaying expenses.
           </p>
-        </li>
-        <li className='py-4'>
-          <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
-            Category Management
-          </h3>
-          <CategoryManager
-            categories={categories}
-            onAddCategory={addCategory}
-            onUpdateCategory={updateCategory}
-            onDeleteCategory={deleteCategory}
-          />
         </li>
         <li className='py-4'>
           <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>

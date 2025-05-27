@@ -15,6 +15,7 @@ import EditExpensePage from './pages/EditExpensePage';
 import AnalyticsPage from './pages/AnalyticsPage';
 import SettingsPage from './pages/SettingsPage';
 import PWAInstallationPage from './pages/PWAInstallationPage';
+import CategoryManagementPage from './pages/CategoryManagementPage';
 
 // Auth Components
 import PinSetup from './components/auth/PinSetup';
@@ -86,6 +87,7 @@ const AppRoutes: React.FC = () => {
           path='/settings/installation'
           element={<PWAInstallationPage />}
         />
+        <Route path='/settings/category' element={<CategoryManagementPage />} />
         <Route path='*' element={<Navigate to='/' replace />} />
       </Routes>
     </Router>

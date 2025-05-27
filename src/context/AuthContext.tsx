@@ -4,9 +4,11 @@ import {
   useEffect,
   useState,
   ReactNode,
+  useCallback,
 } from 'react';
 import { AuthState } from '../types';
 import { hashPin } from '../utils/auth';
+import { useToast } from './ToastContext';
 
 interface AuthContextType {
   auth: AuthState;
@@ -49,17 +51,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     hasPin: false,
   });
 
-  // Check for existing PIN and session cookie on mount
-  useEffect(() => {
-    const hashedPin = localStorage.getItem('userPin');
-    const sessionId = getCookie(SESSION_COOKIE_NAME);
+  const { showToast } = useToast();
 
-    setAuth({
-      isAuthenticated: !!sessionId, // Authenticated if session cookie exists
-      isInitialized: true,
-      hasPin: !!hashedPin,
-    });
+  const logout = useCallback(() => {
+    deleteCookie(SESSION_COOKIE_NAME);
+    setAuth((prev) => ({
+      ...prev,
+      isAuthenticated: false,
+    }));
   }, []);
+
+  const resetPinAndLogout = () => {
+    localStorage.removeItem('userPin');
+    deleteCookie(SESSION_COOKIE_NAME);
+    setAuth((prev) => ({
+      ...prev,
+      isAuthenticated: false,
+      hasPin: false,
+    }));
+  };
 
   const setupPin = (pin: string) => {
     const hashedPin = hashPin(pin);
@@ -91,23 +101,41 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return false;
   };
 
-  const logout = () => {
-    deleteCookie(SESSION_COOKIE_NAME);
-    setAuth((prev) => ({
-      ...prev,
-      isAuthenticated: false,
-    }));
-  };
+  // Check for existing PIN and session cookie on mount
+  useEffect(() => {
+    const hashedPin = localStorage.getItem('userPin');
+    const sessionId = getCookie(SESSION_COOKIE_NAME);
 
-  const resetPinAndLogout = () => {
-    localStorage.removeItem('userPin');
-    deleteCookie(SESSION_COOKIE_NAME);
-    setAuth((prev) => ({
-      ...prev,
-      isAuthenticated: false,
-      hasPin: false,
-    }));
-  };
+    setAuth({
+      isAuthenticated: !!sessionId, // Authenticated if session cookie exists
+      isInitialized: true,
+      hasPin: !!hashedPin,
+    });
+  }, []);
+
+  // Periodic check for session cookie expiration
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout;
+
+    if (auth.isAuthenticated) {
+      intervalId = setInterval(() => {
+        const sessionId = getCookie(SESSION_COOKIE_NAME);
+        if (!sessionId) {
+          showToast({
+            message: 'Session expired. Please log in again.',
+            type: 'error',
+          });
+          logout();
+        }
+      }, 30 * 1000); // Check every minute
+    }
+
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [auth.isAuthenticated, logout, showToast]);
 
   return (
     <AuthContext.Provider

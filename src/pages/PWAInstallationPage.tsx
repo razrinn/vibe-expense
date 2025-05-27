@@ -55,6 +55,27 @@ const PWAInstallationPage: React.FC = () => {
                 <li>The app icon will appear on your home screen.</li>
               </ol>
             </div>
+
+            <div>
+              <h4 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
+                For Desktop Users (Chrome/Edge):
+              </h4>
+              <ol className='list-decimal list-inside text-gray-700 dark:text-gray-300 space-y-2'>
+                <li>Open the app in your Chrome or Edge browser.</li>
+                <li>
+                  Look for the <span className='font-bold'>Install</span> icon
+                  in the address bar.
+                </li>
+                <li>
+                  Click the <span className='font-bold'>Install</span> button.
+                </li>
+                <li>Confirm the installation when prompted.</li>
+                <li>
+                  The app will be added to your desktop shortcut and can be
+                  launched like a native app.
+                </li>
+              </ol>
+            </div>
           </div>
         </div>
       </div>

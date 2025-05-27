@@ -13,9 +13,10 @@ const Sidebar: React.FC = () => {
   const location = useLocation();
 
   const isActive = (path: string) => {
-    return location.pathname === path
-      ? 'bg-green-100 text-green-600 dark:bg-black-800 dark:text-green-400'
-      : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-black-800';
+    return location.pathname === path ||
+      (path !== '/' && location.pathname.startsWith(path))
+      ? 'text-green-600 dark:text-green-400'
+      : 'text-gray-500 dark:text-gray-400';
   };
 
   return (

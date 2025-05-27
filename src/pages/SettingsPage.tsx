@@ -163,7 +163,7 @@ const SettingsPage: React.FC = () => {
                 Manage Categories
               </h3>
               <p className='mt-1 text-sm text-gray-600 dark:text-gray-300'>
-                Add, edit, or delete your expense categories.
+                Add, edit, or delete
               </p>
             </div>
             <button
@@ -178,24 +178,24 @@ const SettingsPage: React.FC = () => {
             <h3 className='text-lg font-medium text-gray-900 dark:text-white mb-3'>
               Export Data
             </h3>
-            <div className='flex flex-col sm:flex-row gap-3'>
+            <div className='flex gap-2'>
               <button
                 onClick={handleExportExpenses}
                 className='inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 w-full sm:w-auto'
               >
                 <Download className='h-4 w-4 mr-2' />
-                Export Expenses (CSV)
+                Expenses
               </button>
               <button
                 onClick={handleExportCategories}
                 className='inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 w-full sm:w-auto'
               >
                 <Download className='h-4 w-4 mr-2' />
-                Export Categories (CSV)
+                Categories
               </button>
             </div>
             <p className='mt-2 text-sm text-gray-600 dark:text-gray-300'>
-              Download your expense and category data as CSV files.
+              Download your data as CSV files.
             </p>
           </div>
 
@@ -203,13 +203,13 @@ const SettingsPage: React.FC = () => {
             <h3 className='text-lg font-medium text-gray-900 dark:text-white mb-3'>
               Import Data
             </h3>
-            <div className='flex flex-col sm:flex-row gap-3'>
+            <div className='flex gap-2'>
               <label
                 htmlFor='import-expenses-csv'
                 className='inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer w-full sm:w-auto'
               >
                 <Upload className='h-4 w-4 mr-2' />
-                Import Expenses (CSV)
+                Expenses
               </label>
               <input
                 id='import-expenses-csv'
@@ -224,7 +224,7 @@ const SettingsPage: React.FC = () => {
                 className='inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer w-full sm:w-auto'
               >
                 <Upload className='h-4 w-4 mr-2' />
-                Import Categories (CSV)
+                Categories
               </label>
               <input
                 id='import-categories-csv'
@@ -236,8 +236,8 @@ const SettingsPage: React.FC = () => {
               />
             </div>
             <p className='mt-2 text-sm text-gray-600 dark:text-gray-300'>
-              Upload CSV files to import expense or category data. Existing
-              entries with matching IDs will be updated.
+              Upload CSV files to import data. Existing entries with matching
+              IDs will be updated.
             </p>
           </div>
         </div>
@@ -247,18 +247,17 @@ const SettingsPage: React.FC = () => {
         <h2 className='text-xl font-semibold text-gray-900 dark:text-white mb-4'>
           Preferences
         </h2>
-        <div className='space-y-6'>
-          <div className='flex items-center justify-between'>
+        <div className='space-y-3'>
+          <div className='flex flex-col gap-2'>
             <div>
               <h3 className='text-lg font-medium text-gray-900 dark:text-white'>
                 Currency
               </h3>
               <p className='mt-1 text-sm text-gray-600 dark:text-gray-300'>
-                Choose the currency for displaying expenses.
+                Only affect the prefix of the expense
               </p>
             </div>
             <Select
-              label='Select Currency'
               id='currency-select'
               name='currency-select'
               value={currency}
@@ -279,7 +278,7 @@ const SettingsPage: React.FC = () => {
                 Dark Mode
               </h3>
               <p className='mt-1 text-sm text-gray-600 dark:text-gray-300'>
-                Toggle between light and dark themes.
+                Toggle light/dark themes.
               </p>
             </div>
             <ThemeToggle />
@@ -298,14 +297,14 @@ const SettingsPage: React.FC = () => {
                 Reset PIN
               </h3>
               <p className='mt-1 text-sm text-gray-600 dark:text-gray-300'>
-                Reset your security PIN and create a new one.
+                Reset and create a new one.
               </p>
             </div>
             <button
               onClick={handleResetPin}
               className='inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-black-900 hover:bg-gray-50 dark:hover:bg-black-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
             >
-              Reset PIN
+              Reset
             </button>
           </div>
 
@@ -315,13 +314,12 @@ const SettingsPage: React.FC = () => {
                 Clear All Data
               </h3>
               <p className='mt-1 text-sm text-gray-600 dark:text-gray-300'>
-                Permanently delete all your expense and category data. This
-                action cannot be undone.
+                Permanently delete all your data.
               </p>
             </div>
             <button
               onClick={handleClearData}
-              className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
+              className='flex-shrink-0 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
             >
               <Trash2 className='h-4 w-4 mr-2' />
               Clear
@@ -329,14 +327,9 @@ const SettingsPage: React.FC = () => {
           </div>
 
           <div className='flex items-center justify-between border-t border-gray-200 dark:border-gray-700 pt-6'>
-            <div>
-              <h3 className='text-lg font-medium text-gray-900 dark:text-white'>
-                Logout
-              </h3>
-              <p className='mt-1 text-sm text-gray-600 dark:text-gray-300'>
-                Log out from your account.
-              </p>
-            </div>
+            <h3 className='text-lg font-medium text-gray-900 dark:text-white'>
+              Logout
+            </h3>
             <button
               onClick={handleLogout}
               className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'

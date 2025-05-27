@@ -126,7 +126,7 @@ const DailyGroupedExpenseList: React.FC<DailyGroupedExpenseListProps> = ({
               </div>
             )}
             <div
-              className={`bg-white dark:bg-black-900 rounded-lg shadow border border-gray-200 dark:border-gray-700 transition-all duration-150 ease-in-out overflow-hidden ${
+              className={`bg-white dark:bg-black-900 rounded-lg shadow transition-all duration-150 ease-in-out overflow-hidden ${
                 collapsedMonths[currentMonthYear]
                   ? 'max-h-0 p-0 border-0'
                   : 'max-h-screen p-4 mb-3'

@@ -210,7 +210,7 @@ const SettingsPage: React.FC = () => {
         </h3>
         <div className='flex items-center justify-between'>
           <p className='text-sm text-gray-500 dark:text-gray-400'>
-            Toggle between light and dark themes.
+            Enable dark mode
           </p>
           <ThemeToggle />
         </div>

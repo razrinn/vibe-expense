@@ -6,7 +6,7 @@ import { useExpenses } from '../context/ExpenseContext';
 import { PlusCircle, ArrowRight } from 'lucide-react';
 
 const HomePage: React.FC = () => {
-  const { filteredExpenses, deleteExpense, categories, summary, filter } =
+  const { filteredExpenses, deleteExpense, categories, summary } =
     useExpenses();
 
   // Get only the 5 most recent expenses
@@ -18,7 +18,7 @@ const HomePage: React.FC = () => {
         <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>
           Overview
         </h2>
-        <KeyMetrics summary={summary} period={filter.period} />
+        <KeyMetrics summary={summary} />
       </div>
 
       <div className='flex items-center justify-between'>

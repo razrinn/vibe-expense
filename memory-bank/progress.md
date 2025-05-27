@@ -36,3 +36,5 @@ This file tracks the project's progress using a task list format.
 [2025-05-27 12:39:22] - Task completed: `clear data` now instantly updates context state.
 
 [2025-05-27 14:40:44] - Task "mapped category become unknown on created expenses after i reopen the app in PWA" completed.
+
+[2025-05-27 15:18:38] - Completed task: Simplified UI of 'src/components/analytics/KeyMetrics.tsx' and replaced 'Average daily spending' metric with 'Number of Transactions'. Cleaned up related code in 'KeyMetrics.tsx' and 'HomePage.tsx'.

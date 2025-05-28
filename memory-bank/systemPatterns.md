@@ -1,8 +1,11 @@
 # System Patterns
 
+This file documents recurring patterns and standards used in the project.
+2025-05-28 15:44:00 - Last updated during memory bank cleanup.
+
 ## UI Patterns
 
-### Expense Card Design
+### Expense Card
 
 - **Layout**: Two-column (70/30 split)
 - **Typography**:
@@ -20,25 +23,21 @@
 
 ### Interaction Patterns
 
-1. **Delete Flow**:
-
-   - First tap: Highlight item
-   - Second tap: Show confirmation
-   - Slide-out animation on confirm
-
-2. **Quick Edit**:
-
-   - Double-tap to enter edit mode
-   - Inline form fields
-   - Save/cancel buttons
-
-3. **Swipe Actions**:
-   - Left swipe: Edit
-   - Right swipe: Delete
+- **Delete Flow**:
+  - First tap: Highlight item
+  - Second tap: Show confirmation
+  - Slide-out animation on confirm
+- **Quick Edit**:
+  - Double-tap to enter edit mode
+  - Inline form fields
+  - Save/cancel buttons
+- **Swipe Actions**:
+  - Left swipe: Edit
+  - Right swipe: Delete
 
 ## Component Architecture
 
-### ExpenseCard (New)
+### ExpenseCard
 
 ```tsx
 interface ExpenseCardProps {
@@ -50,19 +49,9 @@ interface ExpenseCardProps {
 }
 ```
 
-### Implementation Timeline
+### Currency Handling
 
-1. Day 1: Create ExpenseCard component
-2. Day 2: Update ExpenseList
-3. Day 3: Update DailyGroupedExpenseList
-4. Day 4: Update ExpenseFilters
-5. Day 5: Testing and polish
-
-2025-05-28 14:34:25 - Created UI revamp plan
-
-[2024-05-28 15:29:55] - Currency Handling Pattern
-
-- Currency selection is now type-safe throughout the application
-- All currency symbols and display names are defined in a single source (CURRENCY_DISPLAY_NAMES)
-- Input fields automatically adjust padding for different currency symbol widths
-- Currency preferences persist via SettingsContext and localStorage
+- Type-safe currency system with 16 supported currencies
+- Dynamic symbol display in forms
+- Centralized currency data source (CURRENCY_DISPLAY_NAMES)
+- SettingsContext integration for persistence

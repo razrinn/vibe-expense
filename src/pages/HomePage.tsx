@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import KeyMetrics from '../components/analytics/KeyMetrics';
 import CategoryBudgetOverview from '../components/budgets/CategoryBudgetOverview';
+import SpendingHabitsInsight from '../components/insights/SpendingHabitsInsight';
 import { useExpenses } from '../context/ExpenseContext';
 import { PlusCircle } from 'lucide-react';
 
@@ -22,6 +23,7 @@ const HomePage: React.FC = () => {
           <span>Add Expense</span>
         </Link>
       </div>
+      <SpendingHabitsInsight summary={summary} />
       <KeyMetrics summary={summary} />
       <CategoryBudgetOverview />
     </div>

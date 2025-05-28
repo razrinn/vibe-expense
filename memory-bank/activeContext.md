@@ -5,6 +5,7 @@ This file tracks the project's current status, including recent changes, current
 
 ## Current Focus
 
+- Enhancing the "Spending Habits Insight" component on the home page with trend analysis and improved number formatting.
 - Implementing category sorting based on spending/limit ratio in `src/components/budgets/CategoryBudgetOverview.tsx`
 - Addressing `Papa.parse` type error workaround in `src/utils/csvUtils.ts`
 - Implementing monthly budgeting feature for categories
@@ -13,6 +14,12 @@ This file tracks the project's current status, including recent changes, current
 - Authentication system using cookie-based session management
 
 ## Recent Changes
+
+2025-05-28 15:58:00:
+
+- Added "Spending Habits Insight" component to `HomePage.tsx`.
+- Implemented dynamic logic for insights, including trend analysis (current vs. previous month spending).
+- Refined number formatting for currency and percentages using `formatCurrency` and `formatNumber` utilities.
 
 2025-05-28 14:30:00:
 

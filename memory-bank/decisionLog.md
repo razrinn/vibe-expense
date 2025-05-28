@@ -1,7 +1,7 @@
 # Decision Log
 
 This file records architectural and implementation decisions using a standardized format.
-2025-05-28 15:42:00 - Last updated during memory bank cleanup.
+2025-05-28 15:58:00 - Updated with new component and formatting decisions.
 
 ## Authentication
 
@@ -69,3 +69,26 @@ This file records architectural and implementation decisions using a standardize
   - Added type-safe Currency type
   - Updated ExpenseForm and Settings components
   - Centralized currency data source
+
+## New Component: Spending Habits Insight
+
+2025-05-28 15:58:00:
+
+- **Decision**: Add a "Spending Habits Insight" component to the home page.
+- **Rationale**: Address the "empty home page" feedback, provide creative, non-visualized insights, and encourage user engagement.
+- **Implementation**:
+  - Created `src/components/insights/SpendingHabitsInsight.tsx`.
+  - Implemented dynamic insight generation based on `ExpenseSummary`.
+  - Added trend analysis by comparing current and previous month's spending.
+  - Ensured adherence to existing color palette and design language.
+
+## Number Formatting
+
+2025-05-28 15:58:00:
+
+- **Decision**: Standardize number formatting with thousand separators for all numerical displays, including percentages.
+- **Rationale**: Improve readability and user experience, addressing direct user feedback.
+- **Implementation**:
+  - Modified `formatCurrency` in `src/utils/formatters.ts` to explicitly use `useGrouping: true` and set default locale to 'en-US'.
+  - Added new `formatNumber` utility in `src/utils/formatters.ts` for general number formatting (used for percentages).
+  - Applied `formatNumber` to percentage displays in `SpendingHabitsInsight.tsx`.

@@ -1,7 +1,7 @@
 export const formatCurrency = (
   amount: number,
   currencyCode: string = 'IDR',
-  locale: string = 'id-ID',
+  locale: string = 'en-US', // Changed default locale to en-US for consistent thousand separators
   minimumFractionDigits: number = 0,
   maximumFractionDigits: number = 0
 ): string => {
@@ -10,6 +10,20 @@ export const formatCurrency = (
     currency: currencyCode,
     minimumFractionDigits,
     maximumFractionDigits,
+    useGrouping: true, // Explicitly enable thousand separators
+  }).format(amount);
+};
+
+export const formatNumber = (
+  amount: number,
+  locale: string = 'en-US',
+  minimumFractionDigits: number = 0,
+  maximumFractionDigits: number = 0
+): string => {
+  return new Intl.NumberFormat(locale, {
+    minimumFractionDigits,
+    maximumFractionDigits,
+    useGrouping: true,
   }).format(amount);
 };
 

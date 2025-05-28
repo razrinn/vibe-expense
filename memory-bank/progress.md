@@ -51,3 +51,9 @@ This file tracks the project's progress using a task list format.
 
 [2025-05-28 12:23:58] - Started task: Sort categories in `CategoryBudgetOverview.tsx` by spending/limit ratio.
 [2025-05-28 12:23:58] - Progress: Implemented initial sorting logic. Encountered and resolved `dateRange` scope errors by repositioning its `useMemo` hook.
+
+[2025-05-28 15:58:00] - Task Started: Add new component to home page.
+[2025-05-28 15:58:00] - Progress: Created `src/components/insights/SpendingHabitsInsight.tsx` and integrated it into `src/pages/HomePage.tsx`.
+[2025-05-28 15:58:00] - Progress: Implemented dynamic insight generation, including trend analysis (current vs. previous month spending).
+[2025-05-28 15:58:00] - Progress: Refined number formatting for currency and percentages using `formatCurrency` and `formatNumber` utilities in `src/utils/formatters.ts`.
+[2025-05-28 15:58:00] - Task Completed: New component added to home page with dynamic, trend-based insights and proper number formatting.

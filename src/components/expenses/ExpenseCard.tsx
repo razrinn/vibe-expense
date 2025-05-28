@@ -37,47 +37,45 @@ const ExpenseCard: React.FC<ExpenseCardProps> = ({
   return (
     <div
       className={`
-      bg-white dark:bg-black-900 rounded-lg shadow-sm p-4
-      border border-gray-100 dark:border-gray-800
+      bg-white dark:bg-black-900 rounded-lg shadow-sm
       transition-all duration-150 ease-in-out
-      hover:shadow-md hover:border-gray-200 dark:hover:border-gray-700
+      hover:shadow-md
       focus:outline-none focus:ring-2 focus:ring-green-500
-      ${variant === 'compact' ? 'py-2' : ''}
+      py-1
     `}
     >
-      <div className='flex items-start justify-between gap-4'>
+      <div className='flex items-center justify-between gap-2'>
         {/* Left column - Description and metadata */}
         <div className='flex-1 min-w-0'>
-          <div className='flex items-center gap-2 mb-1'>
+          <div className='flex items-center gap-2'>
             <span
               className={`rounded-full ${
                 variant === 'compact' ? 'w-2 h-2' : 'w-3 h-3'
               }`}
               style={{ backgroundColor: getCategoryColor(expense.category) }}
             />
-            <span className='text-xs font-medium text-gray-500 dark:text-gray-400'>
+            <span className='text-xs flex-shrink-0 font-medium text-gray-500 dark:text-gray-400'>
               {getCategoryName(expense.category)}
             </span>
+            <h3 className='text-sm font-medium text-gray-900 dark:text-white truncate'>
+              {expense.description}
+            </h3>
           </div>
 
-          <h3 className='text-base font-medium text-gray-900 dark:text-white truncate'>
-            {expense.description}
-          </h3>
-
           {expense.notes && variant === 'default' && (
-            <p className='mt-1 text-sm text-gray-600 dark:text-gray-300 line-clamp-2'>
+            <p className='text-xs text-gray-600 dark:text-gray-300 line-clamp-1'>
               {expense.notes}
             </p>
           )}
         </div>
 
         {/* Right column - Amount and actions */}
-        <div className='flex flex-col items-end gap-1'>
-          <p className='text-lg font-semibold text-green-600 dark:text-green-400'>
+        <div className='flex items-center gap-2'>
+          <p className='text-sm text-gray-700 dark:text-gray-300 font-mono'>
             {formatCurrency(expense.amount, currency)}
           </p>
 
-          <div className='flex items-center gap-2'>
+          <div className='flex items-center gap-1'>
             <button
               onClick={() => onEdit(expense.id)}
               className='p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 rounded-full'

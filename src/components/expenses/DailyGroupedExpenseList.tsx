@@ -129,7 +129,7 @@ const DailyGroupedExpenseList: React.FC<DailyGroupedExpenseListProps> = ({
                     day: '2-digit',
                   })}
                 </span>
-                <span className=' text-gray-700 dark:text-gray-300'>
+                <span className=' text-green-600 dark:text-green-400'>
                   {formatCurrency(
                     groupedExpenses[date].reduce(
                       (sum, exp) => sum + exp.amount,

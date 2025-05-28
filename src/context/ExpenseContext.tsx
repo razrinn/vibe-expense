@@ -19,7 +19,6 @@ import {
   endOfMonth,
   startOfYear,
   endOfYear,
-  isWithinInterval,
 } from 'date-fns';
 import {
   db,
@@ -51,11 +50,37 @@ interface ExpenseContextType {
   loadCategories: () => Promise<void>; // New function to reload categories
 }
 
+const LOCAL_STORAGE_FILTER_KEY = 'expenseFilter';
+
 const defaultFilter: ExpenseFilter = {
   period: 'all',
   dateRange: { start: new Date(0), end: new Date() }, // Default to all time
+  category: undefined,
   selectedMonth: undefined,
   selectedYear: undefined,
+};
+
+// Helper to serialize filter for localStorage
+const serializeFilter = (filter: ExpenseFilter) => {
+  return JSON.stringify({
+    ...filter,
+    dateRange: {
+      start: filter.dateRange.start.toISOString(),
+      end: filter.dateRange.end.toISOString(),
+    },
+  });
+};
+
+// Helper to deserialize filter from localStorage
+const deserializeFilter = (jsonString: string): ExpenseFilter => {
+  const parsed = JSON.parse(jsonString);
+  return {
+    ...parsed,
+    dateRange: {
+      start: new Date(parsed.dateRange.start),
+      end: new Date(parsed.dateRange.end),
+    },
+  };
 };
 
 const ExpenseContext = createContext<ExpenseContextType | undefined>(undefined);
@@ -63,7 +88,18 @@ const ExpenseContext = createContext<ExpenseContextType | undefined>(undefined);
 export const ExpenseProvider = ({ children }: { children: ReactNode }) => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [filter, setFilterState] = useState<ExpenseFilter>(defaultFilter);
+  const [filter, setFilterState] = useState<ExpenseFilter>(() => {
+    const savedFilter = localStorage.getItem(LOCAL_STORAGE_FILTER_KEY);
+    if (savedFilter) {
+      try {
+        return deserializeFilter(savedFilter);
+      } catch (error) {
+        console.error('Failed to parse saved filter from localStorage', error);
+        return defaultFilter;
+      }
+    }
+    return defaultFilter;
+  });
   const [filteredExpenses, setFilteredExpenses] = useState<Expense[]>([]);
   const [summary, setSummary] = useState<ExpenseSummary>({
     total: 0,
@@ -91,31 +127,17 @@ export const ExpenseProvider = ({ children }: { children: ReactNode }) => {
     loadData();
   }, []); // Run only once on component mount
 
+  // Save filter to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_FILTER_KEY, serializeFilter(filter));
+  }, [filter]);
+
   // Update filtered expenses and summary when expenses, filter, or categories change
   useEffect(() => {
     // Apply filters
-    const newSummary = calculateExpenseSummary(expenses, filter);
-    setFilteredExpenses(
-      // The calculateExpenseSummary function returns the filtered expenses as part of the summary calculation.
-      // We need to extract them from the summary object if we want to set them separately.
-      // For now, we'll re-filter here to avoid changing the calculateExpenseSummary return type.
-      // A better approach might be to have calculateExpenseSummary return both filtered expenses and summary.
-      expenses
-        .filter((expense) => {
-          const expenseDate = new Date(expense.date);
-          return isWithinInterval(expenseDate, {
-            start: filter.dateRange.start,
-            end: filter.dateRange.end,
-          });
-        })
-        .filter((expense) => {
-          if (filter.category) {
-            return expense.category === filter.category;
-          }
-          return true;
-        })
-        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    );
+    const { summary: newSummary, filteredExpenses: newFilteredExpenses } =
+      calculateExpenseSummary(expenses, filter);
+    setFilteredExpenses(newFilteredExpenses);
     setSummary(newSummary);
   }, [expenses, filter, categories]);
 

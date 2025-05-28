@@ -45,51 +45,55 @@ const ExpenseFilters: React.FC<ExpenseFiltersProps> = ({
   const handlePeriodChange = (
     period: 'all' | 'day' | 'week' | 'month' | 'year' | 'custom'
   ) => {
+    let newPeriod = period;
     let newDateRange = filter.dateRange;
     let selectedMonth = filter.selectedMonth;
     let selectedYear = filter.selectedYear;
 
     const today = new Date();
 
-    setShowMonthYearPicker(period === 'month' || period === 'year');
-    setShowCustomRangePicker(period === 'custom');
-
-    switch (period) {
-      case 'all':
-        newDateRange = { start: new Date(0), end: new Date() }; // Effectively no filter
-        selectedMonth = undefined;
-        selectedYear = undefined;
-        break;
-      case 'day':
-        newDateRange = { start: startOfDay(today), end: endOfDay(today) };
-        selectedMonth = undefined;
-        selectedYear = undefined;
-        break;
-      case 'week':
-        newDateRange = { start: startOfWeek(today), end: endOfWeek(today) };
-        selectedMonth = undefined;
-        selectedYear = undefined;
-        break;
-      case 'month':
-        newDateRange = { start: startOfMonth(today), end: endOfMonth(today) };
-        selectedMonth = today.getMonth();
-        selectedYear = today.getFullYear();
-        break;
-      case 'year':
-        newDateRange = { start: startOfYear(today), end: endOfYear(today) };
-        selectedMonth = undefined;
-        selectedYear = today.getFullYear();
-        break;
-      case 'custom':
-        // Keep existing custom range or set a default
-        newDateRange = filter.dateRange || { start: today, end: today };
-        selectedMonth = undefined;
-        selectedYear = undefined;
-        break;
+    // If the same period is clicked again, deselect it and revert to 'all'
+    if (filter.period === period) {
+      newPeriod = 'all';
+      newDateRange = { start: new Date(0), end: new Date() }; // Effectively no filter
+      selectedMonth = undefined;
+      selectedYear = undefined;
+    } else {
+      switch (period) {
+        case 'day':
+          newDateRange = { start: startOfDay(today), end: endOfDay(today) };
+          selectedMonth = undefined;
+          selectedYear = undefined;
+          break;
+        case 'week':
+          newDateRange = { start: startOfWeek(today), end: endOfWeek(today) };
+          selectedMonth = undefined;
+          selectedYear = undefined;
+          break;
+        case 'month':
+          newDateRange = { start: startOfMonth(today), end: endOfMonth(today) };
+          selectedMonth = today.getMonth();
+          selectedYear = today.getFullYear();
+          break;
+        case 'year':
+          newDateRange = { start: startOfYear(today), end: endOfYear(today) };
+          selectedMonth = undefined;
+          selectedYear = today.getFullYear();
+          break;
+        case 'custom':
+          // Keep existing custom range or set a default
+          newDateRange = filter.dateRange || { start: today, end: today };
+          selectedMonth = undefined;
+          selectedYear = undefined;
+          break;
+      }
     }
 
+    setShowMonthYearPicker(newPeriod === 'month' || newPeriod === 'year');
+    setShowCustomRangePicker(newPeriod === 'custom');
+
     onFilterChange({
-      period,
+      period: newPeriod,
       dateRange: newDateRange,
       selectedMonth,
       selectedYear,
@@ -136,9 +140,19 @@ const ExpenseFilters: React.FC<ExpenseFiltersProps> = ({
     });
   };
 
-  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const category = e.target.value === 'all' ? undefined : e.target.value;
-    onFilterChange({ category });
+  const handleCategoryChange = (categoryId: string) => {
+    let newCategories: string[] = filter.category ? [...filter.category] : [];
+
+    if (newCategories.includes(categoryId)) {
+      // Deselect category
+      newCategories = newCategories.filter((id) => id !== categoryId);
+    } else {
+      // Select category
+      newCategories.push(categoryId);
+    }
+    onFilterChange({
+      category: newCategories.length > 0 ? newCategories : undefined,
+    });
   };
 
   return (
@@ -177,8 +191,8 @@ const ExpenseFilters: React.FC<ExpenseFiltersProps> = ({
         }`}
         style={{ transitionProperty: 'max-height, opacity, margin' }}
       >
-        <div className='grid grid-cols-1 sm:grid-cols-2'>
-          <div className='mb-4'>
+        <div className='flex flex-wrap gap-4'>
+          <div className='w-full sm:w-auto'>
             <label
               htmlFor='period'
               className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1'
@@ -186,70 +200,32 @@ const ExpenseFilters: React.FC<ExpenseFiltersProps> = ({
               Time Period
             </label>
             <div className='flex flex-wrap gap-2'>
-              <button
-                onClick={() => handlePeriodChange('all')}
-                className={`px-3 py-1 text-sm rounded-md ${
-                  filter.period === 'all'
-                    ? 'bg-green-100 text-green-600 dark:bg-black-800 dark:text-green-400'
-                    : 'bg-gray-100 text-gray-700 dark:bg-black-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-                }`}
-              >
-                All Time
-              </button>
-              <button
-                onClick={() => handlePeriodChange('day')}
-                className={`px-3 py-1 text-sm rounded-md ${
-                  filter.period === 'day'
-                    ? 'bg-green-100 text-green-600 dark:bg-black-800 dark:text-green-400'
-                    : 'bg-gray-100 text-gray-700 dark:bg-black-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-                }`}
-              >
-                Day
-              </button>
-              <button
-                onClick={() => handlePeriodChange('week')}
-                className={`px-3 py-1 text-sm rounded-md ${
-                  filter.period === 'week'
-                    ? 'bg-green-100 text-green-600 dark:bg-black-800 dark:text-green-400'
-                    : 'bg-gray-100 text-gray-700 dark:bg-black-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-                }`}
-              >
-                Week
-              </button>
-              <button
-                onClick={() => handlePeriodChange('month')}
-                className={`px-3 py-1 text-sm rounded-md ${
-                  filter.period === 'month'
-                    ? 'bg-green-100 text-green-600 dark:bg-black-800 dark:text-green-400'
-                    : 'bg-gray-100 text-gray-700 dark:bg-black-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-                }`}
-              >
-                Month
-              </button>
-              <button
-                onClick={() => handlePeriodChange('year')}
-                className={`px-3 py-1 text-sm rounded-md ${
-                  filter.period === 'year'
-                    ? 'bg-green-100 text-green-600 dark:bg-black-800 dark:text-green-400'
-                    : 'bg-gray-100 text-gray-700 dark:bg-black-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-                }`}
-              >
-                Year
-              </button>
-              <button
-                onClick={() => handlePeriodChange('custom')}
-                className={`px-3 py-1 text-sm rounded-md ${
-                  filter.period === 'custom'
-                    ? 'bg-green-100 text-green-600 dark:bg-black-800 dark:text-green-400'
-                    : 'bg-gray-100 text-gray-700 dark:bg-black-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-                }`}
-              >
-                Custom
-              </button>
+              {(
+                [
+                  { value: 'day', label: 'Day' },
+                  { value: 'week', label: 'Week' },
+                  { value: 'month', label: 'Month' },
+                  { value: 'year', label: 'Year' },
+                  { value: 'custom', label: 'Custom' },
+                ] as const
+              ).map((option) => (
+                <button
+                  key={option.value}
+                  onClick={() => handlePeriodChange(option.value)}
+                  className={`px-3 py-1 text-sm rounded-full ${
+                    filter.period === option.value
+                      ? 'bg-green-500 text-white'
+                      : 'bg-gray-100 text-gray-700 dark:bg-black-800 dark:text-gray-300'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              ))}
             </div>
           </div>
+
           {showMonthYearPicker && (
-            <div className='flex space-x-2'>
+            <div className='flex space-x-2 w-full sm:w-auto'>
               {filter.period === 'month' && (
                 <Select
                   label='Month'
@@ -280,8 +256,9 @@ const ExpenseFilters: React.FC<ExpenseFiltersProps> = ({
               />
             </div>
           )}
+
           {showCustomRangePicker && (
-            <div className='flex space-x-2'>
+            <div className='flex space-x-2 w-full sm:w-auto'>
               <Input
                 label='Start Date'
                 id='start-date'
@@ -300,19 +277,29 @@ const ExpenseFilters: React.FC<ExpenseFiltersProps> = ({
           )}
 
           {categories.length > 0 && (
-            <Select
-              label='Category'
-              id='category'
-              value={filter.category || 'all'}
-              onChange={handleCategoryChange}
-              options={[
-                { value: 'all', label: 'All Categories' },
-                ...categories.map((category) => ({
-                  value: category.id,
-                  label: category.name,
-                })),
-              ]}
-            />
+            <div className='w-full sm:w-auto'>
+              <label
+                htmlFor='category'
+                className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1'
+              >
+                Category
+              </label>
+              <div className='flex flex-wrap gap-2'>
+                {categories.map((category) => (
+                  <button
+                    key={category.id}
+                    onClick={() => handleCategoryChange(category.id)}
+                    className={`px-3 py-1 text-sm rounded-full ${
+                      filter.category?.includes(category.id)
+                        ? 'bg-green-500 text-white'
+                        : 'bg-gray-100 text-gray-700 dark:bg-black-800 dark:text-gray-300'
+                    }`}
+                  >
+                    {category.name}
+                  </button>
+                ))}
+              </div>
+            </div>
           )}
         </div>
       </div>

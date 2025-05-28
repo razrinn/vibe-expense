@@ -27,7 +27,7 @@ export interface DateRange {
 export interface ExpenseFilter {
   period: 'all' | 'day' | 'week' | 'month' | 'year' | 'custom';
   dateRange: DateRange;
-  category?: string;
+  category?: string[];
   selectedMonth?: number; // 0-11 for Jan-Dec
   selectedYear?: number;
 }

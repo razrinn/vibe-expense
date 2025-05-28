@@ -4,7 +4,7 @@ import { isWithinInterval } from 'date-fns';
 export const calculateExpenseSummary = (
   expenses: Expense[],
   filter: ExpenseFilter
-): ExpenseSummary => {
+): { summary: ExpenseSummary; filteredExpenses: Expense[] } => {
   let filtered = [...expenses];
 
   // Filter by date range
@@ -17,9 +17,9 @@ export const calculateExpenseSummary = (
   });
 
   // Filter by category if specified
-  if (filter.category) {
-    filtered = filtered.filter(
-      (expense) => expense.category === filter.category
+  if (filter.category && filter.category.length > 0) {
+    filtered = filtered.filter((expense) =>
+      filter.category!.includes(expense.category)
     );
   }
 
@@ -48,8 +48,11 @@ export const calculateExpenseSummary = (
   });
 
   return {
-    total,
-    average,
-    byCategory,
+    summary: {
+      total,
+      average,
+      byCategory,
+    },
+    filteredExpenses: filtered,
   };
 };

@@ -7,8 +7,9 @@ import {
   useCallback,
 } from 'react';
 import { AuthState } from '../types';
-import { hashPin } from '../utils/auth';
+import { deleteCookie, getCookie, hashPin, setCookie } from '../utils/auth';
 import { useToast } from './ToastContext';
+import { useSettings } from './SettingsContext';
 
 interface AuthContextType {
   auth: AuthState;
@@ -19,28 +20,6 @@ interface AuthContextType {
 }
 
 const SESSION_COOKIE_NAME = 'vibe_session';
-const SESSION_EXPIRATION_MINUTES = 10; // 10 minutes
-
-// Helper functions for cookie management
-const setCookie = (name: string, value: string, minutes: number) => {
-  const expires = new Date(Date.now() + minutes * 60 * 1000).toUTCString();
-  document.cookie = `${name}=${value}; expires=${expires}; path=/; SameSite=Lax`;
-};
-
-const getCookie = (name: string): string | undefined => {
-  const nameEQ = name + '=';
-  const ca = document.cookie.split(';');
-  for (let i = 0; i < ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
-  }
-  return undefined;
-};
-
-const deleteCookie = (name: string) => {
-  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-};
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -52,6 +31,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   });
 
   const { showToast } = useToast();
+  const { sessionExpirationMinutes, enableSessionExpiration } = useSettings();
 
   const logout = useCallback(() => {
     deleteCookie(SESSION_COOKIE_NAME);
@@ -75,7 +55,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const hashedPin = hashPin(pin);
     localStorage.setItem('userPin', hashedPin);
     const newSessionId = Date.now().toString(); // Simple session ID
-    setCookie(SESSION_COOKIE_NAME, newSessionId, SESSION_EXPIRATION_MINUTES);
+    setCookie(
+      SESSION_COOKIE_NAME,
+      newSessionId,
+      sessionExpirationMinutes,
+      enableSessionExpiration
+    );
 
     setAuth((prev) => ({
       ...prev,
@@ -90,7 +75,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     if (hashedPin === inputHashedPin) {
       const newSessionId = Date.now().toString(); // Simple session ID
-      setCookie(SESSION_COOKIE_NAME, newSessionId, SESSION_EXPIRATION_MINUTES);
+      setCookie(
+        SESSION_COOKIE_NAME,
+        newSessionId,
+        sessionExpirationMinutes,
+        enableSessionExpiration
+      );
       setAuth((prev) => ({
         ...prev,
         isAuthenticated: true,

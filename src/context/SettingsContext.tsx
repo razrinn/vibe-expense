@@ -10,6 +10,10 @@ import { Currency } from '../types';
 interface SettingsContextType {
   currency: Currency;
   setCurrency: (currency: Currency) => void;
+  sessionExpirationMinutes: number;
+  setSessionExpirationMinutes: (minutes: number) => void;
+  enableSessionExpiration: boolean;
+  setEnableSessionExpiration: (enabled: boolean) => void;
 }
 
 const SettingsContext = createContext<SettingsContextType | undefined>(
@@ -46,13 +50,47 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({
       : 'IDR';
   });
 
+  const [sessionExpirationMinutes, setSessionExpirationMinutes] =
+    useState<number>(() => {
+      const storedExpiration = localStorage.getItem('sessionExpirationMinutes');
+      return storedExpiration ? parseInt(storedExpiration, 10) : 15; // Default to 15 minutes
+    });
+
+  const [enableSessionExpiration, setEnableSessionExpiration] =
+    useState<boolean>(() => {
+      const storedEnable = localStorage.getItem('enableSessionExpiration');
+      return storedEnable ? JSON.parse(storedEnable) : true; // Default to enabled
+    });
+
   useEffect(() => {
-    // Save currency to local storage whenever it changes
     localStorage.setItem('userCurrency', currency);
   }, [currency]);
 
+  useEffect(() => {
+    localStorage.setItem(
+      'sessionExpirationMinutes',
+      sessionExpirationMinutes.toString()
+    );
+  }, [sessionExpirationMinutes]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      'enableSessionExpiration',
+      JSON.stringify(enableSessionExpiration)
+    );
+  }, [enableSessionExpiration]);
+
   return (
-    <SettingsContext.Provider value={{ currency, setCurrency }}>
+    <SettingsContext.Provider
+      value={{
+        currency,
+        setCurrency,
+        sessionExpirationMinutes,
+        setSessionExpirationMinutes,
+        enableSessionExpiration,
+        setEnableSessionExpiration,
+      }}
+    >
       {children}
     </SettingsContext.Provider>
   );

@@ -1,39 +1,61 @@
-# System Patterns _Optional_
+# System Patterns
 
-This file documents recurring patterns and standards used in the project.
-It is optional, but recommended to be updated as the project evolves.
-2025-05-26 10:19:15 - Log of updates made.
+## UI Patterns
 
--
+### Expense Card Design
 
-## Coding Patterns
+- **Layout**: Two-column (70/30 split)
+- **Typography**:
+  - Amount: 1.25rem semibold
+  - Description: 1rem medium
+  - Metadata: 0.875rem regular
+- **Colors**:
+  - Primary: Green-600 (light), Green-400 (dark)
+  - Secondary: Gray-700 (light), Gray-300 (dark)
+- **Spacing**: 16px padding, 8px gap between elements
+- **States**:
+  - Hover: subtle shadow elevation
+  - Focus: ring-2 ring-green-500
+  - Active: slight scale transform
 
-[2025-05-28 14:29:39] - Context API Pattern: Consistent use of React Context for state management across the application (AuthContext, ExpenseContext, SettingsContext, ThemeContext, ToastContext).
+### Interaction Patterns
 
-[2025-05-28 14:29:39] - Utility Function Pattern: Common utility functions (formatters, calculations) centralized in src/utils/ directory with clear separation of concerns.
+1. **Delete Flow**:
 
-[2025-05-28 14:29:39] - Component Composition: UI components follow a consistent pattern of accepting children and using compound components where appropriate.
+   - First tap: Highlight item
+   - Second tap: Show confirmation
+   - Slide-out animation on confirm
 
-## Architectural Patterns
+2. **Quick Edit**:
 
-[2025-05-28 14:29:39] - Client-Side Data Management: All data stored and managed client-side using IndexedDB with Dexie.js wrapper.
+   - Double-tap to enter edit mode
+   - Inline form fields
+   - Save/cancel buttons
 
-[2025-05-28 14:29:39] - Progressive Web App: Application follows PWA principles with service worker, manifest, and offline capabilities.
+3. **Swipe Actions**:
+   - Left swipe: Edit
+   - Right swipe: Delete
 
-[2025-05-28 14:29:39] - Feature-Based Organization: Components organized by feature (analytics, auth, budgets, expenses) rather than by type.
+## Component Architecture
 
-## Testing Patterns
+### ExpenseCard (New)
 
-[2025-05-28 14:29:39] - (To be implemented) Testing strategy will focus on component integration tests and context/provider tests.
+```tsx
+interface ExpenseCardProps {
+  expense: Expense;
+  categories: Category[];
+  onEdit: (id: string) => void;
+  onDelete: (id: string) => void;
+  isDeleting?: boolean;
+}
+```
 
-## Coding Patterns
+### Implementation Timeline
 
--
+1. Day 1: Create ExpenseCard component
+2. Day 2: Update ExpenseList
+3. Day 3: Update DailyGroupedExpenseList
+4. Day 4: Update ExpenseFilters
+5. Day 5: Testing and polish
 
-## Architectural Patterns
-
--
-
-## Testing Patterns
-
--
+2025-05-28 14:34:25 - Created UI revamp plan

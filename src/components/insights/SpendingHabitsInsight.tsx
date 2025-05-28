@@ -1,6 +1,6 @@
 import React from 'react';
 import { ExpenseSummary } from '../../types';
-import { TrendingUp, TrendingDown, Lightbulb, DollarSign } from 'lucide-react';
+import { TrendingUp, TrendingDown, DollarSign } from 'lucide-react';
 import { startOfMonth, endOfMonth, subMonths } from 'date-fns';
 import { calculateExpenseSummary } from '../../utils/expenseCalculations';
 import { useExpenses } from '../../context/ExpenseContext';
@@ -51,17 +51,17 @@ const SpendingHabitsInsight: React.FC<SpendingHabitsInsightProps> = ({
     dateRange: { start: previousMonthStart, end: previousMonthEnd },
   });
 
-  let insight = {
-    icon: <Lightbulb className='h-6 w-6 text-green-500' />,
-    title: 'Your Spending Snapshot',
-    description: `You've spent ${formatCurrency(
-      summary.total,
-      currency
-    )} this month.`,
-    color: 'bg-green-100 text-green-800',
-  };
+  let insight;
 
-  if (summary.total > 0 && previousMonthSummary.total > 0) {
+  if (summary.total === 0) {
+    insight = {
+      icon: <DollarSign className='h-6 w-6 text-blue-500' />,
+      title: 'No Spending Yet!',
+      description:
+        "You haven't recorded any expenses yet. Start tracking to see insights!",
+      color: 'bg-blue-100 text-blue-800',
+    };
+  } else if (previousMonthSummary.total > 0) {
     const percentageChange =
       ((summary.total - previousMonthSummary.total) /
         previousMonthSummary.total) *
@@ -92,12 +92,96 @@ const SpendingHabitsInsight: React.FC<SpendingHabitsInsightProps> = ({
         color: 'bg-green-100 text-green-800',
       };
     } else {
-      insight = {
-        icon: <Lightbulb className='h-6 w-6 text-blue-500' />,
-        title: 'Stable Spending',
-        description: 'Your spending is consistent with last month.',
-        color: 'bg-blue-100 text-blue-800',
-      };
+      // Stable spending, now check for category changes
+      const topCategoryChange = Object.keys(summary.byCategory).reduce(
+        (acc, categoryId) => {
+          const currentMonthAmount = summary.byCategory[categoryId] || 0;
+          const previousMonthAmount =
+            previousMonthSummary.byCategory[categoryId] || 0;
+          const change = currentMonthAmount - previousMonthAmount;
+          if (Math.abs(change) > Math.abs(acc.change)) {
+            return { categoryId, change };
+          }
+          return acc;
+        },
+        { categoryId: '', change: 0 }
+      );
+
+      if (
+        topCategoryChange.categoryId &&
+        Math.abs(topCategoryChange.change) > 0
+      ) {
+        const categoryName = getCategoryName(topCategoryChange.categoryId);
+        const percentageChange =
+          (topCategoryChange.change /
+            (previousMonthSummary.byCategory[topCategoryChange.categoryId] ||
+              1)) *
+          100;
+
+        if (percentageChange > 20) {
+          insight = {
+            icon: <TrendingUp className='h-6 w-6 text-red-500' />,
+            title: 'Category Spending Surge!',
+            description: `Your spending in "${categoryName}" increased by ${formatNumber(
+              percentageChange,
+              'en-US',
+              0,
+              0
+            )}% this month.`,
+            color: 'bg-red-100 text-red-800',
+          };
+        } else if (percentageChange < -20) {
+          insight = {
+            icon: <TrendingDown className='h-6 w-6 text-green-500' />,
+            title: 'Category Spending Drop!',
+            description: `Your spending in "${categoryName}" decreased by ${formatNumber(
+              Math.abs(percentageChange),
+              'en-US',
+              0,
+              0
+            )}% this month.`,
+            color: 'bg-green-100 text-green-800',
+          };
+        } else if (topCategory.id && topCategory.amount > 0) {
+          insight = {
+            icon: <TrendingUp className='h-6 w-6 text-red-500' />,
+            title: 'Top Spending Category',
+            description: `Your highest spending is in "${getCategoryName(
+              topCategory.id
+            )}" with ${formatCurrency(topCategory.amount, currency)}.`,
+            color: 'bg-red-100 text-red-800',
+          };
+        } else {
+          insight = {
+            icon: <DollarSign className='h-6 w-6 text-blue-500' />,
+            title: 'Daily Spending',
+            description: `You're spending an average of ${formatCurrency(
+              summary.average,
+              currency
+            )} per day this month.`,
+            color: 'bg-blue-100 text-blue-800',
+          };
+        }
+      } else if (topCategory.id && topCategory.amount > 0) {
+        insight = {
+          icon: <TrendingUp className='h-6 w-6 text-red-500' />,
+          title: 'Top Spending Category',
+          description: `Your highest spending is in "${getCategoryName(
+            topCategory.id
+          )}" with ${formatCurrency(topCategory.amount, currency)}.`,
+          color: 'bg-red-100 text-red-800',
+        };
+      } else {
+        insight = {
+          icon: <DollarSign className='h-6 w-6 text-blue-500' />,
+          title: 'Daily Spending',
+          description: `You're spending an average of ${formatCurrency(
+            summary.average,
+            currency
+          )} per day this month.`,
+          color: 'bg-blue-100 text-blue-800',
+        };
+      }
     }
   } else if (topCategory.id && topCategory.amount > 0) {
     insight = {
@@ -108,12 +192,14 @@ const SpendingHabitsInsight: React.FC<SpendingHabitsInsightProps> = ({
       )}" with ${formatCurrency(topCategory.amount, currency)}.`,
       color: 'bg-red-100 text-red-800',
     };
-  } else if (summary.total === 0) {
+  } else {
     insight = {
       icon: <DollarSign className='h-6 w-6 text-blue-500' />,
-      title: 'No Spending Yet!',
-      description:
-        "You haven't recorded any expenses yet. Start tracking to see insights!",
+      title: 'Daily Spending',
+      description: `You're spending an average of ${formatCurrency(
+        summary.average,
+        currency
+      )} per day this month.`,
       color: 'bg-blue-100 text-blue-800',
     };
   }

@@ -10,7 +10,7 @@ interface KeyMetricsProps {
 }
 
 const KeyMetrics: React.FC<KeyMetricsProps> = ({ summary }) => {
-  const { categories, expenses } = useExpenses();
+  const { categories } = useExpenses();
   const { currency } = useSettings();
   const getIcon = (metricName: string) => {
     switch (metricName) {
@@ -80,7 +80,7 @@ const KeyMetrics: React.FC<KeyMetricsProps> = ({ summary }) => {
     },
     {
       name: 'Transactions',
-      value: expenses.length.toString(),
+      value: summary.totalTransactions.toString(),
       desc: 'Number of transactions',
     },
     {

@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import KeyMetrics from '../components/analytics/KeyMetrics';
 import CategoryBudgetOverview from '../components/budgets/CategoryBudgetOverview';
 import SpendingHabitsInsight from '../components/insights/SpendingHabitsInsight';
-import { useExpenses } from '../context/ExpenseContext';
+import { defaultFilter, useExpenses } from '../context/ExpenseContext';
 import { PlusCircle } from 'lucide-react';
+import { calculateExpenseSummary } from '../utils/expenseCalculations';
 
 const HomePage: React.FC = () => {
-  const { summary } = useExpenses();
+  const { expenses } = useExpenses();
+  const { summary } = useMemo(() => {
+    return calculateExpenseSummary(expenses, defaultFilter);
+  }, [expenses]);
 
   return (
     <div className='space-y-6'>

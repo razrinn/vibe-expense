@@ -52,6 +52,7 @@ export const calculateExpenseSummary = (
       total,
       average,
       byCategory,
+      totalTransactions: filtered.length,
     },
     filteredExpenses: filtered,
   };

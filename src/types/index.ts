@@ -36,6 +36,7 @@ export interface ExpenseSummary {
   total: number;
   average: number;
   byCategory: Record<string, number>;
+  totalTransactions: number;
 }
 
 export interface AuthState {

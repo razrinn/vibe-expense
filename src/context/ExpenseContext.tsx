@@ -52,7 +52,7 @@ interface ExpenseContextType {
 
 const LOCAL_STORAGE_FILTER_KEY = 'expenseFilter';
 
-const defaultFilter: ExpenseFilter = {
+export const defaultFilter: ExpenseFilter = {
   period: 'all',
   dateRange: { start: new Date(0), end: new Date() }, // Default to all time
   category: undefined,
@@ -105,6 +105,7 @@ export const ExpenseProvider = ({ children }: { children: ReactNode }) => {
     total: 0,
     average: 0,
     byCategory: {},
+    totalTransactions: 0,
   });
 
   // Load initial data from IndexedDB

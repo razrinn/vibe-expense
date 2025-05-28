@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Expense, Category } from '../../types';
 import { formatCurrency } from '../../utils/formatters';
 import { useSettings } from '../../context/SettingsContext';
+import { Link, useNavigate } from 'react-router-dom';
 import ExpenseCard from './ExpenseCard';
-import DeleteConfirmation from '../ui/DeleteConfirmation';
 
 interface DailyGroupedExpenseListProps {
   expenses: Expense[];
@@ -17,11 +17,10 @@ const DailyGroupedExpenseList: React.FC<DailyGroupedExpenseListProps> = ({
   onDelete,
 }) => {
   const { currency } = useSettings();
+  const navigate = useNavigate();
   const [collapsedMonths, setCollapsedMonths] = useState<
     Record<string, boolean>
   >({});
-  const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
 
   const toggleMonthCollapse = (monthYear: string) => {
     setCollapsedMonths((prevState) => ({
@@ -30,27 +29,9 @@ const DailyGroupedExpenseList: React.FC<DailyGroupedExpenseListProps> = ({
     }));
   };
 
-  const handleDeleteClick = (id: string) => {
-    setConfirmDelete(id);
-  };
-
-  const handleConfirmDelete = async (id: string) => {
-    setDeletingId(id);
-    try {
-      await onDelete(id);
-    } finally {
-      setDeletingId(null);
-      setConfirmDelete(null);
-    }
-  };
-
-  const handleCancelDelete = () => {
-    setConfirmDelete(null);
-  };
-
   // Group expenses by date
   const groupedExpenses = expenses.reduce((acc, expense) => {
-    const date = new Date(expense.date).toISOString().split('T')[0];
+    const date = new Date(expense.date).toISOString().split('T')[0]; // YYYY-MM-DD for grouping
     if (!acc[date]) {
       acc[date] = [];
     }
@@ -67,6 +48,12 @@ const DailyGroupedExpenseList: React.FC<DailyGroupedExpenseListProps> = ({
     return (
       <div className='text-center py-10'>
         <p className='text-gray-500 dark:text-gray-400'>No expenses found.</p>
+        <Link
+          to='/add'
+          className='mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
+        >
+          Add your first expense
+        </Link>
       </div>
     );
   }
@@ -129,20 +116,20 @@ const DailyGroupedExpenseList: React.FC<DailyGroupedExpenseListProps> = ({
               </div>
             )}
             <div
-              className={`transition-all duration-150 ease-in-out overflow-hidden ${
+              className={`bg-white dark:bg-black-900 rounded-lg shadow transition-all duration-150 ease-in-out overflow-hidden ${
                 collapsedMonths[currentMonthYear]
                   ? 'max-h-0 p-0 border-0'
-                  : 'max-h-screen mb-3'
+                  : 'max-h-screen p-4 mb-3'
               }`}
             >
-              <div className='flex justify-between items-center mb-2 text-sm font-semibold px-1'>
+              <div className='flex justify-between items-center mb-3 text-sm font-semibold'>
                 <span className='text-gray-900 dark:text-white'>
                   {new Date(date).toLocaleDateString('en-US', {
                     weekday: 'short',
                     day: '2-digit',
                   })}
                 </span>
-                <span className='text-gray-700 dark:text-gray-300'>
+                <span className=' text-gray-700 dark:text-gray-300'>
                   {formatCurrency(
                     groupedExpenses[date].reduce(
                       (sum, exp) => sum + exp.amount,
@@ -152,27 +139,16 @@ const DailyGroupedExpenseList: React.FC<DailyGroupedExpenseListProps> = ({
                   )}
                 </span>
               </div>
-              <div className='space-y-2'>
+              <div className='space-y-1 w-full'>
                 {groupedExpenses[date].map((expense) => (
-                  <div key={expense.id} className='relative'>
-                    <ExpenseCard
-                      expense={expense}
-                      categories={categories}
-                      onEdit={(id) => window.location.assign(`/edit/${id}`)}
-                      onDelete={handleDeleteClick}
-                      isDeleting={deletingId === expense.id}
-                      variant='compact'
-                    />
-
-                    {confirmDelete === expense.id && (
-                      <DeleteConfirmation
-                        onConfirm={() => handleConfirmDelete(expense.id)}
-                        onCancel={handleCancelDelete}
-                        title='Delete Expense'
-                        message='Are you sure you want to delete this expense? This action cannot be undone.'
-                      />
-                    )}
-                  </div>
+                  <ExpenseCard
+                    key={expense.id}
+                    expense={expense}
+                    categories={categories}
+                    onEdit={() => navigate(`/edit/${expense.id}`)}
+                    onDelete={onDelete}
+                    variant='compact'
+                  />
                 ))}
               </div>
             </div>

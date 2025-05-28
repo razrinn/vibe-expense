@@ -3,6 +3,27 @@ import { useExpenses } from '../context/ExpenseContext';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useSettings } from '../context/SettingsContext';
+import { Currency } from '../types';
+
+const CURRENCY_DISPLAY_NAMES: Record<Currency, string> = {
+  USD: 'United States Dollar',
+  IDR: 'Indonesian Rupiah',
+  EUR: 'Euro',
+  GBP: 'British Pound',
+  JPY: 'Japanese Yen',
+  CNY: 'Chinese Yuan',
+  INR: 'Indian Rupee',
+  KRW: 'South Korean Won',
+  THB: 'Thai Baht',
+  VND: 'Vietnamese Dong',
+  PHP: 'Philippine Peso',
+  MYR: 'Malaysian Ringgit',
+  SGD: 'Singapore Dollar',
+  AUD: 'Australian Dollar',
+  CAD: 'Canadian Dollar',
+  CHF: 'Swiss Franc',
+};
+
 import { Download, Trash2, LogOut, Upload } from 'lucide-react';
 import Select from '../components/ui/forms/Select';
 import { useNavigate } from 'react-router-dom';
@@ -261,14 +282,19 @@ const SettingsPage: React.FC = () => {
               id='currency-select'
               name='currency-select'
               value={currency}
-              onChange={(e) => setCurrency(e.target.value)}
-              options={[
-                { value: 'IDR', label: 'IDR - Indonesian Rupiah' },
-                { value: 'USD', label: 'USD - United States Dollar' },
-                { value: 'EUR', label: 'EUR - Euro' },
-                { value: 'GBP', label: 'GBP - British Pound' },
-                { value: 'JPY', label: 'JPY - Japanese Yen' },
-              ]}
+              onChange={(e) => {
+                if (
+                  Object.keys(CURRENCY_DISPLAY_NAMES).includes(e.target.value)
+                ) {
+                  setCurrency(e.target.value as Currency);
+                }
+              }}
+              options={Object.entries(CURRENCY_DISPLAY_NAMES).map(
+                ([code, name]) => ({
+                  value: code as Currency,
+                  label: `${code} - ${name}`,
+                })
+              )}
             />
           </div>
 

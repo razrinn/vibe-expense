@@ -44,3 +44,11 @@ Implementation Details:
 - Modified `csvUtils.ts` to handle `budget` during category CSV export and import.
 
 [2025-05-28 12:24:02] - Decision: Moved `dateRange` `useMemo` hook to an earlier position in `CategoryBudgetOverview.tsx` to resolve "used before declaration" errors for `sortedBudgetedCategories`.
+
+[2024-05-28 15:29:35] - Currency System Update
+
+- Added type-safe Currency type with 16 supported currencies
+- Implemented dynamic currency symbol display in ExpenseForm
+- Updated SettingsContext with proper currency validation
+- Standardized currency selection in SettingsPage
+- All currency data now sourced from single CURRENCY_DISPLAY_NAMES constant

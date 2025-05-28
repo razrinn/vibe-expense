@@ -7,6 +7,11 @@ export interface Expense {
   notes?: string;
 }
 
+export type Currency =
+  | 'USD' | 'IDR' | 'EUR' | 'GBP' | 'JPY'
+  | 'CNY' | 'INR' | 'KRW' | 'THB' | 'VND'
+  | 'PHP' | 'MYR' | 'SGD' | 'AUD' | 'CAD' | 'CHF';
+
 export interface Category {
   id: string;
   name: string;

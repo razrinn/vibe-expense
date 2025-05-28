@@ -59,3 +59,10 @@ interface ExpenseCardProps {
 5. Day 5: Testing and polish
 
 2025-05-28 14:34:25 - Created UI revamp plan
+
+[2024-05-28 15:29:55] - Currency Handling Pattern
+
+- Currency selection is now type-safe throughout the application
+- All currency symbols and display names are defined in a single source (CURRENCY_DISPLAY_NAMES)
+- Input fields automatically adjust padding for different currency symbol widths
+- Currency preferences persist via SettingsContext and localStorage

@@ -3,9 +3,43 @@ import { useForm } from 'react-hook-form';
 import { formatDateForInput } from '../../utils/formatters';
 import { Expense, Category } from '../../types';
 import { useToast } from '../../context/ToastContext';
+import { useSettings } from '../../context/SettingsContext';
 import Input from '../ui/forms/Input';
 import Select from '../ui/forms/Select';
 import Textarea from '../ui/forms/Textarea';
+
+// Currency symbol mapping with padding adjustments for wider symbols
+const CURRENCY_SYMBOLS: Record<string, string> = {
+  USD: '$',
+  IDR: 'Rp',
+  EUR: '€',
+  GBP: '£',
+  JPY: '¥',
+  CNY: '¥',
+  INR: '₹',
+  KRW: '₩',
+  THB: '฿',
+  VND: '₫',
+  PHP: '₱',
+  MYR: 'RM',
+  SGD: 'S$',
+  AUD: 'A$',
+  CAD: 'C$',
+  CHF: 'CHF',
+};
+
+// Currencies that need extra padding due to wider symbols
+const WIDE_SYMBOL_CURRENCIES = new Set([
+  'IDR',
+  'KRW',
+  'VND',
+  'PHP',
+  'MYR',
+  'SGD',
+  'AUD',
+  'CAD',
+  'CHF',
+]);
 
 interface ExpenseFormProps {
   onSubmit: (data: Omit<Expense, 'id'>) => Promise<void>;
@@ -28,6 +62,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
   } = useForm<Omit<Expense, 'id'>>();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { showToast } = useToast();
+  const { currency } = useSettings();
 
   // Set initial form values when editing an existing expense
   useEffect(() => {
@@ -116,8 +151,12 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
             min: { value: 0.01, message: 'Amount must be greater than 0' },
           })}
           error={errors.amount?.message}
-          className='pl-7' // Add padding for the currency symbol
-          icon={<span className='text-gray-700 dark:text-gray-300'>$</span>}
+          className={WIDE_SYMBOL_CURRENCIES.has(currency) ? 'pl-9' : 'pl-7'} // Adjust padding for wider symbols
+          icon={
+            <span className='text-gray-700 dark:text-gray-300'>
+              {CURRENCY_SYMBOLS[currency] || '$'}
+            </span>
+          }
         />
       </div>
 

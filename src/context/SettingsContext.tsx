@@ -5,10 +5,11 @@ import React, {
   useEffect,
   ReactNode,
 } from 'react';
+import { Currency } from '../types';
 
 interface SettingsContextType {
-  currency: string;
-  setCurrency: (currency: string) => void;
+  currency: Currency;
+  setCurrency: (currency: Currency) => void;
 }
 
 const SettingsContext = createContext<SettingsContextType | undefined>(
@@ -18,10 +19,31 @@ const SettingsContext = createContext<SettingsContextType | undefined>(
 export const SettingsProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [currency, setCurrency] = useState<string>(() => {
-    // Initialize currency from local storage or default to 'IDR'
+  const [currency, setCurrency] = useState<Currency>(() => {
+    // Initialize currency from local storage with type safety
     const storedCurrency = localStorage.getItem('userCurrency');
-    return storedCurrency || 'IDR';
+    const validCurrencies: Currency[] = [
+      'USD',
+      'IDR',
+      'EUR',
+      'GBP',
+      'JPY',
+      'CNY',
+      'INR',
+      'KRW',
+      'THB',
+      'VND',
+      'PHP',
+      'MYR',
+      'SGD',
+      'AUD',
+      'CAD',
+      'CHF',
+    ];
+    return storedCurrency &&
+      validCurrencies.includes(storedCurrency as Currency)
+      ? (storedCurrency as Currency)
+      : 'IDR';
   });
 
   useEffect(() => {

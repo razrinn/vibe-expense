@@ -46,10 +46,13 @@ const SpendingHabitsInsight: React.FC<SpendingHabitsInsightProps> = ({
     return expenseDate >= previousMonthStart && expenseDate <= previousMonthEnd;
   });
 
-  const previousMonthSummary = calculateExpenseSummary(previousMonthExpenses, {
-    period: 'month',
-    dateRange: { start: previousMonthStart, end: previousMonthEnd },
-  });
+  const { summary: previousMonthSummary } = calculateExpenseSummary(
+    previousMonthExpenses,
+    {
+      period: 'month',
+      dateRange: { start: previousMonthStart, end: previousMonthEnd },
+    }
+  );
 
   let insight;
 

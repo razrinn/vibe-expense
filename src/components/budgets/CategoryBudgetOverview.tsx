@@ -41,10 +41,10 @@ const CategoryBudgetOverview = ({
       .map((category) => {
         const categorySpecificSummary = calculateExpenseSummary(expenses, {
           period: 'month',
-          category: category.id,
+          category: [category.id],
           dateRange,
         });
-        const spentAmount = categorySpecificSummary.total || 0;
+        const spentAmount = categorySpecificSummary.summary.total || 0;
         const budget = category.budget || 0;
         const progress = budget > 0 ? spentAmount / budget : 0;
         return { ...category, progress };
@@ -67,10 +67,10 @@ const CategoryBudgetOverview = ({
       {sortedBudgetedCategories.map((category) => {
         const categorySpecificSummary = calculateExpenseSummary(expenses, {
           period: 'month',
-          category: category.id,
+          category: [category.id],
           dateRange,
         });
-        const spentAmount = categorySpecificSummary.total || 0;
+        const spentAmount = categorySpecificSummary.summary.total || 0;
         const budget = category.budget || 0;
         const progress =
           budget > 0 ? Math.min(100, (spentAmount / budget) * 100) : 0;

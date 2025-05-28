@@ -38,6 +38,7 @@ interface ExpenseContextType {
   categories: Category[];
   filter: ExpenseFilter;
   summary: ExpenseSummary;
+  monthlyIncome: number; // New: Monthly income
   addExpense: (expense: Omit<Expense, 'id'>) => Promise<void>;
   updateExpense: (id: string, expense: Omit<Expense, 'id'>) => Promise<void>;
   deleteExpense: (id: string) => Promise<void>;
@@ -48,6 +49,7 @@ interface ExpenseContextType {
   clearAllExpenses: () => Promise<void>;
   loadExpenses: () => Promise<void>; // New function to reload expenses
   loadCategories: () => Promise<void>; // New function to reload categories
+  setMonthlyIncome: (amount: number) => void; // New: Set monthly income
 }
 
 const LOCAL_STORAGE_FILTER_KEY = 'expenseFilter';
@@ -107,6 +109,10 @@ export const ExpenseProvider = ({ children }: { children: ReactNode }) => {
     byCategory: {},
     totalTransactions: 0,
   });
+  const [monthlyIncome, setMonthlyIncomeState] = useState<number>(() => {
+    const savedIncome = localStorage.getItem('monthlyIncome');
+    return savedIncome ? parseFloat(savedIncome) : 0;
+  });
 
   // Load initial data from IndexedDB
   useEffect(() => {
@@ -132,6 +138,10 @@ export const ExpenseProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_FILTER_KEY, serializeFilter(filter));
   }, [filter]);
+
+  useEffect(() => {
+    localStorage.setItem('monthlyIncome', monthlyIncome.toString());
+  }, [monthlyIncome]);
 
   // Update filtered expenses and summary when expenses, filter, or categories change
   useEffect(() => {
@@ -324,6 +334,8 @@ export const ExpenseProvider = ({ children }: { children: ReactNode }) => {
         clearAllExpenses,
         loadExpenses, // Expose new function
         loadCategories, // Expose new function
+        monthlyIncome, // Expose monthly income
+        setMonthlyIncome: setMonthlyIncomeState, // Expose setter for monthly income
       }}
     >
       {children}

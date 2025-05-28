@@ -26,6 +26,7 @@ const CURRENCY_DISPLAY_NAMES: Record<Currency, string> = {
 
 import { Download, Trash2, LogOut, Upload } from 'lucide-react';
 import Select from '../components/ui/forms/Select';
+import Input from '../components/ui/forms/Input'; // Import Input component
 import { useNavigate } from 'react-router-dom';
 import packageJson from '../../package.json'; // Import package.json
 import ThemeToggle from '../components/layout/ThemeToggle';
@@ -41,7 +42,13 @@ interface NavigatorWithStandalone extends Navigator {
 }
 
 const SettingsPage: React.FC = () => {
-  const { clearAllExpenses, loadExpenses, loadCategories } = useExpenses();
+  const {
+    clearAllExpenses,
+    loadExpenses,
+    loadCategories,
+    monthlyIncome,
+    setMonthlyIncome,
+  } = useExpenses();
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const categoryFileInputRef = React.useRef<HTMLInputElement>(null);
 
@@ -295,6 +302,26 @@ const SettingsPage: React.FC = () => {
                   label: `${code} - ${name}`,
                 })
               )}
+            />
+          </div>
+
+          <div className='flex flex-col gap-2 border-t border-gray-200 dark:border-gray-700 pt-6'>
+            <div>
+              <h3 className='text-lg font-medium text-gray-900 dark:text-white'>
+                Monthly Income
+              </h3>
+              <p className='mt-1 text-sm text-gray-600 dark:text-gray-300'>
+                Set your estimated monthly income for insights.
+              </p>
+            </div>
+            <Input
+              id='monthly-income'
+              type='number'
+              placeholder='0.00'
+              value={monthlyIncome.toString()}
+              onChange={(e) =>
+                setMonthlyIncome(parseFloat(e.target.value) || 0)
+              }
             />
           </div>
 

@@ -1,6 +1,8 @@
 # Product Context
 
 This file provides a high-level overview of the Vibe Expense project. Initially populated from projectBrief.md.
+2025-05-28 19:02:00 - Added income tracking and ratio analysis features
+2025-05-28 19:02:00 - Added income tracking and ratio analysis features
 2025-05-28 17:58:00 - Initial creation from project brief
 
 ## Project Goal

@@ -41,3 +41,5 @@ This file tracks the project's current status, including recent changes, current
 - `Papa.parse` type error workaround using `any` cast in `src/utils/csvUtils.ts` persists.
 
 [2025-05-28 12:23:53] - Current focus: Implementing category sorting based on spending/limit ratio in `src/components/budgets/CategoryBudgetOverview.tsx`.
+
+[2025-05-28 14:30:00] - Memory Bank updated with current system patterns and architecture documentation. Reviewed all memory bank files to ensure consistency across project documentation.

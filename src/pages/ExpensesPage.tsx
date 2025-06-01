@@ -5,6 +5,8 @@ import { useExpenses } from '../context/ExpenseContext';
 import { formatCurrency } from '../utils/formatters';
 import { useSettings } from '../context/SettingsContext';
 
+import { useEffect } from 'react';
+
 const ExpensesPage: React.FC = () => {
   const {
     filteredExpenses,
@@ -13,8 +15,13 @@ const ExpensesPage: React.FC = () => {
     filter,
     setFilter,
     summary,
+    loadExpenses,
   } = useExpenses();
   const { currency } = useSettings();
+
+  useEffect(() => {
+    loadExpenses();
+  }, [loadExpenses]);
 
   return (
     <div className='space-y-4'>

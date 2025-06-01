@@ -5,6 +5,7 @@ import {
   useEffect,
   ReactNode,
   useCallback,
+  useMemo,
 } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Expense, Category, ExpenseFilter, ExpenseSummary } from '../types';
@@ -102,13 +103,11 @@ export const ExpenseProvider = ({ children }: { children: ReactNode }) => {
     }
     return defaultFilter;
   });
-  const [filteredExpenses, setFilteredExpenses] = useState<Expense[]>([]);
-  const [summary, setSummary] = useState<ExpenseSummary>({
-    total: 0,
-    average: 0,
-    byCategory: {},
-    totalTransactions: 0,
-  });
+
+  const { filteredExpenses, summary } = useMemo(() => {
+    return calculateExpenseSummary(expenses, filter);
+  }, [expenses, filter]);
+
   const [monthlyIncome, setMonthlyIncomeState] = useState<number>(() => {
     const savedIncome = localStorage.getItem('monthlyIncome');
     return savedIncome ? parseFloat(savedIncome) : 0;
@@ -142,15 +141,6 @@ export const ExpenseProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     localStorage.setItem('monthlyIncome', monthlyIncome.toString());
   }, [monthlyIncome]);
-
-  // Update filtered expenses and summary when expenses, filter, or categories change
-  useEffect(() => {
-    // Apply filters
-    const { summary: newSummary, filteredExpenses: newFilteredExpenses } =
-      calculateExpenseSummary(expenses, filter);
-    setFilteredExpenses(newFilteredExpenses);
-    setSummary(newSummary);
-  }, [expenses, filter, categories]);
 
   const addExpense = useCallback(async (expense: Omit<Expense, 'id'>) => {
     const newExpense: Expense = {

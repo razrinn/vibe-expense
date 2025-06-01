@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Expense, Category } from '../../types';
 import { formatCurrency } from '../../utils/formatters';
 import { getCategoryById } from '../../utils/categories';
@@ -34,17 +34,25 @@ const ExpenseCard: React.FC<ExpenseCardProps> = ({
     return category ? category.name : 'Uncategorized';
   };
 
+  const [showActions, setShowActions] = useState(false);
+
+  const handleCardClick = () => {
+    setShowActions(!showActions);
+  };
+
   return (
     <div
       className={`
-      bg-white dark:bg-black-900 rounded-lg shadow-sm
-      transition-all duration-150 ease-in-out
-      hover:shadow-md
-      focus:outline-none focus:ring-2 focus:ring-green-500
-      py-1
-    `}
+        bg-white dark:bg-black-900 rounded-lg shadow-sm
+        transition-all duration-150 ease-in-out
+        hover:shadow-md
+        focus:outline-none focus:ring-2 focus:ring-green-500
+        py-1
+        relative overflow-hidden
+      `}
+      onClick={handleCardClick}
     >
-      <div className='flex items-center justify-between gap-2'>
+      <div className='flex items-center justify-between gap-2 pr-2'>
         {/* Left column - Description and metadata */}
         <div className='flex-1 min-w-0'>
           <div className='flex items-center gap-2'>
@@ -70,12 +78,21 @@ const ExpenseCard: React.FC<ExpenseCardProps> = ({
         </div>
 
         {/* Right column - Amount and actions */}
-        <div className='flex items-center gap-2'>
+        <div className='flex items-center gap-2 relative'>
           <p className='text-sm text-gray-700 dark:text-gray-300 font-mono'>
             {formatCurrency(expense.amount, currency)}
           </p>
 
-          <div className='flex items-center gap-1'>
+          <div
+            className={`
+              absolute top-0 bottom-0 w-16
+              flex items-center justify-end gap-1
+              bg-white dark:bg-black-900
+              transition-all duration-200 ease-out
+              ${showActions ? 'right-0' : '-right-16'}
+            `}
+            onClick={(e) => e.stopPropagation()} // Prevent card click when interacting with buttons
+          >
             <button
               onClick={() => onEdit(expense.id)}
               className='p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 rounded-full'
